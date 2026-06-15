@@ -47,15 +47,12 @@
 <div id="root"></div>
 
 <script type="text/babel">
-// ─── CONFIGURAÇÃO SUPABASE ────────────────────────────────────
-// Substitua pelos valores do seu projeto Supabase (Settings → API)
-const SUPABASE_URL  = 'https://SEU_PROJECT_ID.supabase.co'
-const SUPABASE_KEY  = 'sua_anon_key_aqui'
+const SUPABASE_URL  = 'https://asugmdvehyjjhtdvkgnw.supabase.co'
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdWdtZHZlaHlqamh0ZHZrZ253Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDI5MTIsImV4cCI6MjA5NzExODkxMn0.hrE2nl5_xmxe9kNKBGUUlIGkMOKluoHnpRY02AexBzE'
 const OWNER_EMAIL   = 'jeancla1306@gmail.com'
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 
-// ─── HELPERS ─────────────────────────────────────────────────
 const { useState, useEffect, useCallback } = React
 const isAdmin = p => p && (p.role === 'admin' || p.role === 'owner')
 const isOwner = p => p && p.role === 'owner'
@@ -78,7 +75,6 @@ function isToday(d) {
   return a.getDate()===b.getDate() && a.getMonth()===b.getMonth() && a.getFullYear()===b.getFullYear()
 }
 
-// ─── DB ──────────────────────────────────────────────────────
 const db = {
   async signIn(email, password) {
     const { error } = await sb.auth.signInWithPassword({ email, password })
@@ -174,7 +170,6 @@ const db = {
   },
 }
 
-// ─── ESTILOS ─────────────────────────────────────────────────
 const S = {
   app:    { minHeight:'100vh', background:'#0f1117', color:'#e8eaf0', fontFamily:"'IBM Plex Mono',monospace" },
   center: { minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'linear-gradient(135deg,#0f1117,#1a1f2e)', padding:16 },
@@ -202,7 +197,6 @@ const S = {
 const ROLE_COLORS = { owner:{bg:'#2a1040',color:'#c080ff'}, admin:{bg:'#2a2010',color:'#f0c040'}, user:{bg:'#0f1f2a',color:'#40c0f0'} }
 const ROLE_LABELS = { owner:'Proprietário', admin:'Admin', user:'Usuário' }
 
-// ─── COMPONENTES BASE ────────────────────────────────────────
 function RoleBadge({role}) {
   const c = ROLE_COLORS[role] || ROLE_COLORS.user
   return <span style={{...S.badge, background:c.bg, color:c.color, fontSize:10}}>{ROLE_LABELS[role]||role}</span>
@@ -220,7 +214,6 @@ function Field({label, value, onChange, placeholder, type='text', mt, onEnter}) 
   )
 }
 
-// ─── LOGIN ───────────────────────────────────────────────────
 function Login({onLogin}) {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
@@ -248,7 +241,6 @@ function Login({onLogin}) {
   )
 }
 
-// ─── DASHBOARD ───────────────────────────────────────────────
 function Dashboard({frotas, onFrota}) {
   return (
     <div className="cb-page">
@@ -271,7 +263,6 @@ function Dashboard({frotas, onFrota}) {
   )
 }
 
-// ─── GRUPO MEDIDA ────────────────────────────────────────────
 function GrupoMedida({grupo, index, total, onChange, onRemove}) {
   const isM = grupo.unidade !== 'mm'
   const step = isM ? 0.01 : 1
@@ -317,7 +308,6 @@ function GrupoMedida({grupo, index, total, onChange, onRemove}) {
   )
 }
 
-// ─── GRUPOS DETALHE ──────────────────────────────────────────
 function GruposDetalhe({grupos}) {
   if (!grupos||grupos.length===0) return <span style={{color:'#6b7280'}}>—</span>
   return (
@@ -337,7 +327,6 @@ function GruposDetalhe({grupos}) {
   )
 }
 
-// ─── TABELA REGISTROS ────────────────────────────────────────
 function TabelaRegistros({registros, onEdit, onDelete}) {
   return (
     <div className="cb-table-wrap">
@@ -404,7 +393,6 @@ function DateGroupedTable({registros, onEdit, onDelete}) {
   )
 }
 
-// ─── MODAIS ──────────────────────────────────────────────────
 function ModalConfirmDel({reg, onConfirm, onCancel}) {
   return (
     <div style={S.modal} onClick={e => e.target===e.currentTarget && onCancel()}>
@@ -465,7 +453,6 @@ function ModalEdicao({reg, perfil, onClose, onSave}) {
   )
 }
 
-// ─── FROTA VIEW ──────────────────────────────────────────────
 function FrotaView({frota, clientes, session, perfil, registros, recarregar, onBack, showToast}) {
   const def = {cliente:'', clienteSearch:'', nota:'', qtdTotal:'', grupos:[novoGrupo()]}
   const [form, setForm] = useState(def)
@@ -570,7 +557,6 @@ function FrotaView({frota, clientes, session, perfil, registros, recarregar, onB
   )
 }
 
-// ─── ADMIN VIEW ──────────────────────────────────────────────
 function AdminView({perfil, frotas, setFrotas, clientes, setClientes, showToast}) {
   const [tab, setTab]   = useState('frotas')
   const [np, setNp]     = useState('')
@@ -678,7 +664,6 @@ function AdminView({perfil, frotas, setFrotas, clientes, setClientes, showToast}
   )
 }
 
-// ─── HISTÓRICO ───────────────────────────────────────────────
 function Historico({registros, recarregar, frotas, perfil, session, showToast}) {
   const [editReg,    setEditReg]    = useState(null)
   const [confirmDel, setConfirmDel] = useState(null)
@@ -748,7 +733,6 @@ function Historico({registros, recarregar, frotas, perfil, session, showToast}) 
   )
 }
 
-// ─── APP ROOT ────────────────────────────────────────────────
 function App() {
   const [session,   setSession]   = useState(null)
   const [perfil,    setPerfil]    = useState(null)
