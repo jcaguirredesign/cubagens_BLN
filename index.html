@@ -11,220 +11,152 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0f1117; font-family: 'IBM Plex Mono', monospace; }
-    .cb-page { padding: 28px 24px; max-width: 1100px; margin: 0 auto; }
-    .cb-card { background:#1a1f2e; border:1px solid #2a3050; border-radius:12px; padding:20px 22px; margin-bottom:16px; }
-    .cb-nav  { background:#1a1f2e; border-bottom:1px solid #2a3050; padding:0 20px; display:flex; align-items:center; min-height:54px; gap:8px; flex-wrap:wrap; }
-    .cb-row  { display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
-    .cb-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px; }
-    .cb-modal-box { background:#1a1f2e; border:1px solid #2a3050; border-radius:16px; padding:28px 24px; width:min(100%,620px); max-height:90vh; overflow-y:auto; }
-    .cb-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-    .cb-frota-btn { background:#1a1f2e; border:2px solid #2a3050; border-radius:12px; padding:24px 16px; cursor:pointer; text-align:center; transition:all 0.15s; }
-    .cb-frota-btn:hover { border-color:#f0c040; }
-    .cb-field-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
-    .cb-field-row > * { min-width:130px; }
-    .cb-sync-bar { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; align-items:center; }
-    @media (max-width:640px) {
-      .cb-page  { padding:14px 10px; }
-      .cb-card  { padding:14px 12px; }
-      .cb-nav   { padding:8px 12px; gap:6px; }
-      .cb-nav-title { font-size:11px !important; }
-      .cb-nav-badge { display:none; }
-      .cb-row   { flex-direction:column; }
-      .cb-row > * { width:100% !important; min-width:unset !important; flex:none !important; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body { background: #0f1117; font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+    #root { min-height: 100vh; }
+
+    .cb-page { padding: 20px 16px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .cb-card { background:#1a1f2e; border:1px solid #2a3050; border-radius:12px; padding:18px 20px; margin-bottom:14px; }
+    .cb-nav  { background:#1a1f2e; border-bottom:1px solid #2a3050; padding:0 16px; display:flex; align-items:center; min-height:52px; gap:6px; flex-wrap:wrap; position:sticky; top:0; z-index:50; }
+    .cb-row  { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; }
+    .cb-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+    .cb-modal-box { background:#1a1f2e; border:1px solid #2a3050; border-radius:14px; padding:24px 20px; width:min(96vw,600px); max-height:92vh; overflow-y:auto; }
+    .cb-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; width:100%; }
+    .cb-frota-btn { background:#1a1f2e; border:2px solid #2a3050; border-radius:12px; padding:20px 14px; cursor:pointer; text-align:center; transition:border-color 0.15s; user-select:none; }
+    .cb-frota-btn:hover, .cb-frota-btn:active { border-color:#f0c040; }
+    .cb-field-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+    .cb-sync-bar { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; align-items:center; }
+
+    /* Responsivo */
+    @media (max-width:768px) {
+      .cb-page { padding:12px 10px; }
+      .cb-card { padding:12px 12px; }
+      .cb-nav  { padding:6px 10px; min-height:48px; }
+      .cb-grid { grid-template-columns:repeat(2,1fr); gap:8px; }
+      .cb-modal-box { padding:16px 12px; }
+      .cb-hide-mobile { display:none !important; }
       .cb-field-row { flex-direction:column; }
       .cb-field-row > * { width:100% !important; min-width:unset !important; }
-      .cb-grid  { grid-template-columns:repeat(2,1fr); gap:10px; }
-      .cb-modal-box { padding:18px 14px; border-radius:12px; }
-      .cb-hide-mobile { display:none !important; }
       table { font-size:11px; }
-      th, td { padding:6px 7px !important; }
+      th, td { padding:5px 6px !important; }
+    }
+    @media (max-width:400px) {
+      .cb-grid { grid-template-columns:1fr 1fr; }
+      .cb-nav-title { font-size:11px !important; }
+      .cb-nav-badge { display:none; }
+    }
+    @media (min-width:1024px) {
+      .cb-page { padding:28px 24px; }
+      .cb-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); }
     }
   </style>
 </head>
 <body>
 <div id="root"></div>
-
 <script type="text/babel">
 const SUPABASE_URL  = 'https://asugmdvehyjjhtdvkgnw.supabase.co'
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzdWdtZHZlaHlqamh0ZHZrZ253Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDI5MTIsImV4cCI6MjA5NzExODkxMn0.hrE2nl5_xmxe9kNKBGUUlIGkMOKluoHnpRY02AexBzE'
-const OWNER_EMAIL   = 'jeancla1306@gmail.com'
-
+const OWNER_EMAIL   = 'jean.aguirre@atualcargas.com.br'
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 
 const { useState, useEffect, useCallback } = React
-const isAdmin = p => p && (p.role === 'admin' || p.role === 'owner')
-const isOwner = p => p && p.role === 'owner'
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2) }
+const isAdmin = p => p && (p.role==='admin'||p.role==='owner')
+const isOwner = p => p && p.role==='owner'
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2) }
 function fmtDate(d) { return new Date(d).toLocaleString('pt-BR') }
 function fmtDim(v) { return `${(parseFloat(v)||0).toFixed(2)}m` }
-function novoGrupo() { return { id: uid(), qtd:'', altura:'', largura:'', comprimento:'', unidade:'m' } }
+function novoGrupo() { return { id:uid(), qtd:'', altura:'', largura:'', comprimento:'', unidade:'m' } }
 function dimsM(g) {
-  const t = v => g.unidade === 'mm' ? (parseFloat(v)||0)/1000 : parseFloat(v)||0
-  return { alturaM: t(g.altura), larguraM: t(g.largura), comprimentoM: t(g.comprimento) }
+  const t = v => g.unidade==='mm' ? (parseFloat(v)||0)/1000 : parseFloat(v)||0
+  return { alturaM:t(g.altura), larguraM:t(g.largura), comprimentoM:t(g.comprimento) }
 }
 function calcM3(grupos) {
   return grupos.reduce((s,g) => {
     const t = v => g.unidade==='mm' ? (parseFloat(v)||0)/1000 : parseFloat(v)||0
-    return s + t(g.largura)*t(g.altura)*t(g.comprimento)*(parseInt(g.qtd)||0)
+    return s+t(g.largura)*t(g.altura)*t(g.comprimento)*(parseInt(g.qtd)||0)
   }, 0)
 }
 function isToday(d) {
-  const a = new Date(d), b = new Date()
-  return a.getDate()===b.getDate() && a.getMonth()===b.getMonth() && a.getFullYear()===b.getFullYear()
+  const a=new Date(d), b=new Date()
+  return a.getDate()===b.getDate()&&a.getMonth()===b.getMonth()&&a.getFullYear()===b.getFullYear()
 }
 
 const db = {
-  async signIn(email, password) {
-    const { error } = await sb.auth.signInWithPassword({ email, password })
-    if (error) throw error
-  },
+  async signIn(email,password) { const {error}=await sb.auth.signInWithPassword({email,password}); if(error) throw error },
   async signOut() { await sb.auth.signOut() },
-  async getPerfil(uid) {
-    const { data, error } = await sb.from('perfis').select('*').eq('id', uid).single()
-    if (error) throw error
-    return data
+  async getPerfil(uid) { const {data,error}=await sb.from('perfis').select('*').eq('id',uid).single(); if(error) throw error; return data },
+  async listarFrotas() { const {data,error}=await sb.from('frotas').select('*').order('placa'); if(error) throw error; return data||[] },
+  async adicionarFrota(placa) { const {data,error}=await sb.from('frotas').insert({placa}).select().single(); if(error) throw error; return data },
+  async removerFrota(id) { const {error}=await sb.from('frotas').delete().eq('id',id); if(error) throw error },
+  async listarClientes() { const {data,error}=await sb.from('clientes').select('*').order('nome'); if(error) throw error; return data||[] },
+  async adicionarCliente(nome) { const {data,error}=await sb.from('clientes').insert({nome}).select().single(); if(error) throw error; return data },
+  async removerCliente(id) { const {error}=await sb.from('clientes').delete().eq('id',id); if(error) throw error },
+  async listarRegistros() { const {data,error}=await sb.from('registros').select('*, grupos(*)').order('criado_em',{ascending:false}); if(error) throw error; return (data||[]).map(r=>({...r,grupos:(r.grupos||[]).sort((a,b)=>a.seq-b.seq)})) },
+  async salvarRegistro(reg,grupos,session,perfil) {
+    const {data:r,error:e1}=await sb.from('registros').insert({frota_id:reg.frotaId,frota_placa:reg.frotaPlaca,cliente:reg.cliente,nota:reg.nota,qtd_total:reg.qtdTotal,m3_total:reg.m3Total,user_id:session.user.id,user_email:session.user.email,user_nome:perfil.nome}).select().single()
+    if(e1) throw e1
+    const gd=grupos.map((g,i)=>({registro_id:r.id,seq:i+1,qtd:parseInt(g.qtd)||0,unidade:g.unidade||'m',altura_m:g.alturaM??0,largura_m:g.larguraM??0,comprimento_m:g.comprimentoM??0,m3_grupo:(g.alturaM??0)*(g.larguraM??0)*(g.comprimentoM??0)*(parseInt(g.qtd)||0)}))
+    const {error:e2}=await sb.from('grupos').insert(gd); if(e2) throw e2
+    return {...r,grupos:gd}
   },
-  async listarFrotas() {
-    const { data, error } = await sb.from('frotas').select('*').order('placa')
-    if (error) throw error
-    return data || []
+  async editarRegistro(regId,grupos,motivo,m3Total,perfil) {
+    const {error:e1}=await sb.from('registros').update({m3_total:m3Total,editado:true,editado_por:perfil.email,motivo_edicao:motivo,data_edicao:new Date().toISOString()}).eq('id',regId); if(e1) throw e1
+    await sb.from('grupos').delete().eq('registro_id',regId)
+    const gd=grupos.map((g,i)=>({registro_id:regId,seq:i+1,qtd:parseInt(g.qtd)||0,unidade:g.unidade||'m',altura_m:g.alturaM??0,largura_m:g.larguraM??0,comprimento_m:g.comprimentoM??0,m3_grupo:(g.alturaM??0)*(g.larguraM??0)*(g.comprimentoM??0)*(parseInt(g.qtd)||0)}))
+    const {error:e2}=await sb.from('grupos').insert(gd); if(e2) throw e2
+    await sb.from('historico_edicoes').insert({registro_id:regId,user_email:perfil.email,motivo})
   },
-  async adicionarFrota(placa) {
-    const { data, error } = await sb.from('frotas').insert({ placa }).select().single()
-    if (error) throw error
-    return data
-  },
-  async removerFrota(id) {
-    const { error } = await sb.from('frotas').delete().eq('id', id)
-    if (error) throw error
-  },
-  async listarClientes() {
-    const { data, error } = await sb.from('clientes').select('*').order('nome')
-    if (error) throw error
-    return data || []
-  },
-  async adicionarCliente(nome) {
-    const { data, error } = await sb.from('clientes').insert({ nome }).select().single()
-    if (error) throw error
-    return data
-  },
-  async removerCliente(id) {
-    const { error } = await sb.from('clientes').delete().eq('id', id)
-    if (error) throw error
-  },
-  async listarRegistros() {
-    const { data, error } = await sb.from('registros').select('*, grupos(*)').order('criado_em', { ascending: false })
-    if (error) throw error
-    return (data||[]).map(r => ({ ...r, grupos: (r.grupos||[]).sort((a,b) => a.seq-b.seq) }))
-  },
-  async salvarRegistro(reg, grupos, session, perfil) {
-    const { data: r, error: e1 } = await sb.from('registros').insert({
-      frota_id: reg.frotaId, frota_placa: reg.frotaPlaca, cliente: reg.cliente,
-      nota: reg.nota, qtd_total: reg.qtdTotal, m3_total: reg.m3Total,
-      user_id: session.user.id, user_email: session.user.email, user_nome: perfil.nome,
-    }).select().single()
-    if (e1) throw e1
-    const gd = grupos.map((g,i) => ({
-      registro_id: r.id, seq: i+1, qtd: parseInt(g.qtd)||0, unidade: g.unidade||'m',
-      altura_m: g.alturaM??parseFloat(g.altura)??0,
-      largura_m: g.larguraM??parseFloat(g.largura)??0,
-      comprimento_m: g.comprimentoM??parseFloat(g.comprimento)??0,
-      m3_grupo: (g.alturaM??0)*(g.larguraM??0)*(g.comprimentoM??0)*(parseInt(g.qtd)||0),
-    }))
-    const { error: e2 } = await sb.from('grupos').insert(gd)
-    if (e2) throw e2
-    return { ...r, grupos: gd }
-  },
-  async editarRegistro(regId, grupos, motivo, m3Total, perfil) {
-    const { error: e1 } = await sb.from('registros').update({
-      m3_total: m3Total, editado: true, editado_por: perfil.email,
-      motivo_edicao: motivo, data_edicao: new Date().toISOString(),
-    }).eq('id', regId)
-    if (e1) throw e1
-    await sb.from('grupos').delete().eq('registro_id', regId)
-    const gd = grupos.map((g,i) => ({
-      registro_id: regId, seq: i+1, qtd: parseInt(g.qtd)||0, unidade: g.unidade||'m',
-      altura_m: g.alturaM??parseFloat(g.altura)??0,
-      largura_m: g.larguraM??parseFloat(g.largura)??0,
-      comprimento_m: g.comprimentoM??parseFloat(g.comprimento)??0,
-      m3_grupo: (g.alturaM??0)*(g.larguraM??0)*(g.comprimentoM??0)*(parseInt(g.qtd)||0),
-    }))
-    const { error: e2 } = await sb.from('grupos').insert(gd)
-    if (e2) throw e2
-    await sb.from('historico_edicoes').insert({ registro_id: regId, user_email: perfil.email, motivo })
-  },
-  async deletarRegistro(id) {
-    const { error } = await sb.from('registros').delete().eq('id', id)
-    if (error) throw error
-  },
-  async listarUsuarios() {
-    const { data, error } = await sb.from('perfis').select('*').order('criado_em')
-    if (error) throw error
-    return data || []
-  },
-  async atualizarRole(userId, role) {
-    const { error } = await sb.from('perfis').update({ role }).eq('id', userId)
-    if (error) throw error
-  },
+  async deletarRegistro(id) { const {error}=await sb.from('registros').delete().eq('id',id); if(error) throw error },
+  async listarUsuarios() { const {data,error}=await sb.from('perfis').select('*').order('criado_em'); if(error) throw error; return data||[] },
+  async atualizarRole(userId,role) { const {error}=await sb.from('perfis').update({role}).eq('id',userId); if(error) throw error },
 }
 
 const S = {
-  app:    { minHeight:'100vh', background:'#0f1117', color:'#e8eaf0', fontFamily:"'IBM Plex Mono',monospace" },
-  center: { minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'linear-gradient(135deg,#0f1117,#1a1f2e)', padding:16 },
-  box:    { width:'100%', maxWidth:400, background:'#1a1f2e', border:'1px solid #2a3050', borderRadius:16, padding:'32px 24px', boxSizing:'border-box' },
-  logoT:  { fontSize:22, fontWeight:700, color:'#f0c040', letterSpacing:2, textTransform:'uppercase', textAlign:'center' },
-  logoS:  { fontSize:11, color:'#6b7280', marginTop:4, letterSpacing:3, textAlign:'center', marginBottom:32 },
-  label:  { display:'block', fontSize:11, color:'#6b7280', letterSpacing:2, marginBottom:6, textTransform:'uppercase' },
-  input:  { width:'100%', background:'#0f1117', border:'1px solid #2a3050', borderRadius:8, padding:'10px 14px', color:'#e8eaf0', fontSize:14, outline:'none', boxSizing:'border-box', fontFamily:'inherit' },
-  btnP:   { width:'100%', background:'#f0c040', color:'#0f1117', border:'none', borderRadius:8, padding:12, fontSize:14, fontWeight:700, cursor:'pointer', letterSpacing:1, textTransform:'uppercase', fontFamily:'inherit' },
-  btnS:   { background:'transparent', border:'1px solid #2a3050', borderRadius:6, padding:'6px 14px', color:'#e8eaf0', fontSize:12, cursor:'pointer', fontFamily:'inherit', whiteSpace:'nowrap' },
-  btnD:   { background:'transparent', border:'1px solid #e05050', borderRadius:6, padding:'6px 14px', color:'#e05050', fontSize:12, cursor:'pointer', fontFamily:'inherit', whiteSpace:'nowrap' },
-  btnY:   { background:'#f0c040', border:'none', borderRadius:6, padding:'8px 18px', color:'#0f1117', fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:'inherit', whiteSpace:'nowrap' },
-  secT:   { fontSize:11, color:'#f0c040', letterSpacing:3, textTransform:'uppercase', marginBottom:16, borderBottom:'1px solid #2a3050', paddingBottom:8 },
-  errBox: { background:'#2a1515', border:'1px solid #e05050', borderRadius:8, padding:'10px 14px', color:'#e05050', fontSize:13, marginTop:10 },
-  okBox:  { background:'#0f2a1a', border:'1px solid #40c080', borderRadius:8, padding:'10px 14px', color:'#40c080', fontSize:13 },
-  table:  { width:'100%', borderCollapse:'collapse', fontSize:12 },
-  th:     { textAlign:'left', fontSize:10, color:'#6b7280', letterSpacing:2, textTransform:'uppercase', padding:'8px 10px', borderBottom:'1px solid #2a3050', whiteSpace:'nowrap' },
-  td:     { padding:'9px 10px', borderBottom:'1px solid #1e2438', verticalAlign:'top' },
-  tabs:   { display:'flex', gap:2, background:'#0f1117', borderRadius:8, padding:4, marginBottom:20 },
-  tab:    { flex:1, padding:'8px 6px', borderRadius:6, fontSize:11, fontWeight:700, letterSpacing:1, textTransform:'uppercase', cursor:'pointer', textAlign:'center', border:'none', fontFamily:'inherit' },
-  badge:  { display:'inline-block', padding:'2px 8px', borderRadius:4, fontSize:11, fontWeight:700, letterSpacing:1 },
-  modal:  { position:'fixed', inset:0, background:'rgba(0,0,0,0.8)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:100, padding:12 },
-  select: { background:'#0f1117', border:'1px solid #2a3050', borderRadius:8, padding:'10px 14px', color:'#e8eaf0', fontSize:13, outline:'none', fontFamily:'inherit', cursor:'pointer' },
+  center:{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#0f1117,#1a1f2e)',padding:16 },
+  box:   { width:'100%',maxWidth:400,background:'#1a1f2e',border:'1px solid #2a3050',borderRadius:16,padding:'32px 20px' },
+  logoT: { fontSize:22,fontWeight:700,color:'#f0c040',letterSpacing:2,textTransform:'uppercase',textAlign:'center' },
+  logoS: { fontSize:11,color:'#6b7280',marginTop:4,letterSpacing:3,textAlign:'center',marginBottom:32 },
+  label: { display:'block',fontSize:11,color:'#6b7280',letterSpacing:2,marginBottom:6,textTransform:'uppercase' },
+  input: { width:'100%',background:'#0f1117',border:'1px solid #2a3050',borderRadius:8,padding:'10px 12px',color:'#e8eaf0',fontSize:14,outline:'none',fontFamily:'inherit' },
+  btnP:  { width:'100%',background:'#f0c040',color:'#0f1117',border:'none',borderRadius:8,padding:12,fontSize:14,fontWeight:700,cursor:'pointer',letterSpacing:1,textTransform:'uppercase',fontFamily:'inherit' },
+  btnS:  { background:'transparent',border:'1px solid #2a3050',borderRadius:6,padding:'6px 12px',color:'#e8eaf0',fontSize:12,cursor:'pointer',fontFamily:'inherit',whiteSpace:'nowrap' },
+  btnD:  { background:'transparent',border:'1px solid #e05050',borderRadius:6,padding:'6px 12px',color:'#e05050',fontSize:12,cursor:'pointer',fontFamily:'inherit',whiteSpace:'nowrap' },
+  btnY:  { background:'#f0c040',border:'none',borderRadius:6,padding:'8px 16px',color:'#0f1117',fontSize:13,fontWeight:700,cursor:'pointer',fontFamily:'inherit',whiteSpace:'nowrap' },
+  secT:  { fontSize:11,color:'#f0c040',letterSpacing:3,textTransform:'uppercase',marginBottom:14,borderBottom:'1px solid #2a3050',paddingBottom:8 },
+  errBox:{ background:'#2a1515',border:'1px solid #e05050',borderRadius:8,padding:'10px 12px',color:'#e05050',fontSize:13,marginTop:10 },
+  okBox: { background:'#0f2a1a',border:'1px solid #40c080',borderRadius:8,padding:'10px 12px',color:'#40c080',fontSize:13 },
+  table: { width:'100%',borderCollapse:'collapse',fontSize:12 },
+  th:    { textAlign:'left',fontSize:10,color:'#6b7280',letterSpacing:2,textTransform:'uppercase',padding:'8px 8px',borderBottom:'1px solid #2a3050',whiteSpace:'nowrap' },
+  td:    { padding:'8px 8px',borderBottom:'1px solid #1e2438',verticalAlign:'top' },
+  tabs:  { display:'flex',gap:2,background:'#0f1117',borderRadius:8,padding:4,marginBottom:18 },
+  tab:   { flex:1,padding:'8px 4px',borderRadius:6,fontSize:11,fontWeight:700,letterSpacing:1,textTransform:'uppercase',cursor:'pointer',textAlign:'center',border:'none',fontFamily:'inherit' },
+  badge: { display:'inline-block',padding:'2px 7px',borderRadius:4,fontSize:10,fontWeight:700,letterSpacing:1 },
+  modal: { position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:200,padding:10 },
+  select:{ background:'#0f1117',border:'1px solid #2a3050',borderRadius:8,padding:'9px 12px',color:'#e8eaf0',fontSize:13,outline:'none',fontFamily:'inherit',cursor:'pointer' },
 }
-const ROLE_COLORS = { owner:{bg:'#2a1040',color:'#c080ff'}, admin:{bg:'#2a2010',color:'#f0c040'}, user:{bg:'#0f1f2a',color:'#40c0f0'} }
-const ROLE_LABELS = { owner:'Proprietário', admin:'Admin', user:'Usuário' }
+const ROLE_COLORS = { owner:{bg:'#2a1040',color:'#c080ff'},admin:{bg:'#2a2010',color:'#f0c040'},user:{bg:'#0f1f2a',color:'#40c0f0'} }
+const ROLE_LABELS = { owner:'Proprietário',admin:'Admin',user:'Usuário' }
 
 function RoleBadge({role}) {
-  const c = ROLE_COLORS[role] || ROLE_COLORS.user
-  return <span style={{...S.badge, background:c.bg, color:c.color, fontSize:10}}>{ROLE_LABELS[role]||role}</span>
+  const c=ROLE_COLORS[role]||ROLE_COLORS.user
+  return <span style={{...S.badge,background:c.bg,color:c.color}}>{ROLE_LABELS[role]||role}</span>
 }
-
-function Field({label, value, onChange, placeholder, type='text', mt, onEnter}) {
+function Field({label,value,onChange,placeholder,type='text',mt,onEnter}) {
   return (
-    <div style={{marginBottom:14, marginTop:mt?4:0}}>
+    <div style={{marginBottom:14,marginTop:mt?4:0}}>
       <label style={S.label}>{label}</label>
-      <input style={S.input} type={type} value={value}
-        onChange={e => onChange(e.target.value)}
-        onKeyDown={e => e.key==='Enter' && onEnter && onEnter()}
-        placeholder={placeholder}/>
+      <input style={S.input} type={type} value={value} onChange={e=>onChange(e.target.value)} onKeyDown={e=>e.key==='Enter'&&onEnter&&onEnter()} placeholder={placeholder}/>
     </div>
   )
 }
 
 function Login({onLogin}) {
-  const [email, setEmail] = useState('')
-  const [senha, setSenha] = useState('')
-  const [erro, setErro] = useState('')
-  const [loading, setLoading] = useState(false)
-  const ok = async () => {
-    setErro(''); setLoading(true)
-    try { await onLogin(email.trim().toLowerCase(), senha) }
-    catch { setErro('E-mail ou senha incorretos.') }
-    setLoading(false)
-  }
+  const [email,setEmail]=useState('')
+  const [senha,setSenha]=useState('')
+  const [erro,setErro]=useState('')
+  const [loading,setLoading]=useState(false)
+  const ok=async()=>{ setErro('');setLoading(true); try{await onLogin(email.trim().toLowerCase(),senha)}catch{setErro('E-mail ou senha incorretos.')} setLoading(false) }
   return (
     <div style={S.center}>
       <div style={S.box}>
@@ -233,71 +165,60 @@ function Login({onLogin}) {
         <Field label="E-mail" value={email} onChange={setEmail} type="email" placeholder="seu@email.com" onEnter={ok}/>
         <Field label="Senha" value={senha} onChange={setSenha} type="password" placeholder="••••••" mt onEnter={ok}/>
         {erro && <div style={S.errBox}>{erro}</div>}
-        <button style={{...S.btnP, marginTop:20, opacity:loading?0.6:1}} onClick={ok} disabled={loading}>
-          {loading ? 'Entrando...' : 'Entrar'}
-        </button>
+        <button style={{...S.btnP,marginTop:20,opacity:loading?0.6:1}} onClick={ok} disabled={loading}>{loading?'Entrando...':'Entrar'}</button>
       </div>
     </div>
   )
 }
 
-function Dashboard({frotas, onFrota}) {
+function Dashboard({frotas,onFrota}) {
   return (
     <div className="cb-page">
-      <h1 style={{fontSize:18, fontWeight:700, color:'#f0c040', letterSpacing:2, marginBottom:4}}>CUBAGENS BLUMENAU</h1>
-      <p style={{fontSize:11, color:'#6b7280', marginBottom:28}}>
-        {new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase()}
-      </p>
+      <h1 style={{fontSize:18,fontWeight:700,color:'#f0c040',letterSpacing:2,marginBottom:4}}>CUBAGENS BLUMENAU</h1>
+      <p style={{fontSize:11,color:'#6b7280',marginBottom:24}}>{new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).toUpperCase()}</p>
       <div style={S.secT}>Selecionar frota</div>
       <div className="cb-grid">
-        {(frotas||[]).map(f => (
-          <div key={f.id} className="cb-frota-btn" onClick={() => onFrota(f)}>
-            <div style={{fontSize:10, color:'#6b7280', letterSpacing:2, marginBottom:8}}>FROTA</div>
-            <div style={{fontSize:17, fontWeight:700, color:'#e8eaf0', letterSpacing:2}}>{f.placa}</div>
-            <div style={{marginTop:12, fontSize:11, color:'#f0c040'}}>→ lançar cubagem</div>
+        {(frotas||[]).map(f=>(
+          <div key={f.id} className="cb-frota-btn" onClick={()=>onFrota(f)}>
+            <div style={{fontSize:10,color:'#6b7280',letterSpacing:2,marginBottom:6}}>FROTA</div>
+            <div style={{fontSize:16,fontWeight:700,color:'#e8eaf0',letterSpacing:2}}>{f.placa}</div>
+            <div style={{marginTop:10,fontSize:11,color:'#f0c040'}}>→ lançar cubagem</div>
           </div>
         ))}
-        {(!frotas||frotas.length===0) && <p style={{color:'#6b7280',fontSize:13}}>Nenhuma frota cadastrada.</p>}
+        {(!frotas||frotas.length===0)&&<p style={{color:'#6b7280',fontSize:13}}>Nenhuma frota cadastrada.</p>}
       </div>
     </div>
   )
 }
 
-function GrupoMedida({grupo, index, total, onChange, onRemove}) {
-  const isM = grupo.unidade !== 'mm'
-  const step = isM ? 0.01 : 1
-  const max  = isM ? 9.99 : 9999
-  const toM  = v => isM ? parseFloat(v)||0 : (parseFloat(v)||0)/1000
-  const m3g  = toM(grupo.largura)*toM(grupo.altura)*toM(grupo.comprimento)*(parseInt(grupo.qtd)||0)
+function GrupoMedida({grupo,index,total,onChange,onRemove}) {
+  const isM=grupo.unidade!=='mm'
+  const step=isM?0.01:1
+  const toM=v=>isM?parseFloat(v)||0:(parseFloat(v)||0)/1000
+  const m3g=toM(grupo.largura)*toM(grupo.altura)*toM(grupo.comprimento)*(parseInt(grupo.qtd)||0)
   return (
-    <div style={{background:'#0f1117', border:'1px solid #2a3050', borderRadius:12, padding:16, marginBottom:12}}>
-      <div style={{display:'flex', alignItems:'center', marginBottom:14, gap:8, flexWrap:'wrap'}}>
-        <span style={{fontSize:11, color:'#6b7280', letterSpacing:2, fontWeight:700}}>GRUPO {index+1}</span>
-        <div style={{display:'flex', gap:3, marginLeft:10}}>
-          {['m','mm'].map(u => (
-            <button key={u} style={{...S.btnS, padding:'2px 10px', fontSize:11, borderColor:grupo.unidade===u?'#f0c040':'#2a3050', color:grupo.unidade===u?'#f0c040':'#6b7280'}}
-              onClick={() => onChange(grupo.id,'unidade',u)}>{u}</button>
+    <div style={{background:'#0f1117',border:'1px solid #2a3050',borderRadius:10,padding:14,marginBottom:10}}>
+      <div style={{display:'flex',alignItems:'center',marginBottom:12,gap:8,flexWrap:'wrap'}}>
+        <span style={{fontSize:11,color:'#6b7280',letterSpacing:2,fontWeight:700}}>GRUPO {index+1}</span>
+        <div style={{display:'flex',gap:3,marginLeft:8}}>
+          {['m','mm'].map(u=>(
+            <button key={u} style={{...S.btnS,padding:'2px 8px',fontSize:11,borderColor:grupo.unidade===u?'#f0c040':'#2a3050',color:grupo.unidade===u?'#f0c040':'#6b7280'}} onClick={()=>onChange(grupo.id,'unidade',u)}>{u}</button>
           ))}
         </div>
-        {total>1 && <button style={{...S.btnD, padding:'2px 10px', fontSize:11, marginLeft:'auto'}} onClick={() => onRemove(grupo.id)}>✕</button>}
+        {total>1&&<button style={{...S.btnD,padding:'2px 8px',fontSize:11,marginLeft:'auto'}} onClick={()=>onRemove(grupo.id)}>✕</button>}
       </div>
-      <div style={{marginBottom:14}}>
+      <div style={{marginBottom:12}}>
         <label style={S.label}>Qtd. volumes neste grupo</label>
-        <input style={{...S.input}} type="number" min="1" value={grupo.qtd} onChange={e => onChange(grupo.id,'qtd',e.target.value)} placeholder="Ex: 15"/>
+        <input style={S.input} type="number" min="1" value={grupo.qtd} onChange={e=>onChange(grupo.id,'qtd',e.target.value)} placeholder="Ex: 15"/>
       </div>
-      {[{k:'altura',l:'Altura'},{k:'largura',l:'Largura'},{k:'comprimento',l:'Comprimento'}].map(({k,l}) => (
-        <div key={k} style={{marginBottom:14}}>
-          <div style={{display:'flex', justifyContent:'space-between', marginBottom:6}}>
-            <label style={{...S.label, marginBottom:0}}>{l} ({grupo.unidade})</label>
-            <span style={{fontSize:14, fontWeight:700, color:'#f0c040'}}>{parseFloat(grupo[k]||0).toFixed(isM?2:0)} {grupo.unidade}</span>
-          </div>
-            <style={{width:'100%', accentColor:'#f0c040', display:'block', marginBottom:8, cursor:'pointer'}}
-            <onChange={e => onChange(grupo.id,k,e.target.value)}/>
-            <onChange={e => onChange(grupo.id,k,e.target.value)} placeholder={isM?'0.00':'0'}/>
+      {[{k:'altura',l:'Altura'},{k:'largura',l:'Largura'},{k:'comprimento',l:'Comprimento'}].map(({k,l})=>(
+        <div key={k} style={{marginBottom:12}}>
+          <label style={S.label}>{l} ({grupo.unidade})</label>
+          <input style={S.input} type="number" min={step} step={step} value={grupo[k]} onChange={e=>onChange(grupo.id,k,e.target.value)} placeholder={isM?'0.00':'0'}/>
         </div>
       ))}
-      {grupo.qtd&&grupo.largura&&grupo.altura&&grupo.comprimento && (
-        <div style={{padding:'8px 12px', background:'#1a1f2e', borderRadius:6, display:'flex', justifyContent:'space-between', fontSize:13}}>
+      {grupo.qtd&&grupo.largura&&grupo.altura&&grupo.comprimento&&(
+        <div style={{padding:'7px 10px',background:'#1a1f2e',borderRadius:6,display:'flex',justifyContent:'space-between',fontSize:13}}>
           <span style={{color:'#6b7280'}}>M³ deste grupo</span>
           <b style={{color:'#f0c040'}}>{m3g.toFixed(4)} m³</b>
         </div>
@@ -307,25 +228,22 @@ function GrupoMedida({grupo, index, total, onChange, onRemove}) {
 }
 
 function GruposDetalhe({grupos}) {
-  if (!grupos||grupos.length===0) return <span style={{color:'#6b7280'}}>—</span>
+  if(!grupos||grupos.length===0) return <span style={{color:'#6b7280'}}>—</span>
   return (
-    <div style={{display:'flex', flexDirection:'column', gap:6}}>
-      {grupos.map((g,i) => {
-        const a=g.altura_m??0, l=g.largura_m??0, c=g.comprimento_m??0
-        return (
-          <div key={g.id||i} style={{background:'#0f1117', borderRadius:6, padding:'6px 10px', fontSize:11, lineHeight:1.8}}>
-            <span style={{color:'#f0c040', fontWeight:700}}>G{i+1}</span>
-            <span style={{color:'#6b7280', marginLeft:6}}>{g.qtd}vol</span>
-            <span style={{color:'#e8eaf0', marginLeft:6}}>A:{fmtDim(a)} L:{fmtDim(l)} C:{fmtDim(c)}</span>
-            <span style={{color:'#40c080', marginLeft:6}}>{(a*l*c*(parseInt(g.qtd)||0)).toFixed(4)}m³</span>
-          </div>
-        )
-      })}
+    <div style={{display:'flex',flexDirection:'column',gap:4}}>
+      {grupos.map((g,i)=>{ const a=g.altura_m??0,l=g.largura_m??0,c=g.comprimento_m??0; return (
+        <div key={g.id||i} style={{background:'#0f1117',borderRadius:5,padding:'4px 8px',fontSize:10,lineHeight:1.8}}>
+          <span style={{color:'#f0c040',fontWeight:700}}>G{i+1}</span>
+          <span style={{color:'#6b7280',marginLeft:5}}>{g.qtd}vol</span>
+          <span style={{color:'#e8eaf0',marginLeft:5}}>A:{fmtDim(a)} L:{fmtDim(l)} C:{fmtDim(c)}</span>
+          <span style={{color:'#40c080',marginLeft:5}}>{(a*l*c*(parseInt(g.qtd)||0)).toFixed(4)}m³</span>
+        </div>
+      )})}
     </div>
   )
 }
 
-function TabelaRegistros({registros, onEdit, onDelete}) {
+function TabelaRegistros({registros,onEdit,onDelete}) {
   return (
     <div className="cb-table-wrap">
       <table style={S.table}>
@@ -339,29 +257,25 @@ function TabelaRegistros({registros, onEdit, onDelete}) {
           <th className="cb-hide-mobile" style={S.th}>Medidas</th>
           <th style={S.th}>M³</th>
           <th style={S.th}>Status</th>
-          {(onEdit||onDelete) && <th style={S.th}>Ações</th>}
+          {(onEdit||onDelete)&&<th style={S.th}>Ações</th>}
         </tr></thead>
         <tbody>
-          {registros.map(r => (
+          {registros.map(r=>(
             <tr key={r.id} style={{background:r.editado?'rgba(240,192,64,0.04)':'transparent'}}>
-              <td style={{...S.td, fontSize:11, whiteSpace:'nowrap'}}>{fmtDate(r.criado_em)}</td>
-              <td style={{...S.td, fontWeight:700, color:'#f0c040', whiteSpace:'nowrap'}}>{r.frota_placa}</td>
-              <td className="cb-hide-mobile" style={{...S.td, fontSize:11, color:'#6b7280'}}>{r.user_email}</td>
+              <td style={{...S.td,fontSize:10,whiteSpace:'nowrap'}}>{fmtDate(r.criado_em)}</td>
+              <td style={{...S.td,fontWeight:700,color:'#f0c040',whiteSpace:'nowrap'}}>{r.frota_placa}</td>
+              <td className="cb-hide-mobile" style={{...S.td,fontSize:10,color:'#6b7280'}}>{r.user_email}</td>
               <td style={S.td}>{r.cliente}</td>
               <td style={S.td}>{r.nota}</td>
-              <td className="cb-hide-mobile" style={{...S.td, textAlign:'center'}}>{r.qtd_total}</td>
+              <td className="cb-hide-mobile" style={{...S.td,textAlign:'center'}}>{r.qtd_total}</td>
               <td className="cb-hide-mobile" style={S.td}><GruposDetalhe grupos={r.grupos}/></td>
-              <td style={{...S.td, fontWeight:700, whiteSpace:'nowrap'}}>{parseFloat(r.m3_total).toFixed(4)}</td>
-              <td style={S.td}>
-                <span style={{...S.badge, background:r.editado?'#2a2010':'#0f2a1a', color:r.editado?'#f0c040':'#40c080', fontSize:10}}>
-                  {r.editado?'edit':'ok'}
-                </span>
-              </td>
-              {(onEdit||onDelete) && (
+              <td style={{...S.td,fontWeight:700,whiteSpace:'nowrap'}}>{parseFloat(r.m3_total).toFixed(4)}</td>
+              <td style={S.td}><span style={{...S.badge,background:r.editado?'#2a2010':'#0f2a1a',color:r.editado?'#f0c040':'#40c080'}}>{r.editado?'edit':'ok'}</span></td>
+              {(onEdit||onDelete)&&(
                 <td style={S.td}>
-                  <div style={{display:'flex', gap:6, flexWrap:'wrap'}}>
-                    {onEdit && <button style={{...S.btnS, padding:'4px 8px', fontSize:11}} onClick={() => onEdit(r)}>✎</button>}
-                    {onDelete && <button style={{...S.btnD, padding:'4px 8px', fontSize:11}} onClick={() => onDelete(r)}>🗑</button>}
+                  <div style={{display:'flex',gap:4,flexWrap:'wrap'}}>
+                    {onEdit&&<button style={{...S.btnS,padding:'3px 7px',fontSize:11}} onClick={()=>onEdit(r)}>✎</button>}
+                    {onDelete&&<button style={{...S.btnD,padding:'3px 7px',fontSize:11}} onClick={()=>onDelete(r)}>🗑</button>}
                   </div>
                 </td>
               )}
@@ -373,76 +287,70 @@ function TabelaRegistros({registros, onEdit, onDelete}) {
   )
 }
 
-function DateGroupedTable({registros, onEdit, onDelete}) {
-  const hoje      = registros.filter(r =>  isToday(r.criado_em))
-  const anteriores = registros.filter(r => !isToday(r.criado_em))
-  const Label = ({cor, dot, label, count}) => (
-    <div style={{display:'flex', alignItems:'center', gap:10, margin:'14px 0 8px'}}>
-      <span style={{fontSize:11, color:cor, letterSpacing:2, fontWeight:700}}>{dot} {label}</span>
-      <span style={{...S.badge, background:cor==='#40c080'?'#0f2a1a':'#1a1f2e', color:cor, fontSize:10}}>{count} reg.</span>
+function DateGroupedTable({registros,onEdit,onDelete}) {
+  const hoje=registros.filter(r=>isToday(r.criado_em))
+  const anteriores=registros.filter(r=>!isToday(r.criado_em))
+  const Label=({cor,dot,label,count})=>(
+    <div style={{display:'flex',alignItems:'center',gap:8,margin:'12px 0 6px'}}>
+      <span style={{fontSize:11,color:cor,letterSpacing:2,fontWeight:700}}>{dot} {label}</span>
+      <span style={{...S.badge,background:cor==='#40c080'?'#0f2a1a':'#1a1f2e',color:cor}}>{count} reg.</span>
     </div>
   )
-  if (registros.length===0) return <p style={{color:'#6b7280', fontSize:13, marginTop:8}}>Nenhum registro.</p>
+  if(registros.length===0) return <p style={{color:'#6b7280',fontSize:13,marginTop:8}}>Nenhum registro.</p>
   return (
     <div>
-      {hoje.length>0 && <><Label cor="#40c080" dot="●" label="HOJE" count={hoje.length}/><TabelaRegistros registros={hoje} onEdit={onEdit} onDelete={onDelete}/></>}
-      {anteriores.length>0 && <><Label cor="#6b7280" dot="○" label="ANTERIORES" count={anteriores.length}/><TabelaRegistros registros={anteriores} onEdit={onEdit} onDelete={onDelete}/></>}
+      {hoje.length>0&&<><Label cor="#40c080" dot="●" label="HOJE" count={hoje.length}/><TabelaRegistros registros={hoje} onEdit={onEdit} onDelete={onDelete}/></>}
+      {anteriores.length>0&&<><Label cor="#6b7280" dot="○" label="ANTERIORES" count={anteriores.length}/><TabelaRegistros registros={anteriores} onEdit={onEdit} onDelete={onDelete}/></>}
     </div>
   )
 }
 
-function ModalConfirmDel({reg, onConfirm, onCancel}) {
+function ModalConfirmDel({reg,onConfirm,onCancel}) {
   return (
-    <div style={S.modal} onClick={e => e.target===e.currentTarget && onCancel()}>
-      <div className="cb-modal-box" style={{maxWidth:400}}>
-        <div style={{fontSize:14, fontWeight:700, color:'#e05050', marginBottom:16}}>⚠️ EXCLUIR CUBAGEM</div>
-        <div style={{fontSize:13, color:'#a0a8c0', lineHeight:2, marginBottom:20}}>
+    <div style={S.modal} onClick={e=>e.target===e.currentTarget&&onCancel()}>
+      <div className="cb-modal-box" style={{maxWidth:380}}>
+        <div style={{fontSize:14,fontWeight:700,color:'#e05050',marginBottom:14}}>⚠️ EXCLUIR CUBAGEM</div>
+        <div style={{fontSize:13,color:'#a0a8c0',lineHeight:2,marginBottom:18}}>
           Excluir nota <b style={{color:'#f0c040'}}>{reg.nota}</b> de <b style={{color:'#e8eaf0'}}>{reg.cliente}</b>?<br/>
           <span style={{color:'#e05050'}}>Esta ação não pode ser desfeita.</span>
         </div>
-        <div style={{display:'flex', gap:10}}>
-          <button style={{...S.btnS, flex:1}} onClick={onCancel}>Cancelar</button>
-          <button style={{...S.btnD, flex:1, background:'#2a1515', fontWeight:700}} onClick={onConfirm}>Confirmar</button>
+        <div style={{display:'flex',gap:8}}>
+          <button style={{...S.btnS,flex:1}} onClick={onCancel}>Cancelar</button>
+          <button style={{...S.btnD,flex:1,background:'#2a1515',fontWeight:700}} onClick={onConfirm}>Confirmar</button>
         </div>
       </div>
     </div>
   )
 }
 
-function ModalEdicao({reg, perfil, onClose, onSave}) {
-  const [step, setStep] = useState('motivo')
-  const [motivo, setMotivo] = useState('')
-  const [grupos, setGrupos] = useState(
-    (reg.grupos||[]).map(g => ({...g, id:g.id||uid(), unidade:g.unidade||'m', altura:String(g.altura_m??0), largura:String(g.largura_m??0), comprimento:String(g.comprimento_m??0)}))
-  )
-  const upG = (id,f,v) => setGrupos(gs => gs.map(g => g.id===id ? {...g,[f]:v} : g))
+function ModalEdicao({reg,perfil,onClose,onSave}) {
+  const [step,setStep]=useState('motivo')
+  const [motivo,setMotivo]=useState('')
+  const [grupos,setGrupos]=useState((reg.grupos||[]).map(g=>({...g,id:g.id||uid(),unidade:g.unidade||'m',altura:String(g.altura_m??0),largura:String(g.largura_m??0),comprimento:String(g.comprimento_m??0)})))
+  const upG=(id,f,v)=>setGrupos(gs=>gs.map(g=>g.id===id?{...g,[f]:v}:g))
   return (
-    <div style={S.modal} onClick={e => e.target===e.currentTarget && onClose()}>
+    <div style={S.modal} onClick={e=>e.target===e.currentTarget&&onClose()}>
       <div className="cb-modal-box">
-        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16}}>
-          <span style={{fontSize:13, fontWeight:700, color:'#f0c040', letterSpacing:2}}>EDITAR CUBAGEM</span>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
+          <span style={{fontSize:13,fontWeight:700,color:'#f0c040',letterSpacing:2}}>EDITAR CUBAGEM</span>
           <button style={S.btnS} onClick={onClose}>✕</button>
         </div>
-        <div style={{fontSize:12, color:'#6b7280', marginBottom:16}}>
-          Nota <b style={{color:'#e8eaf0'}}>{reg.nota}</b> · {reg.cliente} · <b style={{color:'#f0c040'}}>{reg.frota_placa}</b>
-        </div>
-        {step==='motivo' ? (
+        <div style={{fontSize:12,color:'#6b7280',marginBottom:14}}>Nota <b style={{color:'#e8eaf0'}}>{reg.nota}</b> · {reg.cliente} · <b style={{color:'#f0c040'}}>{reg.frota_placa}</b></div>
+        {step==='motivo'?(
           <>
             <label style={S.label}>Motivo da edição (mín. 10 chars)</label>
-            <textarea style={{...S.input, minHeight:80, resize:'vertical'}} value={motivo} onChange={e => setMotivo(e.target.value)} placeholder="Descreva o motivo..."/>
-            <div style={{fontSize:11, color:motivo.length>=10?'#40c080':'#6b7280', marginTop:4}}>{motivo.length}/10</div>
-            <button style={{...S.btnY, width:'100%', marginTop:14, opacity:motivo.length>=10?1:0.4}} disabled={motivo.length<10} onClick={() => setStep('editar')}>Continuar →</button>
+            <textarea style={{...S.input,minHeight:80,resize:'vertical'}} value={motivo} onChange={e=>setMotivo(e.target.value)} placeholder="Descreva o motivo..."/>
+            <div style={{fontSize:11,color:motivo.length>=10?'#40c080':'#6b7280',marginTop:4}}>{motivo.length}/10</div>
+            <button style={{...S.btnY,width:'100%',marginTop:12,opacity:motivo.length>=10?1:0.4}} disabled={motivo.length<10} onClick={()=>setStep('editar')}>Continuar →</button>
           </>
-        ) : (
+        ):(
           <>
             <div style={S.secT}>Grupos de medidas</div>
-            {grupos.map((g,i) => <GrupoMedida key={g.id} grupo={g} index={i} total={grupos.length} onChange={upG} onRemove={()=>{}}/>)}
-            <div style={{padding:'10px 14px', background:'#0f1117', borderRadius:8, fontSize:13, marginBottom:14}}>
-              M³ total: <b style={{color:'#f0c040'}}>{calcM3(grupos).toFixed(4)}</b>
-            </div>
-            <div style={{display:'flex', gap:10}}>
-              <button style={{...S.btnS, flex:1}} onClick={() => setStep('motivo')}>← Voltar</button>
-              <button style={{...S.btnY, flex:2}} onClick={() => onSave(reg.id, grupos, motivo)}>💾 Salvar</button>
+            {grupos.map((g,i)=><GrupoMedida key={g.id} grupo={g} index={i} total={grupos.length} onChange={upG} onRemove={()=>{}}/>)}
+            <div style={{padding:'9px 12px',background:'#0f1117',borderRadius:8,fontSize:13,marginBottom:12}}>M³ total: <b style={{color:'#f0c040'}}>{calcM3(grupos).toFixed(4)}</b></div>
+            <div style={{display:'flex',gap:8}}>
+              <button style={{...S.btnS,flex:1}} onClick={()=>setStep('motivo')}>← Voltar</button>
+              <button style={{...S.btnY,flex:2}} onClick={()=>onSave(reg.id,grupos,motivo)}>💾 Salvar</button>
             </div>
           </>
         )}
@@ -451,204 +359,164 @@ function ModalEdicao({reg, perfil, onClose, onSave}) {
   )
 }
 
-function FrotaView({frota, clientes, session, perfil, registros, recarregar, onBack, showToast}) {
-  const def = {cliente:'', clienteSearch:'', nota:'', qtdTotal:'', grupos:[novoGrupo()]}
-  const [form, setForm] = useState(def)
-  const [showCli, setShowCli] = useState(false)
-  const [erros, setErros] = useState([])
-  const [editReg, setEditReg] = useState(null)
-  const [confirmDel, setConfirmDel] = useState(null)
-  const [salvando, setSalvando] = useState(false)
+function FrotaView({frota,clientes,session,perfil,registros,recarregar,onBack,showToast}) {
+  const def={cliente:'',clienteSearch:'',nota:'',qtdTotal:'',grupos:[novoGrupo()]}
+  const [form,setForm]=useState(def)
+  const [showCli,setShowCli]=useState(false)
+  const [erros,setErros]=useState([])
+  const [editReg,setEditReg]=useState(null)
+  const [confirmDel,setConfirmDel]=useState(null)
+  const [salvando,setSalvando]=useState(false)
+  const up=p=>setForm(f=>({...f,...p}))
+  const clisF=(clientes||[]).filter(c=>c.nome.toLowerCase().includes((form.clienteSearch||'').toLowerCase()))
+  const soma=form.grupos.reduce((s,g)=>s+(parseInt(g.qtd)||0),0)
+  const m3T=calcM3(form.grupos)
+  const regF=(registros||[]).filter(r=>r.frota_id===frota.id).sort((a,b)=>new Date(b.criado_em)-new Date(a.criado_em))
 
-  const up = p => setForm(f => ({...f,...p}))
-  const clisF = (clientes||[]).filter(c => c.nome.toLowerCase().includes((form.clienteSearch||'').toLowerCase()))
-  const soma = form.grupos.reduce((s,g) => s+(parseInt(g.qtd)||0), 0)
-  const m3T  = calcM3(form.grupos)
-  const regF = (registros||[]).filter(r => r.frota_id===frota.id).sort((a,b) => new Date(b.criado_em)-new Date(a.criado_em))
-
-  const salvar = async () => {
-    const err = []
-    if (!form.cliente) err.push('Selecione um cliente.')
-    if (!form.nota.trim()) err.push('Informe a nota fiscal.')
-    if (!form.qtdTotal||parseInt(form.qtdTotal)<1) err.push('Informe a quantidade total de volumes.')
-    if (soma!==parseInt(form.qtdTotal)) err.push(`Soma dos grupos (${soma}) ≠ total (${form.qtdTotal}).`)
-    form.grupos.forEach((g,i) => { if (!g.qtd||!g.altura||!g.largura||!g.comprimento) err.push(`Grupo ${i+1}: preencha todos os campos.`) })
-    setErros(err); if (err.length) return
+  const salvar=async()=>{
+    const err=[]
+    if(!form.cliente) err.push('Selecione um cliente.')
+    if(!form.nota.trim()) err.push('Informe a nota fiscal.')
+    if(!form.qtdTotal||parseInt(form.qtdTotal)<1) err.push('Informe a quantidade total de volumes.')
+    if(soma!==parseInt(form.qtdTotal)) err.push(`Soma dos grupos (${soma}) ≠ total (${form.qtdTotal}).`)
+    form.grupos.forEach((g,i)=>{ if(!g.qtd||!g.altura||!g.largura||!g.comprimento) err.push(`Grupo ${i+1}: preencha todos os campos.`) })
+    setErros(err); if(err.length) return
     setSalvando(true)
     try {
-      const gruposComDims = form.grupos.map(g => ({...g,...dimsM(g)}))
-      await db.salvarRegistro({frotaId:frota.id, frotaPlaca:frota.placa, cliente:form.cliente, nota:form.nota, qtdTotal:parseInt(form.qtdTotal), m3Total:m3T}, gruposComDims, session, perfil)
-      setForm(def); setErros([])
-      showToast(`Nota ${form.nota} salva! ${m3T.toFixed(4)} m³`)
-      await recarregar()
-    } catch(e) { showToast('Erro ao salvar: '+e.message,'err') }
+      const gruposComDims=form.grupos.map(g=>({...g,...dimsM(g)}))
+      await db.salvarRegistro({frotaId:frota.id,frotaPlaca:frota.placa,cliente:form.cliente,nota:form.nota,qtdTotal:parseInt(form.qtdTotal),m3Total:m3T},gruposComDims,session,perfil)
+      setForm(def);setErros([]);showToast(`Nota ${form.nota} salva! ${m3T.toFixed(4)} m³`);await recarregar()
+    } catch(e){showToast('Erro ao salvar: '+e.message,'err')}
     setSalvando(false)
   }
-
-  const handleDelete = async id => {
-    try { await db.deletarRegistro(id); setConfirmDel(null); showToast('Cubagem excluída.','err'); await recarregar() }
-    catch(e) { showToast('Erro: '+e.message,'err') }
-  }
-
-  const handleEdit = async (id, grupos, motivo) => {
-    const m3 = calcM3(grupos)
-    try { await db.editarRegistro(id, grupos.map(g=>({...g,...dimsM(g)})), motivo, m3, perfil); setEditReg(null); showToast('Cubagem atualizada!'); await recarregar() }
-    catch(e) { showToast('Erro: '+e.message,'err') }
-  }
+  const handleDelete=async id=>{ try{await db.deletarRegistro(id);setConfirmDel(null);showToast('Cubagem excluída.','err');await recarregar()}catch(e){showToast('Erro: '+e.message,'err')} }
+  const handleEdit=async(id,grupos,motivo)=>{ const m3=calcM3(grupos); try{await db.editarRegistro(id,grupos.map(g=>({...g,...dimsM(g)})),motivo,m3,perfil);setEditReg(null);showToast('Cubagem atualizada!');await recarregar()}catch(e){showToast('Erro: '+e.message,'err')} }
 
   return (
     <div className="cb-page">
-      <div className="cb-row" style={{marginBottom:22, alignItems:'center'}}>
+      <div className="cb-row" style={{marginBottom:18,alignItems:'center'}}>
         <button style={S.btnS} onClick={onBack}>← Voltar</button>
-        <h1 style={{fontSize:17, fontWeight:700, color:'#f0c040', letterSpacing:2}}>FROTA {frota.placa}</h1>
+        <h1 style={{fontSize:16,fontWeight:700,color:'#f0c040',letterSpacing:2}}>FROTA {frota.placa}</h1>
       </div>
       <div className="cb-card">
         <div style={S.secT}>Novo lançamento</div>
         <div className="cb-field-row">
-          <div style={{flex:2, minWidth:180, position:'relative'}}>
+          <div style={{flex:2,minWidth:160,position:'relative'}}>
             <label style={S.label}>Cliente</label>
-            <input style={S.input} value={form.clienteSearch!==undefined?form.clienteSearch:form.cliente}
-              onFocus={() => setShowCli(true)} onBlur={() => setTimeout(()=>setShowCli(false),150)}
-              onChange={e => up({clienteSearch:e.target.value, cliente:''})} placeholder="Pesquisar cliente..."/>
-            {showCli && (
-              <div style={{position:'absolute', top:'100%', left:0, right:0, background:'#1a1f2e', border:'1px solid #2a3050', borderRadius:8, zIndex:50, maxHeight:180, overflowY:'auto', marginTop:4}}>
-                {clisF.map(c => <div key={c.id} style={{padding:'9px 14px', cursor:'pointer', fontSize:13, borderBottom:'1px solid #1e2438'}} onMouseDown={() => up({cliente:c.nome, clienteSearch:c.nome})}>{c.nome}</div>)}
-                {clisF.length===0 && <div style={{padding:'9px 14px', color:'#6b7280', fontSize:13}}>Sem resultados.</div>}
+            <input style={S.input} value={form.clienteSearch!==undefined?form.clienteSearch:form.cliente} onFocus={()=>setShowCli(true)} onBlur={()=>setTimeout(()=>setShowCli(false),150)} onChange={e=>up({clienteSearch:e.target.value,cliente:''})} placeholder="Pesquisar cliente..."/>
+            {showCli&&(
+              <div style={{position:'absolute',top:'100%',left:0,right:0,background:'#1a1f2e',border:'1px solid #2a3050',borderRadius:8,zIndex:50,maxHeight:160,overflowY:'auto',marginTop:3}}>
+                {clisF.map(c=><div key={c.id} style={{padding:'8px 12px',cursor:'pointer',fontSize:13,borderBottom:'1px solid #1e2438'}} onMouseDown={()=>up({cliente:c.nome,clienteSearch:c.nome})}>{c.nome}</div>)}
+                {clisF.length===0&&<div style={{padding:'8px 12px',color:'#6b7280',fontSize:13}}>Sem resultados.</div>}
               </div>
             )}
-            {form.cliente && <div style={{marginTop:4, fontSize:11, color:'#40c080'}}>✓ {form.cliente}</div>}
+            {form.cliente&&<div style={{marginTop:3,fontSize:11,color:'#40c080'}}>✓ {form.cliente}</div>}
           </div>
-          <div style={{flex:1, minWidth:120}}>
+          <div style={{flex:1,minWidth:110}}>
             <label style={S.label}>Nota fiscal</label>
-            <input style={S.input} value={form.nota} onChange={e => up({nota:e.target.value})} placeholder="Ex: 2026"/>
+            <input style={S.input} value={form.nota} onChange={e=>up({nota:e.target.value})} placeholder="Ex: 2026"/>
           </div>
-          <div style={{flex:1, minWidth:100}}>
+          <div style={{flex:1,minWidth:90}}>
             <label style={S.label}>Qtd. volumes</label>
-            <input style={S.input} type="number" min="1" value={form.qtdTotal} onChange={e => up({qtdTotal:e.target.value})} placeholder="40"/>
+            <input style={S.input} type="number" min="1" value={form.qtdTotal} onChange={e=>up({qtdTotal:e.target.value})} placeholder="40"/>
           </div>
         </div>
         <div style={S.secT}>Grupos de medidas</div>
-        {form.grupos.map((g,i) => (
+        {form.grupos.map((g,i)=>(
           <GrupoMedida key={g.id} grupo={g} index={i} total={form.grupos.length}
-            onChange={(id,f,v) => up({grupos:form.grupos.map(x => x.id===id?{...x,[f]:v}:x)})}
-            onRemove={id => up({grupos:form.grupos.filter(x => x.id!==id)})}/>
+            onChange={(id,f,v)=>up({grupos:form.grupos.map(x=>x.id===id?{...x,[f]:v}:x)})}
+            onRemove={id=>up({grupos:form.grupos.filter(x=>x.id!==id)})}/>
         ))}
-        <div className="cb-row" style={{marginTop:12, alignItems:'center'}}>
-          <button style={S.btnS} onClick={() => up({grupos:[...form.grupos,novoGrupo()]})}>+ Grupo</button>
-          <span style={{fontSize:12, color:soma===parseInt(form.qtdTotal)&&form.qtdTotal?'#40c080':'#f0c040'}}>Vol: {soma}/{form.qtdTotal||'?'}</span>
-          <span style={{marginLeft:'auto', fontSize:13}}>M³: <b style={{color:'#f0c040'}}>{m3T.toFixed(4)}</b></span>
+        <div className="cb-row" style={{marginTop:10,alignItems:'center'}}>
+          <button style={S.btnS} onClick={()=>up({grupos:[...form.grupos,novoGrupo()]})}>+ Grupo</button>
+          <span style={{fontSize:12,color:soma===parseInt(form.qtdTotal)&&form.qtdTotal?'#40c080':'#f0c040'}}>Vol: {soma}/{form.qtdTotal||'?'}</span>
+          <span style={{marginLeft:'auto',fontSize:13}}>M³: <b style={{color:'#f0c040'}}>{m3T.toFixed(4)}</b></span>
         </div>
-        {erros.length>0 && <div style={S.errBox}>{erros.map((e,i)=><div key={i}>• {e}</div>)}</div>}
-        <button style={{...S.btnY, marginTop:16, width:'100%', opacity:salvando?0.6:1}} onClick={salvar} disabled={salvando}>
-          {salvando?'Salvando...':'Salvar cubagem'}
-        </button>
+        {erros.length>0&&<div style={S.errBox}>{erros.map((e,i)=><div key={i}>• {e}</div>)}</div>}
+        <button style={{...S.btnY,marginTop:14,width:'100%',opacity:salvando?0.6:1}} onClick={salvar} disabled={salvando}>{salvando?'Salvando...':'Salvar cubagem'}</button>
       </div>
-      {regF.length>0 && (
+      {regF.length>0&&(
         <div className="cb-card">
           <div style={S.secT}>Lançamentos desta frota</div>
           <DateGroupedTable registros={regF} onEdit={setEditReg} onDelete={isAdmin(perfil)?setConfirmDel:null}/>
         </div>
       )}
-      {editReg && <ModalEdicao reg={editReg} perfil={perfil} onClose={() => setEditReg(null)} onSave={handleEdit}/>}
-      {confirmDel && <ModalConfirmDel reg={confirmDel} onConfirm={() => handleDelete(confirmDel.id)} onCancel={() => setConfirmDel(null)}/>}
+      {editReg&&<ModalEdicao reg={editReg} perfil={perfil} onClose={()=>setEditReg(null)} onSave={handleEdit}/>}
+      {confirmDel&&<ModalConfirmDel reg={confirmDel} onConfirm={()=>handleDelete(confirmDel.id)} onCancel={()=>setConfirmDel(null)}/>}
     </div>
   )
 }
 
-function AdminView({perfil, frotas, setFrotas, clientes, setClientes, showToast}) {
-  const [tab, setTab]   = useState('frotas')
-  const [np, setNp]     = useState('')
-  const [nc, setNc]     = useState('')
-  const [usuarios, setUsuarios] = useState([])
-
-  useEffect(() => {
-    if (tab==='usuarios') db.listarUsuarios().then(setUsuarios).catch(()=>{})
-  }, [tab])
-
+function AdminView({perfil,frotas,setFrotas,clientes,setClientes,showToast}) {
+  const [tab,setTab]=useState('frotas')
+  const [np,setNp]=useState('')
+  const [nc,setNc]=useState('')
+  const [usuarios,setUsuarios]=useState([])
+  useEffect(()=>{ if(tab==='usuarios') db.listarUsuarios().then(setUsuarios).catch(()=>{}) },[tab])
   return (
     <div className="cb-page">
-      <h1 style={{fontSize:17, fontWeight:700, color:'#f0c040', letterSpacing:2, marginBottom:20}}>PAINEL ADMIN</h1>
+      <h1 style={{fontSize:16,fontWeight:700,color:'#f0c040',letterSpacing:2,marginBottom:18}}>PAINEL ADMIN</h1>
       <div style={S.tabs}>
-        {[['frotas','Frotas'],['clientes','Clientes'],['usuarios','Usuários']].map(([k,l]) => (
-          <button key={k} style={{...S.tab, background:tab===k?'#f0c040':'transparent', color:tab===k?'#0f1117':'#6b7280'}} onClick={() => setTab(k)}>{l}</button>
+        {[['frotas','Frotas'],['clientes','Clientes'],['usuarios','Usuários']].map(([k,l])=>(
+          <button key={k} style={{...S.tab,background:tab===k?'#f0c040':'transparent',color:tab===k?'#0f1117':'#6b7280'}} onClick={()=>setTab(k)}>{l}</button>
         ))}
       </div>
-
-      {tab==='frotas' && (
+      {tab==='frotas'&&(
         <div className="cb-card">
           <div style={S.secT}>Frotas</div>
-          <div className="cb-row" style={{marginBottom:14}}>
-            <input style={{...S.input, maxWidth:200}} value={np} onChange={e => setNp(e.target.value.toUpperCase())} placeholder="Ex: ABC1234" maxLength={8}/>
-            <button style={S.btnY} onClick={async () => {
-              if (!np.trim()) return
-              try { const f = await db.adicionarFrota(np.trim()); setFrotas(p => [...p,f]); setNp(''); showToast('Frota adicionada!') }
-              catch(e) { showToast(e.message,'err') }
-            }}>+ Adicionar</button>
+          <div className="cb-row" style={{marginBottom:12}}>
+            <input style={{...S.input,maxWidth:200}} value={np} onChange={e=>setNp(e.target.value.toUpperCase())} placeholder="Ex: ABC1234" maxLength={8}/>
+            <button style={S.btnY} onClick={async()=>{ if(!np.trim()) return; try{const f=await db.adicionarFrota(np.trim());setFrotas(p=>[...p,f]);setNp('');showToast('Frota adicionada!')}catch(e){showToast(e.message,'err')} }}>+ Adicionar</button>
           </div>
           <div className="cb-table-wrap">
             <table style={S.table}><thead><tr><th style={S.th}>Placa</th><th style={S.th}>Ação</th></tr></thead>
-              <tbody>{(frotas||[]).map(f => (
-                <tr key={f.id}><td style={{...S.td, fontWeight:700}}>{f.placa}</td>
-                  <td style={S.td}><button style={S.btnD} onClick={async () => {
-                    try { await db.removerFrota(f.id); setFrotas(p => p.filter(x => x.id!==f.id)); showToast('Removida.','err') }
-                    catch(e) { showToast(e.message,'err') }
-                  }}>Remover</button></td></tr>
+              <tbody>{(frotas||[]).map(f=>(
+                <tr key={f.id}><td style={{...S.td,fontWeight:700}}>{f.placa}</td>
+                  <td style={S.td}><button style={S.btnD} onClick={async()=>{ try{await db.removerFrota(f.id);setFrotas(p=>p.filter(x=>x.id!==f.id));showToast('Removida.','err')}catch(e){showToast(e.message,'err')} }}>Remover</button></td></tr>
               ))}</tbody>
             </table>
           </div>
         </div>
       )}
-
-      {tab==='clientes' && (
+      {tab==='clientes'&&(
         <div className="cb-card">
           <div style={S.secT}>Clientes</div>
-          <div className="cb-row" style={{marginBottom:14}}>
-            <input style={{...S.input, flex:1}} value={nc} onChange={e => setNc(e.target.value)} placeholder="Nome do cliente"/>
-            <button style={S.btnY} onClick={async () => {
-              if (!nc.trim()) return
-              try { const c = await db.adicionarCliente(nc.trim()); setClientes(p => [...p,c]); setNc(''); showToast('Cliente adicionado!') }
-              catch(e) { showToast(e.message,'err') }
-            }}>+ Adicionar</button>
+          <div className="cb-row" style={{marginBottom:12}}>
+            <input style={{...S.input,flex:1}} value={nc} onChange={e=>setNc(e.target.value)} placeholder="Nome do cliente"/>
+            <button style={S.btnY} onClick={async()=>{ if(!nc.trim()) return; try{const c=await db.adicionarCliente(nc.trim());setClientes(p=>[...p,c]);setNc('');showToast('Cliente adicionado!')}catch(e){showToast(e.message,'err')} }}>+ Adicionar</button>
           </div>
           <div className="cb-table-wrap">
             <table style={S.table}><thead><tr><th style={S.th}>Nome</th><th style={S.th}>Ação</th></tr></thead>
-              <tbody>{(clientes||[]).map(c => (
+              <tbody>{(clientes||[]).map(c=>(
                 <tr key={c.id}><td style={S.td}>{c.nome}</td>
-                  <td style={S.td}><button style={S.btnD} onClick={async () => {
-                    try { await db.removerCliente(c.id); setClientes(p => p.filter(x => x.id!==c.id)); showToast('Removido.','err') }
-                    catch(e) { showToast(e.message,'err') }
-                  }}>Remover</button></td></tr>
+                  <td style={S.td}><button style={S.btnD} onClick={async()=>{ try{await db.removerCliente(c.id);setClientes(p=>p.filter(x=>x.id!==c.id));showToast('Removido.','err')}catch(e){showToast(e.message,'err')} }}>Remover</button></td></tr>
               ))}</tbody>
             </table>
           </div>
         </div>
       )}
-
-      {tab==='usuarios' && (
+      {tab==='usuarios'&&(
         <div className="cb-card">
           <div style={S.secT}>Usuários</div>
-          <div style={{...S.okBox, marginBottom:16, fontSize:12}}>
-            ℹ️ Para criar novos usuários, acesse o painel do Supabase → Authentication → Users → Add user.
-            Após criar, execute: <code>update perfis set role = 'admin' where email = 'email@exemplo.com';</code>
-          </div>
+          <div style={{...S.okBox,marginBottom:14,fontSize:12}}>ℹ️ Crie usuários em Authentication → Users → Add user. Depois defina o perfil via SQL.</div>
           <div className="cb-table-wrap">
             <table style={S.table}><thead><tr>
               <th style={S.th}>Nome</th>
               <th className="cb-hide-mobile" style={S.th}>E-mail</th>
               <th style={S.th}>Perfil</th>
-              {isOwner(perfil) && <th style={S.th}>Ações</th>}
+              {isOwner(perfil)&&<th style={S.th}>Ações</th>}
             </tr></thead>
-              <tbody>{(usuarios||[]).map(u => (
+              <tbody>{(usuarios||[]).map(u=>(
                 <tr key={u.id}>
                   <td style={S.td}>{u.nome}</td>
                   <td className="cb-hide-mobile" style={S.td}>{u.email}</td>
                   <td style={S.td}><RoleBadge role={u.role}/></td>
-                  {isOwner(perfil) && (
+                  {isOwner(perfil)&&(
                     <td style={S.td}>
-                      {u.email!==OWNER_EMAIL && u.role!=='owner' && (
+                      {u.email!==OWNER_EMAIL&&u.role!=='owner'&&(
                         u.role==='admin'
-                          ? <button style={{...S.btnS, fontSize:11}} onClick={async () => { await db.atualizarRole(u.id,'user'); setUsuarios(p => p.map(x => x.id===u.id?{...x,role:'user'}:x)); showToast(`${u.nome} rebaixado.`) }}>↓ User</button>
-                          : <button style={{...S.btnS, fontSize:11, borderColor:'#c080ff', color:'#c080ff'}} onClick={async () => { await db.atualizarRole(u.id,'admin'); setUsuarios(p => p.map(x => x.id===u.id?{...x,role:'admin'}:x)); showToast(`${u.nome} promovido!`) }}>↑ Admin</button>
+                          ?<button style={{...S.btnS,fontSize:11}} onClick={async()=>{await db.atualizarRole(u.id,'user');setUsuarios(p=>p.map(x=>x.id===u.id?{...x,role:'user'}:x));showToast(`${u.nome} rebaixado.`)}}>↓ User</button>
+                          :<button style={{...S.btnS,fontSize:11,borderColor:'#c080ff',color:'#c080ff'}} onClick={async()=>{await db.atualizarRole(u.id,'admin');setUsuarios(p=>p.map(x=>x.id===u.id?{...x,role:'admin'}:x));showToast(`${u.nome} promovido!`)}}>↑ Admin</button>
                       )}
                     </td>
                   )}
@@ -662,156 +530,99 @@ function AdminView({perfil, frotas, setFrotas, clientes, setClientes, showToast}
   )
 }
 
-function Historico({registros, recarregar, frotas, perfil, session, showToast}) {
-  const [editReg,    setEditReg]    = useState(null)
-  const [confirmDel, setConfirmDel] = useState(null)
-  const [filtroFrota, setFiltroFrota] = useState('')
-  const [filtroNota,  setFiltroNota]  = useState('')
-
-  const lista = [...(registros||[])]
-    .filter(r => !filtroFrota || r.frota_id===filtroFrota)
-    .filter(r => !filtroNota  || r.nota.toLowerCase().includes(filtroNota.toLowerCase()))
-    .sort((a,b) => new Date(b.criado_em)-new Date(a.criado_em))
-
-  const handleDelete = async id => {
-    try { await db.deletarRegistro(id); setConfirmDel(null); showToast('Cubagem excluída.','err'); await recarregar() }
-    catch(e) { showToast('Erro: '+e.message,'err') }
+function Historico({registros,recarregar,frotas,perfil,showToast}) {
+  const [editReg,setEditReg]=useState(null)
+  const [confirmDel,setConfirmDel]=useState(null)
+  const [filtroFrota,setFiltroFrota]=useState('')
+  const [filtroNota,setFiltroNota]=useState('')
+  const lista=[...(registros||[])].filter(r=>!filtroFrota||r.frota_id===filtroFrota).filter(r=>!filtroNota||r.nota.toLowerCase().includes(filtroNota.toLowerCase())).sort((a,b)=>new Date(b.criado_em)-new Date(a.criado_em))
+  const handleDelete=async id=>{ try{await db.deletarRegistro(id);setConfirmDel(null);showToast('Cubagem excluída.','err');await recarregar()}catch(e){showToast('Erro: '+e.message,'err')} }
+  const handleEdit=async(id,grupos,motivo)=>{ const m3=calcM3(grupos); try{await db.editarRegistro(id,grupos.map(g=>({...g,...dimsM(g)})),motivo,m3,perfil);setEditReg(null);showToast('Cubagem atualizada!');await recarregar()}catch(e){showToast('Erro: '+e.message,'err')} }
+  const downloadCSV=()=>{
+    const BOM='\uFEFF'
+    const header=['ID','Frota','Data','Usuário','Cliente','Nota','Vol.Total','Grupo','Vol.Grupo','Alt(m)','Larg(m)','Comp(m)','M³Grupo','M³Total','Status'].join(';')
+    const rows=[]
+    lista.forEach(r=>{ (r.grupos||[]).forEach((g,gi)=>{ const a=g.altura_m??0,l=g.largura_m??0,c=g.comprimento_m??0; rows.push([r.id,r.frota_placa,fmtDate(r.criado_em),r.user_email,r.cliente,r.nota,r.qtd_total,`G${gi+1}`,g.qtd,a.toFixed(3),l.toFixed(3),c.toFixed(3),(a*l*c*g.qtd).toFixed(4),parseFloat(r.m3_total).toFixed(4),r.editado?'EDITADO':'ORIGINAL'].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(';')) }) })
+    const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([BOM+header+'\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'})); a.download=`cubagens_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a);a.click();document.body.removeChild(a); showToast('CSV baixado!')
   }
-  const handleEdit = async (id, grupos, motivo) => {
-    const m3 = calcM3(grupos)
-    try { await db.editarRegistro(id, grupos.map(g=>({...g,...dimsM(g)})), motivo, m3, perfil); setEditReg(null); showToast('Cubagem atualizada!'); await recarregar() }
-    catch(e) { showToast('Erro: '+e.message,'err') }
-  }
-
-  const downloadCSV = () => {
-    const BOM = '\uFEFF'
-    const header = ['ID','Frota','Data','Usuário','Cliente','Nota','Vol.Total','Grupo','Vol.Grupo','Alt(m)','Larg(m)','Comp(m)','M³Grupo','M³Total','Status'].join(';')
-    const rows = []
-    lista.forEach(r => {
-      (r.grupos||[]).forEach((g,gi) => {
-        const a=g.altura_m??0, l=g.largura_m??0, c=g.comprimento_m??0
-        rows.push([r.id,r.frota_placa,fmtDate(r.criado_em),r.user_email,r.cliente,r.nota,r.qtd_total,`G${gi+1}`,g.qtd,a.toFixed(3),l.toFixed(3),c.toFixed(3),(a*l*c*g.qtd).toFixed(4),parseFloat(r.m3_total).toFixed(4),r.editado?'EDITADO':'ORIGINAL'].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(';'))
-      })
-    })
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(new Blob([BOM+header+'\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'}))
-    a.download = `cubagens_${new Date().toISOString().slice(0,10)}.csv`
-    document.body.appendChild(a); a.click(); document.body.removeChild(a)
-    showToast('CSV baixado!')
-  }
-
   return (
     <div className="cb-page">
       <div className="cb-sync-bar">
-        <h1 style={{fontSize:17, fontWeight:700, color:'#f0c040', letterSpacing:2, flex:1, minWidth:120}}>HISTÓRICO</h1>
-        <select style={{...S.select, minWidth:120}} value={filtroFrota} onChange={e => setFiltroFrota(e.target.value)}>
+        <h1 style={{fontSize:16,fontWeight:700,color:'#f0c040',letterSpacing:2,flex:1,minWidth:100}}>HISTÓRICO</h1>
+        <select style={{...S.select,minWidth:110}} value={filtroFrota} onChange={e=>setFiltroFrota(e.target.value)}>
           <option value="">Todas as frotas</option>
-          {(frotas||[]).map(f => <option key={f.id} value={f.id}>{f.placa}</option>)}
+          {(frotas||[]).map(f=><option key={f.id} value={f.id}>{f.placa}</option>)}
         </select>
-        <div style={{position:'relative', flex:1, minWidth:160}}>
-          <input style={{...S.input, paddingLeft:30}} value={filtroNota} onChange={e => setFiltroNota(e.target.value)} placeholder="Buscar nota..."/>
-          <span style={{position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', color:'#6b7280', fontSize:13, pointerEvents:'none'}}>🔍</span>
-          {filtroNota && <span style={{position:'absolute', right:10, top:'50%', transform:'translateY(-50%)', color:'#6b7280', cursor:'pointer', fontSize:13}} onClick={() => setFiltroNota('')}>✕</span>}
+        <div style={{position:'relative',flex:1,minWidth:140}}>
+          <input style={{...S.input,paddingLeft:28}} value={filtroNota} onChange={e=>setFiltroNota(e.target.value)} placeholder="Buscar nota..."/>
+          <span style={{position:'absolute',left:9,top:'50%',transform:'translateY(-50%)',color:'#6b7280',fontSize:12,pointerEvents:'none'}}>🔍</span>
+          {filtroNota&&<span style={{position:'absolute',right:9,top:'50%',transform:'translateY(-50%)',color:'#6b7280',cursor:'pointer',fontSize:12}} onClick={()=>setFiltroNota('')}>✕</span>}
         </div>
         <button style={S.btnS} onClick={downloadCSV}>↓ CSV</button>
       </div>
-      {filtroNota && (
-        <div style={{marginBottom:10, fontSize:12, color:'#6b7280'}}>
-          {lista.length>0
-            ? <span><b style={{color:'#f0c040'}}>{lista.length}</b> registro(s) — nota "<b style={{color:'#e8eaf0'}}>{filtroNota}</b>"</span>
-            : <span style={{color:'#e05050'}}>Nenhum registro com nota "{filtroNota}".</span>}
-        </div>
-      )}
       <div className="cb-card">
         <DateGroupedTable registros={lista} onEdit={setEditReg} onDelete={isAdmin(perfil)?setConfirmDel:null}/>
       </div>
-      {editReg && <ModalEdicao reg={editReg} perfil={perfil} onClose={() => setEditReg(null)} onSave={handleEdit}/>}
-      {confirmDel && <ModalConfirmDel reg={confirmDel} onConfirm={() => handleDelete(confirmDel.id)} onCancel={() => setConfirmDel(null)}/>}
+      {editReg&&<ModalEdicao reg={editReg} perfil={perfil} onClose={()=>setEditReg(null)} onSave={handleEdit}/>}
+      {confirmDel&&<ModalConfirmDel reg={confirmDel} onConfirm={()=>handleDelete(confirmDel.id)} onCancel={()=>setConfirmDel(null)}/>}
     </div>
   )
 }
 
 function App() {
-  const [session,   setSession]   = useState(null)
-  const [perfil,    setPerfil]    = useState(null)
-  const [frotas,    setFrotas]    = useState([])
-  const [clientes,  setClientes]  = useState([])
-  const [registros, setRegistros] = useState([])
-  const [view,      setView]      = useState('dashboard')
-  const [frota,     setFrota]     = useState(null)
-  const [toast,     setToast]     = useState(null)
-  const [loading,   setLoading]   = useState(true)
+  const [session,setSession]=useState(null)
+  const [perfil,setPerfil]=useState(null)
+  const [frotas,setFrotas]=useState([])
+  const [clientes,setClientes]=useState([])
+  const [registros,setRegistros]=useState([])
+  const [view,setView]=useState('dashboard')
+  const [frota,setFrota]=useState(null)
+  const [toast,setToast]=useState(null)
+  const [loading,setLoading]=useState(true)
+  const showToast=(msg,type='ok')=>{ setToast({msg,type}); setTimeout(()=>setToast(null),3500) }
+  const carregarDados=useCallback(async()=>{ const [f,c,r]=await Promise.all([db.listarFrotas(),db.listarClientes(),db.listarRegistros()]); setFrotas(f);setClientes(c);setRegistros(r) },[])
+  const recarregar=useCallback(async()=>{ const r=await db.listarRegistros(); setRegistros(r) },[])
 
-  const showToast = (msg, type='ok') => { setToast({msg,type}); setTimeout(()=>setToast(null),3500) }
-
-  const carregarDados = useCallback(async () => {
-    const [f,c,r] = await Promise.all([db.listarFrotas(), db.listarClientes(), db.listarRegistros()])
-    setFrotas(f); setClientes(c); setRegistros(r)
-  }, [])
-
-  const recarregar = useCallback(async () => {
-    const r = await db.listarRegistros()
-    setRegistros(r)
-  }, [])
-
-  useEffect(() => {
-    sb.auth.getSession().then(async ({data:{session}}) => {
-      if (session) {
-        setSession(session)
-        const p = await db.getPerfil(session.user.id)
-        setPerfil(p)
-        await carregarDados()
-      }
-      setLoading(false)
+  useEffect(()=>{
+    sb.auth.getSession().then(async({data:{session}})=>{ if(session){setSession(session);const p=await db.getPerfil(session.user.id);setPerfil(p);await carregarDados()} setLoading(false) })
+    const {data:{subscription}}=sb.auth.onAuthStateChange(async(event,session)=>{
+      if(session){setSession(session);const p=await db.getPerfil(session.user.id);setPerfil(p);await carregarDados()}
+      else{setSession(null);setPerfil(null);setFrotas([]);setClientes([]);setRegistros([]);setView('dashboard');setFrota(null)}
     })
-    const { data:{subscription} } = sb.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
-        setSession(session)
-        const p = await db.getPerfil(session.user.id)
-        setPerfil(p)
-        await carregarDados()
-      } else {
-        setSession(null); setPerfil(null)
-        setFrotas([]); setClientes([]); setRegistros([])
-        setView('dashboard'); setFrota(null)
-      }
-    })
-    return () => subscription.unsubscribe()
-  }, [carregarDados])
+    return ()=>subscription.unsubscribe()
+  },[carregarDados])
 
-  if (loading) return (
-    <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'linear-gradient(135deg,#0f1117,#1a1f2e)'}}>
+  if(loading) return (
+    <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'linear-gradient(135deg,#0f1117,#1a1f2e)'}}>
       <div style={{textAlign:'center'}}>
-        <div style={{fontSize:22, fontWeight:700, color:'#f0c040', letterSpacing:2}}>CUBAGENS</div>
-        <div style={{fontSize:12, color:'#6b7280', letterSpacing:2, marginTop:10}}>CARREGANDO...</div>
+        <div style={{fontSize:22,fontWeight:700,color:'#f0c040',letterSpacing:2}}>CUBAGENS</div>
+        <div style={{fontSize:12,color:'#6b7280',letterSpacing:2,marginTop:10}}>CARREGANDO...</div>
       </div>
     </div>
   )
 
-  if (!session) return <Login onLogin={(e,s) => db.signIn(e,s)}/>
+  if(!session) return <Login onLogin={(e,s)=>db.signIn(e,s)}/>
 
   return (
-    <div style={{minHeight:'100vh', background:'#0f1117', color:'#e8eaf0', fontFamily:"'IBM Plex Mono',monospace"}}>
+    <div style={{minHeight:'100vh',background:'#0f1117',color:'#e8eaf0',fontFamily:"'IBM Plex Mono',monospace"}}>
       <nav className="cb-nav">
-        <span className="cb-nav-title" style={{fontSize:13, fontWeight:700, color:'#f0c040', letterSpacing:2, flex:1}}>▣ CUBAGENS</span>
-        <span className="cb-nav-badge" style={{fontSize:11, color:'#6b7280'}}>{perfil?.nome}</span>
+        <span className="cb-nav-title" style={{fontSize:13,fontWeight:700,color:'#f0c040',letterSpacing:2,flex:1}}>▣ CUBAGENS</span>
+        <span className="cb-nav-badge" style={{fontSize:11,color:'#6b7280'}}>{perfil?.nome}</span>
         <span className="cb-nav-badge"><RoleBadge role={perfil?.role}/></span>
-        {isAdmin(perfil) && <button style={S.btnS} onClick={() => setView('admin')}>Admin</button>}
-        <button style={S.btnS} onClick={() => setView('historico')}>Histórico</button>
-        <button style={S.btnS} onClick={() => {setView('dashboard');setFrota(null)}}>Início</button>
-        <button style={S.btnD} onClick={() => db.signOut()}>Sair</button>
+        {isAdmin(perfil)&&<button style={S.btnS} onClick={()=>setView('admin')}>Admin</button>}
+        <button style={S.btnS} onClick={()=>setView('historico')}>Histórico</button>
+        <button style={S.btnS} onClick={()=>{setView('dashboard');setFrota(null)}}>Início</button>
+        <button style={S.btnD} onClick={()=>db.signOut()}>Sair</button>
       </nav>
-
-      {toast && (
-        <div style={{position:'fixed', top:66, right:12, left:12, zIndex:200, padding:'10px 16px', borderRadius:8, fontSize:13, fontFamily:'inherit', background:toast.type==='ok'?'#0f2a1a':'#2a1515', border:`1px solid ${toast.type==='ok'?'#40c080':'#e05050'}`, color:toast.type==='ok'?'#40c080':'#e05050', maxWidth:380, marginLeft:'auto'}}>
+      {toast&&(
+        <div style={{position:'fixed',top:58,right:10,left:10,zIndex:300,padding:'10px 14px',borderRadius:8,fontSize:13,fontFamily:'inherit',background:toast.type==='ok'?'#0f2a1a':'#2a1515',border:`1px solid ${toast.type==='ok'?'#40c080':'#e05050'}`,color:toast.type==='ok'?'#40c080':'#e05050',maxWidth:380,marginLeft:'auto'}}>
           {toast.msg}
         </div>
       )}
-
-      {view==='dashboard' && <Dashboard frotas={frotas} onFrota={f => {setFrota(f);setView('frota')}}/>}
-      {view==='frota'     && frota && <FrotaView frota={frota} clientes={clientes} session={session} perfil={perfil} registros={registros} recarregar={recarregar} onBack={() => setView('dashboard')} showToast={showToast}/>}
-      {view==='admin'     && isAdmin(perfil) && <AdminView perfil={perfil} frotas={frotas} setFrotas={setFrotas} clientes={clientes} setClientes={setClientes} showToast={showToast}/>}
-      {view==='historico' && <Historico registros={registros} recarregar={recarregar} frotas={frotas} perfil={perfil} session={session} showToast={showToast}/>}
+      {view==='dashboard'&&<Dashboard frotas={frotas} onFrota={f=>{setFrota(f);setView('frota')}}/>}
+      {view==='frota'&&frota&&<FrotaView frota={frota} clientes={clientes} session={session} perfil={perfil} registros={registros} recarregar={recarregar} onBack={()=>setView('dashboard')} showToast={showToast}/>}
+      {view==='admin'&&isAdmin(perfil)&&<AdminView perfil={perfil} frotas={frotas} setFrotas={setFrotas} clientes={clientes} setClientes={setClientes} showToast={showToast}/>}
+      {view==='historico'&&<Historico registros={registros} recarregar={recarregar} frotas={frotas} perfil={perfil} showToast={showToast}/>}
     </div>
   )
 }
