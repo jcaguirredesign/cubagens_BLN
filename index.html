@@ -291,11 +291,9 @@ function GrupoMedida({grupo, index, total, onChange, onRemove}) {
             <label style={{...S.label, marginBottom:0}}>{l} ({grupo.unidade})</label>
             <span style={{fontSize:14, fontWeight:700, color:'#f0c040'}}>{parseFloat(grupo[k]||0).toFixed(isM?2:0)} {grupo.unidade}</span>
           </div>
-          <input type="range" min={step} max={max} step={step} value={grupo[k]||step}
-            style={{width:'100%', accentColor:'#f0c040', display:'block', marginBottom:8, cursor:'pointer'}}
-            onChange={e => onChange(grupo.id,k,e.target.value)}/>
-          <input style={S.input} type="number" min={step} max={max} step={step} value={grupo[k]}
-            onChange={e => onChange(grupo.id,k,e.target.value)} placeholder={isM?'0.00':'0'}/>
+            <style={{width:'100%', accentColor:'#f0c040', display:'block', marginBottom:8, cursor:'pointer'}}
+            <onChange={e => onChange(grupo.id,k,e.target.value)}/>
+            <onChange={e => onChange(grupo.id,k,e.target.value)} placeholder={isM?'0.00':'0'}/>
         </div>
       ))}
       {grupo.qtd&&grupo.largura&&grupo.altura&&grupo.comprimento && (
