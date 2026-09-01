@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   if (!nome || !email || !senha || senha.length < 8) {
     return res.status(400).json({ error: 'Preencha nome, e-mail e uma senha com 8+ caracteres.' })
   }
-  if (!['user', 'admin'].includes(role)) {
+  if (!['user', 'admin', 'comercial', 'expedicao'].includes(role)) {
     return res.status(400).json({ error: 'Perfil inválido.' })
   }
   // Somente owner pode criar outro admin.
