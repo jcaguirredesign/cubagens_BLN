@@ -32,13 +32,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: createError.message })
   }
 
-  const { error: perfilError } = await supabaseAdmin.from('perfis').insert({
+  const { error: perfilError } = await supabaseAdmin.from('perfis').upsert({
     id: created.user.id,
     nome,
     email,
     role,
     deve_trocar_senha: true,
-  })
+  }, { onConflict: 'id' })
   if (perfilError) {
     // Reverte a criação no Auth se o perfil não puder ser criado, para não deixar usuário órfão.
     await supabaseAdmin.auth.admin.deleteUser(created.user.id)
