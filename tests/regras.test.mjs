@@ -16,8 +16,8 @@ const stubs = {
   document: { getElementById: () => null },
 };
 const exportar = [
-  "parseNum", "calcM3", "dimsM", "grupoCompleto", "motivoComercial", "motivoExpedicao",
-  "etapaComercial", "diasParado", "menuDe", "viewInicial", "validarAnexo",
+  "parseNum", "calcM3", "dimsM", "grupoCompleto", "etapaDe", "problemasDe", "precisaAtencao",
+  "diasParado", "menuDe", "viewInicial", "validarAnexo", "chaveInfo", "avisosMedida",
 ];
 const app = new Function(...Object.keys(stubs), `${code}\nreturn { ${exportar.join(", ")} };`)(...Object.values(stubs));
 
@@ -51,29 +51,46 @@ test("grupoCompleto exige todos os campos maiores que zero", () => {
 
 const pend = (o) => ({ status_comercial: "em_analise", status_expedicao: "pendente", cotacoes: [], aprovacao_path: null, ...o });
 
-test("motivo comercial segue os anexos", () => {
-  assert.equal(app.motivoComercial(pend()), "sem_cotacao");
-  assert.equal(app.motivoComercial(pend({ cotacoes: [{ id: 1 }] })), "aguardando_aprovacao");
-  assert.equal(app.motivoComercial(pend({ cotacoes: [{ id: 1 }], aprovacao_path: "a.png" })), "aguardando_liberacao");
-  assert.equal(app.motivoComercial(pend({ motivo_comercial: "divergencia_frete", cotacoes: [{ id: 1 }] })), "divergencia_frete");
-  assert.equal(app.motivoComercial(pend({ status_comercial: "liberado" })), null);
+test("etapa da nota segue o processo", () => {
+  assert.equal(app.etapaDe(pend()), 1);
+  assert.equal(app.etapaDe(pend({ cotacoes: [{ id: 1 }] })), 2);
+  assert.equal(app.etapaDe(pend({ cotacoes: [{ id: 1 }], aprovacao_path: "a.png" })), 3);
+  assert.equal(app.etapaDe(pend({ status_comercial: "liberado" })), 4);
+  assert.equal(app.etapaDe(pend({ status_expedicao: "expedido" })), 5);
+  assert.equal(app.etapaDe(pend({ status_expedicao: "expedido", status_comercial: "em_analise" })), 5);
 });
 
-test("motivo da expedição", () => {
-  assert.equal(app.motivoExpedicao(pend()), null);
-  assert.equal(app.motivoExpedicao(pend({ status_comercial: "liberado" })), "aguardando_expedicao");
-  assert.equal(app.motivoExpedicao(pend({ houve_falta: true })), "falta_mercadoria");
-  assert.equal(app.motivoExpedicao(pend({ motivo_expedicao: "divergencia_cubagem", houve_falta: true })), "divergencia_cubagem");
-  assert.equal(app.motivoExpedicao(pend({ status_expedicao: "cte_anulado", motivo_expedicao: "falta_mercadoria" })), "cte_anulado");
-  assert.equal(app.motivoExpedicao(pend({ status_expedicao: "expedido" })), null);
+test("problemas da nota", () => {
+  assert.deepEqual(app.problemasDe(pend()), []);
+  assert.equal(app.problemasDe(pend({ houve_falta: true, qtd_falta: 4 }))[0].t, "Falta 4 vol");
+  assert.equal(app.problemasDe(pend({ motivo_expedicao: "falta_mercadoria", qtd_falta: 2 })).length, 1);
+  assert.equal(app.problemasDe(pend({ status_expedicao: "cte_anulado", cte_anulado_numero: "X1" }))[0].k, "crit");
+  assert.equal(app.problemasDe(pend({ motivo_comercial: "divergencia_frete" }))[0].t, "Divergência de frete");
+  assert.equal(app.problemasDe(pend({ motivo_expedicao: "aguardando_carregamento" }))[0].k, "mute");
 });
 
-test("etapa comercial", () => {
-  assert.equal(app.etapaComercial(pend()).step, 1);
-  assert.equal(app.etapaComercial(pend({ cotacoes: [{ id: 1 }] })).step, 2);
-  assert.equal(app.etapaComercial(pend({ cotacoes: [{ id: 1 }], aprovacao_path: "a" })).t, "Marque a cotação aprovada");
-  assert.equal(app.etapaComercial(pend({ cotacoes: [{ id: 1 }], aprovacao_path: "a", cotacao_aprovada_id: 1 })).t, "Pronta para liberar");
-  assert.equal(app.etapaComercial(pend({ status_comercial: "liberado" })).step, 4);
+test("precisa de atenção: 3+ dias ou problema grave, nunca se já expedida", () => {
+  const velho = new Date(Date.now() - 4 * 86400000).toISOString();
+  const hoje = new Date().toISOString();
+  assert.equal(app.precisaAtencao(pend({ criado_em: velho })), true);
+  assert.equal(app.precisaAtencao(pend({ criado_em: hoje })), false);
+  assert.equal(app.precisaAtencao(pend({ criado_em: hoje, houve_falta: true })), true);
+  assert.equal(app.precisaAtencao(pend({ criado_em: hoje, motivo_expedicao: "divergencia_cubagem" })), false);
+  assert.equal(app.precisaAtencao(pend({ criado_em: velho, status_expedicao: "expedido" })), false);
+});
+
+test("chave de acesso: 44 dígitos e número da NF", () => {
+  const ch = app.chaveInfo("4226 1102 3556 7300 0190 5500 1000 0047 5414 4209 3930");
+  assert.equal(ch.ok, true);
+  assert.equal(ch.nf, "4754");
+  assert.equal(ch.serie, "1");
+  assert.equal(app.chaveInfo("123").ok, false);
+});
+
+test("aviso de medida suspeita", () => {
+  assert.match(app.avisosMedida(g({ altura: "15", largura: "0,15", comprimento: "0,35" }))[0], /0,15/);
+  assert.deepEqual(app.avisosMedida(g({ altura: "1,2", largura: "0,8", comprimento: "2,9" })), []);
+  assert.equal(app.avisosMedida(g({ altura: "4500", largura: "100", comprimento: "100", unidade: "mm" })).length, 1);
 });
 
 test("dias parado", () => {

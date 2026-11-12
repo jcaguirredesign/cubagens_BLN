@@ -225,6 +225,102 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .cb-frotas{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .cb-facts{grid-template-columns:1fr 1fr}
 }
+
+/* ===== Issue #15 — etapas, listas enxutas, gaveta de cadastro ===== */
+.cb-drawer.wide{width:min(800px,100%)}
+.cb-stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.cb-stage{position:relative;background:var(--surface);border:0;border-right:1px solid var(--line);padding:16px 18px 16px 22px;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0;color:var(--fg);font-family:inherit;cursor:pointer}
+.cb-stage:last-child{border-right:0}
+.cb-stage::after{content:"";position:absolute;right:-9px;top:50%;width:16px;height:16px;border-top:1px solid var(--line);border-right:1px solid var(--line);transform:translateY(-50%) rotate(45deg);z-index:2;background:inherit}
+.cb-stage:last-child::after{display:none}
+.cb-stage:hover{background:#032f6c}
+.cb-stage[aria-pressed="true"]{background:#063a73}
+.cb-stage-top{display:flex;align-items:center;gap:8px}
+.cb-stage-n{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--muted);flex:none}
+.cb-stage[aria-pressed="true"] .cb-stage-n{border-color:var(--accent);color:var(--accent)}
+.cb-stage-label{font-family:var(--f-display);font-weight:600;font-size:14px}
+.cb-stage-count{font-family:var(--f-display);font-size:30px;font-weight:600;line-height:1.05;font-variant-numeric:tabular-nums}
+.cb-stage-count.zero{color:var(--faint)}
+.cb-stage-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.cb-attn{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--crit-soft);border:1px solid rgba(255,107,120,.35);border-radius:12px;padding:10px 14px;margin-top:14px}
+.cb-attn b{color:var(--crit);font-weight:600}
+.cb-attn.ok{background:var(--ok-soft);border-color:rgba(74,222,128,.3)}
+.cb-attn.ok b{color:var(--ok)}
+.cb-sumline{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:13px;align-items:center}
+.cb-sumline b{color:var(--fg);font-family:var(--f-display);font-weight:600;font-variant-numeric:tabular-nums}
+.cb-group-h{display:flex;align-items:baseline;gap:10px;margin:20px 0 8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.cb-group-h b{font-family:var(--f-display);font-size:14px;color:var(--fg);font-weight:600}
+.cb-rows{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.cb-linha{display:grid;grid-template-columns:4px minmax(170px,1.6fr) 90px minmax(110px,1fr) 140px minmax(150px,1.4fr) 70px 150px;gap:14px;align-items:center;padding:11px 14px 11px 0;border-bottom:1px solid var(--line-soft);cursor:pointer;transition:background-color .15s;animation:cb-fade-up .25s ease-out both}
+.cb-linha:last-child{border-bottom:0}
+.cb-linha:hover{background:rgba(146,239,252,.035)}
+.cb-linha:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.cb-linha .stripe{align-self:stretch;background:var(--line)}
+.cb-linha.a2 .stripe{background:var(--warn)}.cb-linha.a3 .stripe{background:var(--crit)}
+.cb-linha .nf b{font-family:var(--f-display);font-weight:600;font-size:14.5px;display:block}
+.cb-linha .nf small{color:var(--muted);font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cb-linha .muted{color:var(--muted);font-size:12.5px}
+.cb-linha .flags{display:flex;gap:6px;flex-wrap:wrap}
+.cb-linha .next{font-size:12px;color:var(--muted);display:block;text-align:right}
+.cb-linha .next b{color:var(--fg);font-weight:500}
+.cb-empty-row{padding:18px;color:var(--faint);font-size:13px;text-align:center}
+.cb-month{display:flex;align-items:center;gap:8px;letter-spacing:0!important;text-transform:none}
+.cb-month b{font-family:var(--f-display);font-weight:600;min-width:140px;text-align:center;color:var(--fg);font-size:13px}
+.cb-tbl-click tbody tr{cursor:pointer;transition:background-color .15s}
+.cb-tbl-click tbody tr:hover{background:rgba(146,239,252,.035)}
+.cb-ellip{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.cb-frotas.compact{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.cb-frotas.compact .cb-frota{padding:10px;gap:8px}
+.cb-prog{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.cb-prog div{display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--faint);min-width:0}
+.cb-prog i{height:6px;border-radius:3px;background:var(--line)}
+.cb-prog .done i{background:var(--ok)}.cb-prog .done{color:var(--muted)}
+.cb-prog .cur i{background:var(--accent)}.cb-prog .cur{color:var(--fg);font-weight:600}
+.cb-now{display:flex;gap:10px;align-items:center;background:var(--accent-soft);border:1px solid rgba(13,214,253,.35);border-radius:10px;padding:10px 12px;font-size:13px;flex-wrap:wrap}
+.cb-now b{color:var(--accent-hi)}
+.cb-mchips{display:flex;gap:8px;flex-wrap:wrap}
+.cb-mchip{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13px;color:var(--muted);text-align:left;cursor:pointer;font-family:inherit}
+.cb-mchip[aria-pressed="true"]{border-color:var(--accent);color:var(--fg);background:var(--accent-soft)}
+.cb-mchip small{display:block;font-size:11px;color:var(--faint);margin-top:2px}
+.cb-sec{display:flex;flex-direction:column;gap:12px}
+.cb-sec-h{display:flex;align-items:center;gap:10px}
+.cb-sec-h .n{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+.cb-sec-h h3{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--fg)}
+.cb-sec-h small{color:var(--muted);font-size:12px;margin-left:auto;text-align:right}
+.cb-grid3{display:grid;grid-template-columns:2fr 1fr 2fr;gap:12px}
+.cb-helper{font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;margin-top:4px}
+.cb-helper .okc{color:var(--ok)}.cb-helper .bad{color:var(--crit)}
+.cb-cub-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.cb-cub{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:left;color:var(--fg);cursor:pointer;font-family:inherit}
+.cb-cub[aria-pressed="true"]{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok)}
+.cb-cub b{font-family:var(--f-display);font-weight:600}
+.cb-cub small{color:var(--muted);font-size:12px}
+.cb-plate-pick{display:flex;gap:8px;flex-wrap:wrap}
+.cb-plate-pick button{background:transparent;border:2px solid transparent;border-radius:6px;padding:2px;cursor:pointer}
+.cb-plate-pick button[aria-pressed="true"]{border-color:var(--accent)}
+.cb-mgrp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) 92px auto;gap:8px;align-items:end;background:var(--surface-2);border:1px solid var(--line-soft);border-radius:10px;padding:10px}
+.cb-mgrp .m3{font-family:var(--f-display);font-weight:600;color:var(--accent);font-size:14px;text-align:right;padding-bottom:11px;font-variant-numeric:tabular-nums}
+.cb-warnbox{background:var(--warn-soft);border:1px solid rgba(245,184,74,.35);color:var(--warn);border-radius:8px;padding:8px 10px;font-size:12.5px}
+.cb-foot-sum{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.cb-foot-sum b{color:var(--fg);font-variant-numeric:tabular-nums}
+.cb-medtbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.cb-medtbl th{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.cb-medtbl td{padding:6px 8px;border-bottom:1px solid var(--line-soft);font-variant-numeric:tabular-nums}
+@media (max-width:1000px){
+  .cb-stages{grid-template-columns:1fr 1fr}
+  .cb-stage:nth-child(2n){border-right:0}
+  .cb-stage:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .cb-stage::after{display:none}
+  .cb-linha{grid-template-columns:4px minmax(0,1fr) auto;row-gap:6px}
+  .cb-linha > :nth-child(3),.cb-linha > :nth-child(4),.cb-linha > :nth-child(5),.cb-linha > :nth-child(8){display:none}
+  .cb-linha .flags{grid-column:2/-1}
+  .cb-linha .age{grid-column:3;grid-row:1}
+}
+@media (max-width:640px){
+  .cb-grid3{grid-template-columns:1fr}
+  .cb-mgrp{grid-template-columns:1fr 1fr}
+  .cb-prog span{display:none}
+}
 </style>
 </head>
 <body>
@@ -284,6 +380,7 @@ async buscarRegistrosPorCliente(cliente){if(!cliente) return [];const {data,erro
 async criarPendencia(payload,grupos){const {data:p,error:e1}=await sb.from('pendencias_emissao').insert(payload).select().single();if(e1) throw e1;if(grupos&&grupos.length){const gd=grupos.map((g,i)=>({pendencia_id:p.id,seq:i+1,qtd:parseInt(g.qtd)||0,unidade:g.unidade||'m',altura_m:g.alturaM??0,largura_m:g.larguraM??0,comprimento_m:g.comprimentoM??0,m3_grupo:(g.alturaM??0)*(g.larguraM??0)*(g.comprimentoM??0)*(parseInt(g.qtd)||0)}));const {error:e2}=await sb.from('pendencias_emissao_grupos').insert(gd);if(e2) throw e2}return p},
 async atualizarPendencia(id,patch){const {error}=await sb.from('pendencias_emissao').update(patch).eq('id',id);if(error) throw error},
 async atualizarGruposPendencia(pendenciaId,grupos,m3Total){await sb.from('pendencias_emissao_grupos').delete().eq('pendencia_id',pendenciaId);const gd=grupos.map((g,i)=>({pendencia_id:pendenciaId,seq:i+1,qtd:parseInt(g.qtd)||0,unidade:g.unidade||'m',altura_m:g.alturaM??0,largura_m:g.larguraM??0,comprimento_m:g.comprimentoM??0,m3_grupo:(g.alturaM??0)*(g.larguraM??0)*(g.comprimentoM??0)*(parseInt(g.qtd)||0)}));if(gd.length){const {error}=await sb.from('pendencias_emissao_grupos').insert(gd);if(error) throw error}const qtdTotal=grupos.reduce((s,g)=>s+(parseInt(g.qtd)||0),0);await this.atualizarPendencia(pendenciaId,{qtd_volumes:qtdTotal,m3_total:m3Total})},
+async expedirPendencia(id){const {error}=await sb.from('pendencias_emissao').update({status_expedicao:'expedido',motivo_expedicao:null}).eq('id',id);if(error) throw error},
 async deletarPendencia(id){const {error}=await sb.from('pendencias_emissao').delete().eq('id',id);if(error) throw error},
 async uploadNfImagem(file,pendenciaId){const ext=(file.name.split('.').pop()||'jpg').toLowerCase();const path=`${pendenciaId}/${Date.now()}.${ext}`;const {error}=await sb.storage.from('nf-anexos').upload(path,file,{upsert:true});if(error) throw error;return path},
 async urlNfImagem(path){const {data,error}=await sb.storage.from('nf-anexos').createSignedUrl(path,3600);if(error) throw error;return data.signedUrl},
@@ -352,10 +449,10 @@ function MiniPlaca({ placa }) {
     </span>
   );
 }
-function FrotasGrid({ frotas, onFrota, contagem }) {
+function FrotasGrid({ frotas, onFrota, contagem, compacto }) {
   if (!frotas || frotas.length === 0) return <p style={{ color: "var(--muted)", fontSize: 13 }}>Nenhuma frota cadastrada.</p>;
   return (
-    <div className="cb-frotas">
+    <div className={"cb-frotas" + (compacto ? " compact" : "")}>
       {frotas.map((f) => (
         <button key={f.id} type="button" className="cb-frota" onClick={() => onFrota(f)}>
           <Placa placa={f.placa} />
@@ -868,420 +965,7 @@ function FrotaView({ frota, clientes, session, perfil, onBack, showToast }) {
 function AdminView({perfil,session,frotas,setFrotas,clientes,setClientes,showToast,onSolicitacoesAtualizadas}){const [tab,setTab]=useState('frotas');const [np,setNp]=useState('');const [nc,setNc]=useState('');const [usuarios,setUsuarios]=useState([]);const defNovoUsr={nome:'',email:'',senha:'',role:'user'};const [novoUsr,setNovoUsr]=useState(defNovoUsr);const [criandoUsr,setCriandoUsr]=useState(false);const [redefinirUsr,setRedefinirUsr]=useState(null);const [novaSenhaRedef,setNovaSenhaRedef]=useState('');const [redefinindo,setRedefinindo]=useState(false);const [excluirUsr,setExcluirUsr]=useState(null);const [excluindo,setExcluindo]=useState(false);const recarregarUsuarios=()=>db.listarUsuarios().then(setUsuarios).catch(()=>{});useEffect(()=>{ if(tab==='usuarios') recarregarUsuarios() },[tab]);const gerarSenha=()=>{ const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; let s=''; for(let i=0;i<10;i++) s+=chars[Math.floor(Math.random()*chars.length)]; return s };const criarUsuario=async()=>{ if(!novoUsr.nome.trim()||!novoUsr.email.trim()||novoUsr.senha.length<8){ showToast('Preencha nome, e-mail e uma senha com 8+ caracteres.','err'); return }; setCriandoUsr(true); try{ await db.criarUsuario({nome:novoUsr.nome.trim(),email:novoUsr.email.trim().toLowerCase(),senha:novoUsr.senha,role:novoUsr.role},session.access_token); showToast(`Usuário ${novoUsr.nome} criado! Senha temporária: ${novoUsr.senha}`); setNovoUsr(defNovoUsr); recarregarUsuarios() }catch(e){ showToast('Erro: '+e.message,'err') }; setCriandoUsr(false) };const confirmarRedefinicao=async()=>{ if(novaSenhaRedef.length<8){ showToast('A senha deve ter no mínimo 8 caracteres.','err'); return }; setRedefinindo(true); try{ await db.redefinirSenha(redefinirUsr.id,novaSenhaRedef,session.access_token); showToast(`Senha de ${redefinirUsr.nome} redefinida! Nova senha: ${novaSenhaRedef}`); setRedefinirUsr(null);setNovaSenhaRedef(''); recarregarUsuarios(); onSolicitacoesAtualizadas&&onSolicitacoesAtualizadas() }catch(e){ showToast('Erro: '+e.message,'err') }; setRedefinindo(false) };const confirmarExclusao=async()=>{ setExcluindo(true); try{ await db.excluirUsuario(excluirUsr.id,session.access_token); showToast(`${excluirUsr.nome} excluído.`,'err'); setExcluirUsr(null); recarregarUsuarios(); onSolicitacoesAtualizadas&&onSolicitacoesAtualizadas() }catch(e){ showToast('Erro: '+e.message,'err') }; setExcluindo(false) };const pendentes=(usuarios||[]).filter(u=>u.solicitou_reset_senha).length;return (<div className="cb-page"><h1 style={{fontSize:16,fontWeight:700,color:'var(--accent)',letterSpacing:2,marginBottom:18,fontFamily:"'Space Grotesk','Inter',sans-serif"}}>PAINEL ADMIN</h1><div style={S.tabs}>{[['frotas','Frotas'],['clientes','Clientes'],['usuarios','Usuários']].map(([k,l])=>(<button key={k} style={{...S.tab,background:tab===k?'var(--accent)':'transparent',color:tab===k?'var(--inset)':'var(--muted)'}} onClick={()=>setTab(k)}>{l}</button>))}</div>{tab==='frotas'&&(<div className="cb-card"><div style={S.secT}>Frotas</div><div className="cb-row" style={{marginBottom:12}}><input style={{...S.input,maxWidth:200}} value={np} onChange={e=>setNp(e.target.value.toUpperCase())} placeholder="Ex: ABC1234" maxLength={8}/><button style={S.btnY} onClick={async()=>{ if(!np.trim()) return; try{const f=await db.adicionarFrota(np.trim());setFrotas(p=>[...p,f]);setNp('');showToast('Frota adicionada!')}catch(e){showToast(e.message,'err')} }}>+ Adicionar</button></div><div className="cb-table-wrap"><table style={S.table}><thead><tr><th style={S.th}>Placa</th><th style={S.th}>Ação</th></tr></thead><tbody>{(frotas||[]).map(f=>(<tr key={f.id}><td style={{...S.td,fontWeight:700}}>{f.placa}</td><td style={S.td}><button style={S.btnD} onClick={async()=>{ try{await db.removerFrota(f.id);setFrotas(p=>p.filter(x=>x.id!==f.id));showToast('Removida.','err')}catch(e){showToast(e.message,'err')} }}>Remover</button></td></tr>))}</tbody></table></div></div>)}{tab==='clientes'&&(<div className="cb-card"><div style={S.secT}>Clientes</div><div className="cb-row" style={{marginBottom:12}}><input style={{...S.input,flex:1}} value={nc} onChange={e=>setNc(e.target.value)} placeholder="Nome do cliente"/><button style={S.btnY} onClick={async()=>{ if(!nc.trim()) return; try{const c=await db.adicionarCliente(nc.trim());setClientes(p=>[...p,c]);setNc('');showToast('Cliente adicionado!')}catch(e){showToast(e.message,'err')} }}>+ Adicionar</button></div><div className="cb-table-wrap"><table style={S.table}><thead><tr><th style={S.th}>Nome</th><th style={S.th}>Ação</th></tr></thead><tbody>{(clientes||[]).map(c=>(<tr key={c.id}><td style={S.td}>{c.nome}</td><td style={S.td}><button style={S.btnD} onClick={async()=>{ try{await db.removerCliente(c.id);setClientes(p=>p.filter(x=>x.id!==c.id));showToast('Removido.','err')}catch(e){showToast(e.message,'err')} }}>Remover</button></td></tr>))}</tbody></table></div></div>)}{tab==='usuarios'&&(<div className="cb-card"><div style={S.secT}>Usuários</div>{pendentes>0&&(<div style={{...S.errBox,marginBottom:14,borderColor:'var(--accent)',color:'var(--accent)',background:'var(--warn-soft)'}}>🔔 {pendentes} usuário{pendentes>1?'s':''} solicitando troca de senha — veja a marcação abaixo.</div>)}{isOwner(perfil)&&(<div style={{background:'var(--inset)',border:'1px solid var(--line)',borderRadius:10,padding:14,marginBottom:16}}><div style={{fontSize:11,color:'var(--accent)',letterSpacing:2,fontWeight:700,marginBottom:12}}>CADASTRAR NOVO USUÁRIO</div><div className="cb-field-row"><div style={{flex:1,minWidth:140}}><label style={S.label}>Nome</label><input style={S.input} value={novoUsr.nome} onChange={e=>setNovoUsr(u=>({...u,nome:e.target.value}))} placeholder="Nome completo"/></div><div style={{flex:1,minWidth:160}}><label style={S.label}>E-mail</label><input style={S.input} type="email" value={novoUsr.email} onChange={e=>setNovoUsr(u=>({...u,email:e.target.value}))} placeholder="usuario@atualcargas.com.br"/></div><div style={{minWidth:130}}><label style={S.label}>Perfil</label><select style={{...S.select,width:'100%'}} value={novoUsr.role} onChange={e=>setNovoUsr(u=>({...u,role:e.target.value}))}><option value="user">Conferente</option><option value="comercial">Comercial</option><option value="expedicao">Expedição</option><option value="admin">Admin</option></select></div></div><div className="cb-field-row"><div style={{flex:1,minWidth:160}}><label style={S.label}>Senha temporária</label><div style={{display:'flex',gap:6}}><input style={S.input} value={novoUsr.senha} onChange={e=>setNovoUsr(u=>({...u,senha:e.target.value}))} placeholder="mín. 8 caracteres"/><button style={S.btnS} onClick={()=>setNovoUsr(u=>({...u,senha:gerarSenha()}))}>Gerar</button></div></div></div><div style={{fontSize:11,color:'var(--muted)',marginBottom:10}}>O usuário será obrigado a trocar essa senha no primeiro acesso.</div><button style={{...S.btnY,opacity:criandoUsr?0.6:1}} onClick={criarUsuario} disabled={criandoUsr}>{criandoUsr?'Criando...':'+ Criar usuário'}</button></div>)}<div className="cb-table-wrap"><table style={S.table}><thead><tr><th style={S.th}>Nome</th><th className="cb-hide-mobile" style={S.th}>E-mail</th><th style={S.th}>Perfil</th>{isOwner(perfil)&&<th style={S.th}>Ações</th>}</tr></thead><tbody>{(usuarios||[]).map(u=>(<tr key={u.id} style={{background:u.solicitou_reset_senha?'rgba(13,214,253,0.08)':'transparent'}}><td style={S.td}>{u.nome}{u.solicitou_reset_senha&&<div style={{...S.badge,background:'var(--warn-soft)',color:'var(--accent)',marginTop:4}}>🔔 pediu troca de senha</div>}</td><td className="cb-hide-mobile" style={S.td}>{u.email}</td><td style={S.td}><RoleBadge role={u.role}/></td>{isOwner(perfil)&&(<td style={S.td}><div style={{display:'flex',gap:4,flexWrap:'wrap'}}>{u.email!==OWNER_EMAIL&&u.role!=='owner'&&(<><select style={{...S.select,fontSize:11,padding:'4px 6px'}} value={u.role} onChange={async e=>{const novoRole=e.target.value;try{await db.atualizarRole(u.id,novoRole);setUsuarios(p=>p.map(x=>x.id===u.id?{...x,role:novoRole}:x));showToast(`${u.nome} agora é ${ROLE_LABELS[novoRole]}.`)}catch(err){showToast('Erro: '+err.message,'err')}}}><option value="user">Conferente</option><option value="comercial">Comercial</option><option value="expedicao">Expedição</option><option value="admin">Admin</option></select><button style={{...S.btnS,fontSize:11,borderColor:'var(--accent)',color:'var(--accent)'}} onClick={()=>{setRedefinirUsr(u);setNovaSenhaRedef(gerarSenha())}}>🔑 Redefinir</button><button style={{...S.btnD,fontSize:11}} onClick={()=>setExcluirUsr(u)}>Excluir</button></>)}</div></td>)}</tr>))}</tbody></table></div></div>)}{redefinirUsr&&(<div style={S.modal} onClick={e=>e.target===e.currentTarget&&setRedefinirUsr(null)}><div className="cb-modal-box" style={{maxWidth:380}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}><span style={{fontSize:13,fontWeight:700,color:'var(--accent)',letterSpacing:2}}>REDEFINIR SENHA</span><button style={S.btnS} onClick={()=>setRedefinirUsr(null)}>✕</button></div><p style={{fontSize:12,color:'var(--fg-2)',marginBottom:14}}>Nova senha temporária para <b style={{color:'var(--fg)'}}>{redefinirUsr.nome}</b>. Ele será obrigado a trocá-la no próximo login.</p><div style={{display:'flex',gap:6}}><input style={S.input} value={novaSenhaRedef} onChange={e=>setNovaSenhaRedef(e.target.value)} placeholder="mín. 8 caracteres"/><button style={S.btnS} onClick={()=>setNovaSenhaRedef(gerarSenha())}>Gerar</button></div><div style={{display:'flex',gap:8,marginTop:20}}><button style={{...S.btnS,flex:1}} onClick={()=>setRedefinirUsr(null)}>Cancelar</button><button style={{...S.btnY,flex:2,opacity:redefinindo?0.6:1}} onClick={confirmarRedefinicao} disabled={redefinindo}>{redefinindo?'Salvando...':'Confirmar'}</button></div></div></div>)}{excluirUsr&&(<div style={S.modal} onClick={e=>e.target===e.currentTarget&&setExcluirUsr(null)}><div className="cb-modal-box" style={{maxWidth:380}}><div style={{fontSize:14,fontWeight:700,color:'var(--crit)',marginBottom:14}}>⚠️ EXCLUIR USUÁRIO</div><div style={{fontSize:13,color:'var(--fg-2)',lineHeight:2,marginBottom:18}}>Excluir <b style={{color:'var(--fg)'}}>{excluirUsr.nome}</b> ({excluirUsr.email})?<br/><span style={{color:'var(--crit)'}}>O acesso dele ao sistema será removido imediatamente. Esta ação não pode ser desfeita.</span></div><div style={{display:'flex',gap:8}}><button style={{...S.btnS,flex:1}} onClick={()=>setExcluirUsr(null)}>Cancelar</button><button style={{...S.btnD,flex:1,background:'var(--crit-soft)',fontWeight:700,opacity:excluindo?0.6:1}} onClick={confirmarExclusao} disabled={excluindo}>{excluindo?'Excluindo...':'Confirmar'}</button></div></div></div>)}</div>)}
 function Historico({frotas,perfil,showToast}){const [editReg,setEditReg]=useState(null);const [confirmDel,setConfirmDel]=useState(null);const [filtroFrota,setFiltroFrota]=useState('');const [filtroNota,setFiltroNota]=useState('');const [dataIni,setDataIni]=useState(todayStr());const [dataFim,setDataFim]=useState(todayStr());const [registros,setRegistros]=useState([]);const [carregando,setCarregando]=useState(true);const recarregar=useCallback(async()=>{ setCarregando(true); try{ setRegistros(await db.listarRegistrosPorPeriodo(dataIni,dataFim,filtroFrota||null)) }catch(e){ showToast('Erro ao carregar histórico: '+e.message,'err') }; setCarregando(false) },[dataIni,dataFim,filtroFrota]);useEffect(()=>{ recarregar() },[recarregar]);const lista=[...(registros||[])].filter(r=>!filtroNota||r.nota.toLowerCase().includes(filtroNota.toLowerCase())).sort((a,b)=>new Date(b.criado_em)-new Date(a.criado_em));const handleDelete=async id=>{ try{await db.deletarRegistro(id);setConfirmDel(null);showToast('Cubagem excluída.','err');await recarregar()}catch(e){showToast('Erro: '+e.message,'err')} };const handleEdit=async(id,grupos,motivo)=>{ const m3=calcM3(grupos); try{await db.editarRegistro(id,grupos.map(g=>({...g,...dimsM(g)})),motivo,m3,perfil);setEditReg(null);showToast('Cubagem atualizada!');await recarregar()}catch(e){showToast('Erro: '+e.message,'err')} };const downloadCSV=()=>{ const BOM='\uFEFF'; const header=['ID','Frota','Data','Usuário','Cliente','Nota','Vol.Total','Grupo','Vol.Grupo','Alt(m)','Larg(m)','Comp(m)','M³Grupo','M³Total','Status'].join(';'); const rows=[]; lista.forEach(r=>{ (r.grupos||[]).forEach((g,gi)=>{ const a=g.altura_m??0,l=g.largura_m??0,c=g.comprimento_m??0; rows.push([r.id,r.frota_placa,fmtDate(r.criado_em),r.user_email,r.cliente,r.nota,r.qtd_total,`G${gi+1}`,g.qtd,a.toFixed(3),l.toFixed(3),c.toFixed(3),(a*l*c*g.qtd).toFixed(4),parseFloat(r.m3_total).toFixed(4),r.editado?'EDITADO':'ORIGINAL'].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(';')) }) }); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([BOM+header+'\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'})); a.download=`cubagens_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a);a.click();document.body.removeChild(a); showToast('CSV baixado!') };return (<div className="cb-page"><div className="cb-sync-bar"><h1 style={{fontSize:16,fontWeight:700,color:'var(--accent)',letterSpacing:2,flex:1,minWidth:100,fontFamily:"'Space Grotesk','Inter',sans-serif"}}>HISTÓRICO</h1><button style={S.btnS} onClick={downloadCSV}>↓ CSV</button></div><div className="cb-card"><div className="cb-field-row" style={{marginBottom:12}}><div style={{minWidth:130}}><label style={S.label}>De</label><input style={S.input} type="date" value={dataIni} onChange={e=>setDataIni(e.target.value)}/></div><div style={{minWidth:130}}><label style={S.label}>Até</label><input style={S.input} type="date" value={dataFim} onChange={e=>setDataFim(e.target.value)}/></div><div style={{minWidth:120}}><label style={S.label}>Frota</label><select style={{...S.select,width:'100%'}} value={filtroFrota} onChange={e=>setFiltroFrota(e.target.value)}><option value="">Todas</option>{(frotas||[]).map(f=><option key={f.id} value={f.id}>{f.placa}</option>)}</select></div><div style={{flex:1,minWidth:140,position:'relative'}}><label style={S.label}>Buscar nota</label><input style={S.input} value={filtroNota} onChange={e=>setFiltroNota(e.target.value)} placeholder="Ex: 2026"/></div><button style={{...S.btnS,marginTop:18}} onClick={()=>{setDataIni(todayStr());setDataFim(todayStr())}}>Hoje</button></div>{carregando?<SkeletonTableRows rows={5} cols={7}/>:<DateGroupedTable registros={lista} onEdit={setEditReg} onDelete={isAdmin(perfil)?setConfirmDel:null}/>}</div>{editReg&&<ModalEdicao reg={editReg} perfil={perfil} onClose={()=>setEditReg(null)} onSave={handleEdit}/>}{confirmDel&&<ModalConfirmDel reg={confirmDel} onConfirm={()=>handleDelete(confirmDel.id)} onCancel={()=>setConfirmDel(null)}/>}</div>)}
 const STATUS_EXP_LABELS={pendente:'Pendente',expedido:'Expedido',cte_anulado:'CTe anulado'}
-const STATUS_EXP_COLORS={pendente:{bg:'var(--warn-soft)',color:'var(--warn)'},expedido:{bg:'var(--ok-soft)',color:'var(--ok)'},cte_anulado:{bg:'rgba(251,146,60,.16)',color:'#fb923c'}}
 const podeExcluirPendencia=p=>isAdmin(p)||p?.role==='expedicao'
-function StatusBadge({map,value,label}){const c=map[value]||{bg:'var(--surface)',color:'var(--muted)'};return <span style={{...S.badge,background:c.bg,color:c.color}}>{label||value}</span>}
-function DropzoneNf({pendenciaId,path,onUploaded,disabled}){const [arrastando,setArrastando]=useState(false);const [enviando,setEnviando]=useState(false);const [url,setUrl]=useState(null);useEffect(()=>{ let ativo=true; if(path){ db.urlNfImagem(path).then(u=>ativo&&setUrl(u)).catch(()=>{}) } else setUrl(null); return ()=>{ativo=false} },[path]);const handleFile=async(file)=>{ if(!file||disabled) return; setEnviando(true); try{ const novoPath=await db.uploadNfImagem(file,pendenciaId); onUploaded(novoPath) }catch(e){ alert('Erro ao enviar imagem: '+e.message) }; setEnviando(false) };return (<div onDragOver={e=>{e.preventDefault();if(!disabled)setArrastando(true)}} onDragLeave={()=>setArrastando(false)} onDrop={e=>{e.preventDefault();setArrastando(false);if(!disabled)handleFile(e.dataTransfer.files?.[0])}} style={{border:`1.5px dashed ${arrastando?'var(--accent)':'var(--line)'}`,borderRadius:10,padding:16,textAlign:'center',background:arrastando?'rgba(13,214,253,0.06)':'var(--inset)',cursor:disabled?'default':'pointer',opacity:disabled?0.6:1}} onClick={()=>!disabled&&document.getElementById('nf-file-'+pendenciaId).click()}><input id={'nf-file-'+pendenciaId} type="file" accept="image/*,.pdf" style={{display:'none'}} disabled={disabled} onChange={e=>handleFile(e.target.files?.[0])}/>{enviando?<span style={{fontSize:12,color:'var(--muted)'}}>Enviando...</span>:url?(<a href={url} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{fontSize:12,color:'var(--accent)'}}>📎 Ver anexo da NF (clique pra abrir)</a>):(<span style={{fontSize:12,color:'var(--muted)'}}>📎 Arraste a imagem/PDF da NF aqui ou clique pra anexar</span>)}</div>)}
-function PendenciaModal({ pendencia, frotas, clientes, perfil, session, onClose, onSave }) {
-  const isNew = !pendencia;
-  const podeExp = isExpedicao(perfil);
-  const [cliente, setCliente] = useState(pendencia?.cliente || "");
-  const [registrosCliente, setRegistrosCliente] = useState([]);
-  const [registroSelId, setRegistroSelId] = useState(pendencia?.registro_vinculado_id || "");
-  const [frotaPlaca, setFrotaPlaca] = useState(pendencia?.frota_placa || "");
-  const [nfNumero, setNfNumero] = useState(pendencia?.nf_numero || "");
-  const [chaveNf, setChaveNf] = useState(pendencia?.chave_nf || "");
-  const [ufDestino, setUfDestino] = useState(pendencia?.uf_destino || "");
-  const [municipioDestino, setMunicipioDestino] = useState(pendencia?.municipio_destino || "");
-  const [grupos, setGrupos] = useState(
-    pendencia?.grupos?.length
-      ? pendencia.grupos.map((g) => ({
-          id: uid(),
-          unidade: g.unidade || "m",
-          qtd: String(g.qtd),
-          altura: String(g.altura_m),
-          largura: String(g.largura_m),
-          comprimento: String(g.comprimento_m),
-        }))
-      : [novoGrupo()],
-  );
-  const [houveFalta, setHouveFalta] = useState(pendencia?.houve_falta || false);
-  const [qtdFalta, setQtdFalta] = useState(pendencia?.qtd_falta != null ? String(pendencia.qtd_falta) : "");
-  const [statusExpedicao, setStatusExpedicao] = useState(pendencia?.status_expedicao || "pendente");
-  const [obsExpedicao, setObsExpedicao] = useState(pendencia?.observacao_expedicao || "");
-  const [motivoExp, setMotivoExp] = useState(pendencia?.motivo_expedicao || "");
-  const [nfImagemPath, setNfImagemPath] = useState(pendencia?.nf_imagem_path || null);
-  const [salvando, setSalvando] = useState(false);
-  const m3T = calcM3(grupos.map((g) => ({ ...g, ...dimsM(g) })));
-  const qtdTotal = grupos.reduce((s, g) => s + (parseInt(g.qtd) || 0), 0);
-  const statusComercialAtual = pendencia?.status_comercial || "em_analise";
-  useEffect(() => {
-    if (!podeExp || !cliente) {
-      setRegistrosCliente([]);
-      return;
-    }
-    let ativo = true;
-    db.buscarRegistrosPorCliente(cliente)
-      .then((rs) => ativo && setRegistrosCliente(rs))
-      .catch(() => {});
-    return () => {
-      ativo = false;
-    };
-  }, [cliente, podeExp]);
-  const aplicarRegistro = (regId) => {
-    setRegistroSelId(regId);
-    const reg = registrosCliente.find((r) => r.id === regId);
-    if (!reg) return;
-    setNfNumero(reg.nota || "");
-    setFrotaPlaca(reg.frota_placa || "");
-    if (reg.grupos && reg.grupos.length) {
-      setGrupos(
-        reg.grupos.map((g) => ({
-          id: uid(),
-          unidade: g.unidade || "m",
-          qtd: String(g.qtd),
-          altura: String(g.altura_m),
-          largura: String(g.largura_m),
-          comprimento: String(g.comprimento_m),
-        })),
-      );
-    }
-  };
-  const salvar = async () => {
-    if (!cliente.trim()) {
-      alert("Selecione o cliente.");
-      return;
-    }
-    setSalvando(true);
-    try {
-      const grupoDims = grupos.map((g) => ({ ...g, ...dimsM(g) }));
-      const patchBase = {};
-      if (podeExp) {
-        Object.assign(patchBase, {
-          frota_placa: frotaPlaca || null,
-          cliente: cliente.trim(),
-          nf_numero: nfNumero || null,
-          chave_nf: chaveNf || null,
-          uf_destino: ufDestino || null,
-          municipio_destino: municipioDestino || null,
-          qtd_volumes: qtdTotal,
-          m3_total: m3T,
-          status_expedicao: statusExpedicao,
-          observacao_expedicao: obsExpedicao || null,
-          houve_falta: houveFalta,
-          qtd_falta: houveFalta ? parseInt(qtdFalta) || 0 : null,
-          registro_vinculado_id: registroSelId || null,
-          motivo_expedicao: motivoExp || null,
-        });
-      }
-      if (isNew) {
-        const novaFrota = frotas.find((f) => f.placa === frotaPlaca);
-        const criada = await db.criarPendencia({ ...patchBase, cliente: cliente.trim(), frota_id: novaFrota?.id || null }, grupoDims);
-        onSave(criada.id);
-      } else {
-        await db.atualizarPendencia(pendencia.id, patchBase);
-        if (podeExp) await db.atualizarGruposPendencia(pendencia.id, grupoDims, m3T);
-        onSave(pendencia.id);
-      }
-    } catch (e) {
-      alert("Erro ao salvar: " + e.message);
-    }
-    setSalvando(false);
-  };
-  const Ro = { fontSize: 13, color: "var(--fg)", marginBottom: 10 };
-  return (
-    <div style={S.modal} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="cb-modal-box" style={{ maxWidth: 640, padding: 0 }}>
-        <div
-          style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 2,
-            background: "var(--surface)",
-            padding: "20px 20px 14px",
-            borderBottom: "1px solid var(--line)",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ fontSize: 13, fontWeight: 700, color: "var(--accent)", letterSpacing: 2 }}>
-            {isNew ? "NOVA PENDÊNCIA" : "EDITAR PENDÊNCIA"}
-          </span>
-          <button style={S.btnS} onClick={onClose}>
-            ✕
-          </button>
-        </div>
-        <div style={{ padding: "16px 20px 20px" }}>
-          {podeExp ? (
-            <>
-              <div style={S.secT}>Dados gerais</div>
-              <div className="cb-field-row">
-                <div style={{ flex: 2, minWidth: 160 }}>
-                  <label style={S.label}>Cliente (cadastrado)</label>
-                  <select
-                    style={{ ...S.select, width: "100%" }}
-                    value={cliente}
-                    onChange={(e) => {
-                      setCliente(e.target.value);
-                      setRegistroSelId("");
-                    }}
-                  >
-                    <option value="">Selecione...</option>
-                    {(clientes || []).map((c) => (
-                      <option key={c.id} value={c.nome}>
-                        {c.nome}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div style={{ flex: 1, minWidth: 140 }}>
-                  <label style={S.label}>Frota</label>
-                  <select style={{ ...S.select, width: "100%" }} value={frotaPlaca} onChange={(e) => setFrotaPlaca(e.target.value)}>
-                    <option value="">—</option>
-                    {(frotas || []).map((f) => (
-                      <option key={f.id} value={f.placa}>
-                        {f.placa}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              {cliente && registrosCliente.length > 0 && (
-                <div style={{ marginBottom: 14 }}>
-                  <label style={S.label}>Puxar de uma cubagem já lançada (opcional)</label>
-                  <select style={{ ...S.select, width: "100%" }} value={registroSelId} onChange={(e) => aplicarRegistro(e.target.value)}>
-                    <option value="">— preencher manualmente —</option>
-                    {registrosCliente.map((r) => (
-                      <option key={r.id} value={r.id}>
-                        NF {r.nota} · {r.frota_placa} · {r.qtd_total} vol · {new Date(r.criado_em).toLocaleDateString("pt-BR")}
-                      </option>
-                    ))}
-                  </select>
-                  <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 4 }}>
-                    Preenche automaticamente nota, frota, quantidade e medidas.
-                  </div>
-                </div>
-              )}
-              <div className="cb-field-row">
-                <div style={{ flex: 1, minWidth: 120 }}>
-                  <label style={S.label}>Número da NF</label>
-                  <input style={S.input} value={nfNumero} onChange={(e) => setNfNumero(e.target.value)} placeholder="Ex: 12345" />
-                </div>
-                <div style={{ flex: 2, minWidth: 200 }}>
-                  <label style={S.label}>Chave da NF</label>
-                  <input style={S.input} value={chaveNf} onChange={(e) => setChaveNf(e.target.value)} placeholder="44 dígitos" />
-                </div>
-              </div>
-              <div className="cb-field-row">
-                <div style={{ flex: 1, minWidth: 90 }}>
-                  <label style={S.label}>UF destino</label>
-                  <input
-                    style={S.input}
-                    value={ufDestino}
-                    onChange={(e) => setUfDestino(e.target.value.toUpperCase())}
-                    maxLength={2}
-                    placeholder="SC"
-                  />
-                </div>
-                <div style={{ flex: 2, minWidth: 160 }}>
-                  <label style={S.label}>Município destino</label>
-                  <input
-                    style={S.input}
-                    value={municipioDestino}
-                    onChange={(e) => setMunicipioDestino(e.target.value)}
-                    placeholder="Ex: Blumenau"
-                  />
-                </div>
-              </div>
-              <div style={{ marginBottom: 14 }}>
-                <label style={S.label}>Anexo da NF</label>
-                <DropzoneNf
-                  pendenciaId={pendencia?.id || "novo-" + Date.now()}
-                  path={nfImagemPath}
-                  disabled={isNew}
-                  onUploaded={(p) => setNfImagemPath(p)}
-                />
-                {isNew && (
-                  <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 4 }}>
-                    Salve a pendência primeiro pra poder anexar a imagem.
-                  </div>
-                )}
-              </div>
-              <div style={S.secT}>Volumes e medidas</div>
-              {grupos.map((g, i) => (
-                <GrupoMedida
-                  key={g.id}
-                  grupo={g}
-                  index={i}
-                  total={grupos.length}
-                  onChange={(id, f, v) => setGrupos((gs) => gs.map((x) => (x.id === id ? { ...x, [f]: v } : x)))}
-                  onRemove={(id) => setGrupos((gs) => gs.filter((x) => x.id !== id))}
-                />
-              ))}
-              <div className="cb-row" style={{ marginBottom: 14, alignItems: "center" }}>
-                <button style={S.btnS} onClick={() => setGrupos((gs) => [...gs, novoGrupo()])}>
-                  + Grupo
-                </button>
-                <span style={{ marginLeft: "auto", fontSize: 13 }}>
-                  Volumes: <b>{qtdTotal}</b> · M³: <b style={{ color: "var(--accent)" }}>{m3T.toFixed(4)}</b>
-                </span>
-              </div>
-            </>
-          ) : (
-            <div style={{ marginBottom: 16, background: "var(--inset)", border: "1px solid var(--line)", borderRadius: 10, padding: 14 }}>
-              <div style={{ fontSize: 11, color: "var(--muted)", letterSpacing: 2, fontWeight: 700, marginBottom: 10 }}>
-                DADOS GERAIS (somente leitura)
-              </div>
-              <div style={Ro}>
-                Cliente: <b>{cliente || "—"}</b>
-              </div>
-              <div style={Ro}>
-                Frota: <b>{frotaPlaca || "—"}</b>
-              </div>
-              <div style={Ro}>
-                NF: <b>{nfNumero || "—"}</b> · Chave: <b>{chaveNf || "—"}</b>
-              </div>
-              <div style={Ro}>
-                Destino:{" "}
-                <b>
-                  {municipioDestino || "—"}
-                  {ufDestino ? "/" + ufDestino : ""}
-                </b>
-              </div>
-              <div style={Ro}>
-                Volumes: <b>{qtdTotal}</b> · M³: <b style={{ color: "var(--accent)" }}>{m3T.toFixed(4)}</b>
-              </div>
-              <GruposDetalhe
-                grupos={grupos.map((g) => ({
-                  ...g,
-                  ...dimsM(g),
-                  altura_m: dimsM(g).alturaM,
-                  largura_m: dimsM(g).larguraM,
-                  comprimento_m: dimsM(g).comprimentoM,
-                }))}
-              />
-            </div>
-          )}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 6 }}>
-            <div
-              style={{
-                background: "var(--inset)",
-                border: "1px solid var(--line)",
-                borderRadius: 10,
-                padding: 12,
-                opacity: podeExp ? 1 : 0.5,
-              }}
-            >
-              <div style={{ fontSize: 11, color: "var(--accent)", letterSpacing: 2, fontWeight: 700, marginBottom: 10 }}>EXPEDIÇÃO</div>
-              <label style={S.label}>Status</label>
-              <select
-                style={{ ...S.select, width: "100%", marginBottom: 10 }}
-                value={statusExpedicao}
-                onChange={(e) => setStatusExpedicao(e.target.value)}
-                disabled={!podeExp}
-              >
-                {Object.keys(STATUS_EXP_LABELS).map((k) => (
-                  <option key={k} value={k}>
-                    {STATUS_EXP_LABELS[k]}
-                  </option>
-                ))}
-              </select>
-              <label style={S.label}>Motivo da pendência</label>
-              <select
-                style={{ ...S.select, width: "100%", marginBottom: 10 }}
-                value={motivoExp}
-                onChange={(e) => setMotivoExp(e.target.value)}
-                disabled={!podeExp}
-              >
-                <option value="">— nenhum —</option>
-                {MOTIVOS_EXP_EDITAVEIS.map((k) => (
-                  <option key={k} value={k}>
-                    {MOTIVOS_EXP[k]}
-                  </option>
-                ))}
-              </select>
-              <label style={{ ...S.label, display: "flex", alignItems: "center", gap: 6, cursor: podeExp ? "pointer" : "default" }}>
-                <input type="checkbox" checked={houveFalta} onChange={(e) => setHouveFalta(e.target.checked)} disabled={!podeExp} /> Houve
-                falta?
-              </label>
-              {houveFalta && (
-                <input
-                  style={{ ...S.input, marginTop: 6, marginBottom: 10 }}
-                  type="number"
-                  min="0"
-                  value={qtdFalta}
-                  onChange={(e) => setQtdFalta(e.target.value)}
-                  disabled={!podeExp}
-                  placeholder="Qtd. em falta"
-                />
-              )}
-              <label style={S.label}>Observação</label>
-              <textarea
-                style={{ ...S.input, minHeight: 60, resize: "vertical" }}
-                value={obsExpedicao}
-                onChange={(e) => setObsExpedicao(e.target.value)}
-                disabled={!podeExp}
-                placeholder={podeExp ? "Observação de expedição..." : "Somente expedição/admin edita"}
-              />
-              {!isNew && pendencia?.expedido_em && (
-                <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 8 }}>
-                  Expedido em {fmtDate(pendencia.expedido_em)} por {pendencia.expedido_por_nome || "—"}
-                </div>
-              )}
-            </div>
-            <div
-              style={{
-                background: "var(--inset)",
-                border: "1px solid var(--line)",
-                borderRadius: 10,
-                padding: 12,
-                
-              }}
-            >
-              <div style={{ fontSize: 11, color: "var(--com)", letterSpacing: 2, fontWeight: 700, marginBottom: 10 }}>COMERCIAL</div>
-              {isNew ? (
-                <div style={{ fontSize: 12, color: "var(--muted)" }}>Depois de criada, a nota aparece na página Comercial para cotação e aprovação.</div>
-              ) : (
-                <>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                    <StatusBadge
-                      map={{
-                        em_analise: { bg: "var(--warn-soft)", color: "var(--warn)" },
-                        liberado: { bg: "var(--info-soft)", color: "var(--info)" },
-                      }}
-                      value={statusComercialAtual}
-                      label={statusComercialAtual === "liberado" ? "Liberado" : "Em análise"}
-                    />
-                  </div>
-                  <div style={Ro}>
-                    Cotações anexadas: <b>{(pendencia.cotacoes || []).length}</b>
-                  </div>
-                  <div style={Ro}>
-                    Cotação aprovada: <b>{pendencia.cotacao_numero || "—"}</b>
-                  </div>
-                  <div style={Ro}>
-                    Frete:{" "}
-                    <b>
-                      {pendencia.frete_valor != null
-                        ? "R$ " + Number(pendencia.frete_valor).toLocaleString("pt-BR", { minimumFractionDigits: 2 })
-                        : "—"}
-                    </b>
-                  </div>
-                  <div style={{ fontSize: 11, color: "var(--muted)" }}>Cotações, aprovação e liberação ficam na página Comercial.</div>
-                </>
-              )}
-            </div>
-          </div>
-          {!isNew && (
-            <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 4, marginBottom: 6 }}>
-              Inserido por {pendencia.criado_por_nome || "—"} em {fmtDate(pendencia.criado_em)}
-            </div>
-          )}
-          <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-            <button style={{ ...S.btnS, flex: 1 }} onClick={onClose}>
-              Cancelar
-            </button>
-            <button style={{ ...S.btnY, flex: 2, opacity: salvando ? 0.6 : 1 }} disabled={salvando} onClick={salvar}>
-              {salvando ? "Salvando..." : isNew ? "Criar pendência" : "Salvar alterações"}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function PainelExpedicao({ p, onClose, onSaved }) {
   const [status, setStatus] = useState(p.status_expedicao);
   const [houveFalta, setHouveFalta] = useState(p.houve_falta || false);
@@ -1380,52 +1064,77 @@ function PainelExpedicao({ p, onClose, onSaved }) {
   );
 }
 
-const MOTIVOS_COM = {
-  sem_cotacao: "Aguardando cotação",
-  aguardando_aprovacao: "Aguardando aprovação do fornecedor",
-  aguardando_liberacao: "Pronta para liberar",
-  divergencia_frete: "Divergência de valor de frete",
-};
+const ETAPAS = [
+  { n: 1, id: "cotacao", label: "Cotação", quem: "comercial", acao: "Anexar a cotação do frete" },
+  { n: 2, id: "aprovacao", label: "Aprovação do fornecedor", quem: "comercial", acao: "Anexar o print do fornecedor aprovando" },
+  { n: 3, id: "liberacao", label: "Liberação", quem: "comercial", acao: "Marcar a cotação aprovada e liberar" },
+  { n: 4, id: "expedicao", label: "Expedição", quem: "expedicao", acao: "Carregar e marcar como expedida" },
+];
+const QUEM = { comercial: "Comercial", expedicao: "Expedição" };
 const MOTIVOS_EXP = {
-  divergencia_cubagem: "Divergência de cubagem/volume",
+  divergencia_cubagem: "Divergência de cubagem",
   falta_mercadoria: "Falta de mercadoria",
   aguardando_carregamento: "Aguardando carregamento",
-  cte_anulado: "CT-e anulado — reemitir",
-  aguardando_expedicao: "Liberada, aguardando expedição",
 };
-const MOTIVOS_EXP_EDITAVEIS = ["divergencia_cubagem", "falta_mercadoria", "aguardando_carregamento"];
+const MOTIVOS_EXP_OPCOES = [
+  { id: "", label: "Nenhum", dica: "segue o fluxo normal" },
+  { id: "divergencia_cubagem", label: "Divergência de cubagem", dica: "medidas não batem" },
+  { id: "falta_mercadoria", label: "Falta de mercadoria", dica: "volumes faltando" },
+  { id: "aguardando_carregamento", label: "Aguardando carregamento", dica: "sem veículo ainda" },
+];
+const MOTIVOS_EXP_EDITAVEIS = Object.keys(MOTIVOS_EXP);
+const UFS = ["AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"];
 const ANEXO_TIPOS = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
 const ANEXO_MAX = 10 * 1024 * 1024;
-function motivoComercial(p) {
-  if (p.status_comercial === "liberado") return null;
-  if (p.motivo_comercial === "divergencia_frete") return "divergencia_frete";
-  if (!(p.cotacoes || []).length) return "sem_cotacao";
-  if (!p.aprovacao_path) return "aguardando_aprovacao";
-  return "aguardando_liberacao";
+function etapaDe(p) {
+  if (p.status_expedicao === "expedido") return 5;
+  if (p.status_comercial === "liberado") return 4;
+  if (!(p.cotacoes || []).length) return 1;
+  if (!p.aprovacao_path) return 2;
+  return 3;
 }
-function motivoExpedicao(p) {
-  if (p.status_expedicao === "expedido") return null;
-  if (p.status_expedicao === "cte_anulado") return "cte_anulado";
-  if (p.motivo_expedicao) return p.motivo_expedicao;
-  if (p.houve_falta) return "falta_mercadoria";
-  if (p.status_comercial === "liberado") return "aguardando_expedicao";
-  return null;
+function problemasDe(p) {
+  const r = [];
+  if (p.status_expedicao === "cte_anulado") r.push({ k: "crit", t: "CT-e anulado" + (p.cte_anulado_numero ? " " + p.cte_anulado_numero : "") });
+  if (p.motivo_expedicao === "falta_mercadoria" || p.houve_falta) r.push({ k: "crit", t: "Falta " + (p.qtd_falta || "?") + " vol" });
+  if (p.motivo_expedicao === "divergencia_cubagem") r.push({ k: "warn", t: "Divergência de cubagem" });
+  if (p.motivo_comercial === "divergencia_frete") r.push({ k: "warn", t: "Divergência de frete" });
+  if (p.motivo_expedicao === "aguardando_carregamento") r.push({ k: "mute", t: "Aguardando carregamento" });
+  return r;
 }
 function diasParado(p) {
   return Math.max(0, Math.floor((Date.now() - new Date(p.criado_em).getTime()) / 86400000));
 }
+function precisaAtencao(p) {
+  return etapaDe(p) < 5 && (diasParado(p) >= 3 || problemasDe(p).some((x) => x.k === "crit"));
+}
 function textoDias(d) {
   return d === 0 ? "hoje" : d === 1 ? "1 dia" : d + " dias";
 }
-function etapaComercial(p) {
-  if (p.status_comercial === "liberado") return { k: "ok", t: "Liberada", step: 4 };
-  if (!(p.cotacoes || []).length) return { k: "crit", t: "Sem cotação", step: 1 };
-  if (!p.aprovacao_path) return { k: "warn", t: "Aguardando aprovação", step: 2 };
-  if (!p.cotacao_aprovada_id) return { k: "com", t: "Marque a cotação aprovada", step: 3 };
-  return { k: "com", t: "Pronta para liberar", step: 3 };
-}
 function fmtMoedaBR(v) {
   return v == null ? "—" : "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function fmtCarga(p) {
+  return (p.qtd_volumes || 0) + " vol · " + (parseFloat(p.m3_total) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " m³";
+}
+function destinoDe(p) {
+  return p.municipio_destino ? p.municipio_destino + (p.uf_destino ? "/" + p.uf_destino : "") : p.uf_destino || "—";
+}
+function chaveInfo(ch) {
+  const d = String(ch || "").replace(/\D/g, "");
+  if (d.length !== 44) return { ok: false, d };
+  return { ok: true, d, nf: String(parseInt(d.slice(25, 34), 10)), serie: String(parseInt(d.slice(22, 25), 10)) };
+}
+function avisosMedida(g) {
+  const lim = g.unidade === "mm" ? 3000 : 3;
+  const nomes = { altura: "Altura", largura: "Largura", comprimento: "Comprimento" };
+  return ["altura", "largura", "comprimento"]
+    .filter((k) => parseNum(g[k]) > lim)
+    .map((k) => {
+      const v = parseNum(g[k]);
+      const sug = g.unidade === "m" ? String(v / 100).replace(".", ",") : String(v / 10);
+      return `${nomes[k]} de ${g[k]} ${g.unidade} parece alta. Confira se não é ${sug}.`;
+    });
 }
 function validarAnexo(file, soImagem) {
   if (!file) return "Nenhum arquivo selecionado.";
@@ -1525,23 +1234,75 @@ function LinhaCotacao({ c, selecionada, podeEditar, onSelecionar, onRemover }) {
     </div>
   );
 }
-function ControleComercial({ p, perfil, onClose, onChanged, showToast }) {
-  const podeEditar = isComercial(perfil) && p.status_comercial !== "liberado";
+function ProgressoEtapas({ etapa }) {
+  const nomes = ["Cotação", "Aprovação", "Liberação", "Expedição", "Expedida"];
+  return (
+    <div className="cb-prog">
+      {nomes.map((n, i) => (
+        <div key={n} className={etapa > i + 1 ? "done" : etapa === i + 1 ? "cur" : ""}>
+          <i />
+          <span>{n}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+function TabelaMedidas({ grupos }) {
+  if (!grupos || !grupos.length) return <p style={{ color: "var(--muted)", fontSize: 13 }}>Sem medidas registradas.</p>;
+  const f = (v) => (parseFloat(v) || 0).toLocaleString("pt-BR", { maximumFractionDigits: 3 });
+  return (
+    <div className="cb-table-wrap">
+      <table className="cb-medtbl">
+        <thead>
+          <tr>
+            <th>Grupo</th>
+            <th>Vol</th>
+            <th>A × L × C (m)</th>
+            <th style={{ textAlign: "right" }}>m³</th>
+          </tr>
+        </thead>
+        <tbody>
+          {grupos.map((g, i) => (
+            <tr key={g.id || i}>
+              <td>{i + 1}</td>
+              <td>{g.qtd}</td>
+              <td>
+                {f(g.altura_m)} × {f(g.largura_m)} × {f(g.comprimento_m)}
+              </td>
+              <td style={{ textAlign: "right" }}>{(parseFloat(g.m3_grupo) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showToast }) {
+  const etapa = etapaDe(p);
+  const et = ETAPAS[Math.min(etapa, 4) - 1];
+  const comEdita = isComercial(perfil) && etapa <= 3;
+  const expEdita = isExpedicao(perfil) && etapa <= 4;
   const [numero, setNumero] = useState("");
   const [valor, setValor] = useState("");
   const [arquivo, setArquivo] = useState(null);
   const [ocupado, setOcupado] = useState(false);
-  const [obs, setObs] = useState(p.observacao_comercial || "");
+  const [obsCom, setObsCom] = useState(p.observacao_comercial || "");
   const [divergencia, setDivergencia] = useState(p.motivo_comercial === "divergencia_frete");
+  const [motivo, setMotivo] = useState(p.motivo_expedicao || (p.houve_falta ? "falta_mercadoria" : ""));
+  const [falta, setFalta] = useState(p.qtd_falta != null ? String(p.qtd_falta) : "");
+  const [obsExp, setObsExp] = useState(p.observacao_expedicao || "");
+  const [confirmaExcluir, setConfirmaExcluir] = useState(false);
   const urlAprov = useUrlAssinada(p.aprovacao_path);
-  const etapa = etapaComercial(p);
+  const urlNf = useUrlAssinada(p.nf_imagem_path);
   const cotacoes = p.cotacoes || [];
-  const executar = async (fn, ok) => {
+  const problemas = problemasDe(p);
+  const executar = async (fn, ok, fechar) => {
     setOcupado(true);
     try {
       await fn();
       if (ok) showToast(ok);
-      await onChanged();
+      if (fechar) onClose();
+      await onChanged(fechar);
     } catch (e) {
       showToast(e.message || "Erro inesperado.", "err");
     }
@@ -1551,7 +1312,7 @@ function ControleComercial({ p, perfil, onClose, onChanged, showToast }) {
     const n = numero.trim();
     const v = parseNum(valor);
     if (!n) return showToast("Informe o número da cotação.", "err");
-    if (!(v >= 0) || String(valor).trim() === "") return showToast("Informe o valor do frete.", "err");
+    if (String(valor).trim() === "" || !(v >= 0)) return showToast("Informe o valor do frete.", "err");
     const erro = validarAnexo(arquivo, false);
     if (erro) return showToast(erro, "err");
     executar(async () => {
@@ -1570,40 +1331,118 @@ function ControleComercial({ p, perfil, onClose, onChanged, showToast }) {
     }, "Print de aprovação anexado.");
   };
   useEffect(() => {
-    if (!podeEditar || p.aprovacao_path) return;
+    if (!comEdita || p.aprovacao_path) return;
     const onPaste = (e) => {
       const item = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith("image/"));
       if (!item) return;
       e.preventDefault();
       const f = item.getAsFile();
-      const nome = new File([f], "print-aprovacao-" + Date.now() + "." + (f.type.split("/")[1] || "png"), { type: f.type });
-      enviarAprovacao(nome);
+      enviarAprovacao(new File([f], "print-aprovacao-" + Date.now() + "." + (f.type.split("/")[1] || "png"), { type: f.type }));
     };
     document.addEventListener("paste", onPaste);
     return () => document.removeEventListener("paste", onPaste);
-  }, [podeEditar, p.aprovacao_path, p.id]);
+  }, [comEdita, p.aprovacao_path, p.id]);
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
-  const mExp = motivoExpedicao(p);
+  const salvarSituacao = () => {
+    const ehFalta = motivo === "falta_mercadoria";
+    if (ehFalta && !(parseInt(falta) > 0)) return showToast("Informe quantos volumes faltam.", "err");
+    executar(
+      () =>
+        db.atualizarPendencia(p.id, {
+          motivo_expedicao: motivo || null,
+          houve_falta: ehFalta,
+          qtd_falta: ehFalta ? parseInt(falta) : null,
+          observacao_expedicao: obsExp.trim() || null,
+        }),
+      "Situação da NF " + (p.nf_numero || "") + " salva.",
+    );
+  };
+  let rodape;
+  if (etapa <= 3 && isComercial(perfil)) {
+    const pronta = p.cotacao_aprovada_id && p.aprovacao_path;
+    rodape = (
+      <>
+        <small>{pronta ? "Tudo certo. Pode liberar." : "Para liberar: marque a cotação aprovada e anexe o print do fornecedor."}</small>
+        <button
+          type="button"
+          style={{ ...S.btnY, opacity: pronta && !ocupado ? 1 : 0.4 }}
+          disabled={!pronta || ocupado}
+          onClick={() => executar(() => db.atualizarPendencia(p.id, { status_comercial: "liberado" }), "NF " + (p.nf_numero || "") + " liberada. Agora está com a Expedição.")}
+        >
+          Liberar nota
+        </button>
+      </>
+    );
+  } else if (etapa === 4 && isExpedicao(perfil)) {
+    rodape = (
+      <>
+        <small>Liberada pelo Comercial. Ao carregar, marque como expedida.</small>
+        <button
+          type="button"
+          style={{ ...S.btnY, opacity: ocupado ? 0.6 : 1 }}
+          disabled={ocupado}
+          onClick={() => executar(() => db.expedirPendencia(p.id), "NF " + (p.nf_numero || "") + " marcada como expedida.", true)}
+        >
+          Marcar expedida
+        </button>
+      </>
+    );
+  } else {
+    rodape = (
+      <>
+        <small>
+          {etapa === 5
+            ? "Expedida em " + (p.expedido_em ? fmtDate(p.expedido_em) : "—") + " por " + (p.expedido_por_nome || "—") + "."
+            : etapa <= 3
+              ? "Aguardando o Comercial."
+              : "Aguardando a Expedição."}
+        </small>
+        <button type="button" style={S.btnS} onClick={onClose}>
+          Fechar
+        </button>
+      </>
+    );
+  }
   return (
     <>
       <div className="cb-scrim" onClick={onClose} />
       <aside className="cb-drawer" role="dialog" aria-modal="true" aria-labelledby="cb-dr-title">
         <div className="cb-dr-head">
-          <div>
+          <div style={{ minWidth: 0 }}>
             <h2 id="cb-dr-title" className="cb-num">
               NF {p.nf_numero || "—"}
             </h2>
-            <p>{p.cliente}</p>
+            <p>
+              {p.cliente} · registrada por {p.criado_por_nome || "—"} {etapa < 5 ? "há " + textoDias(diasParado(p)) : "em " + fmtDate(p.criado_em)}
+            </p>
           </div>
           <button type="button" style={S.btnS} onClick={onClose} aria-label="Fechar">
             ✕
           </button>
         </div>
         <div className="cb-dr-body">
+          <ProgressoEtapas etapa={etapa} />
+          {etapa < 5 && (
+            <div className="cb-now">
+              <span className={"cb-pill " + (et.quem === "comercial" ? "com" : "exp")}>{QUEM[et.quem]}</span>
+              <span>
+                Etapa {etapa} · <b>{et.acao}</b>
+              </span>
+            </div>
+          )}
+          {problemas.length > 0 && (
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {problemas.map((x) => (
+                <span key={x.t} className={"cb-pill " + x.k}>
+                  {x.t}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="cb-facts">
             <div className="cb-fact">
               <small>Frota</small>
@@ -1613,281 +1452,352 @@ function ControleComercial({ p, perfil, onClose, onChanged, showToast }) {
             </div>
             <div className="cb-fact">
               <small>Destino</small>
-              <span>{p.municipio_destino ? p.municipio_destino + (p.uf_destino ? "/" + p.uf_destino : "") : p.uf_destino || "—"}</span>
+              <span>{destinoDe(p)}</span>
             </div>
             <div className="cb-fact">
               <small>Carga</small>
-              <span className="cb-num">
-                {p.qtd_volumes || 0} vol · {(parseFloat(p.m3_total) || 0).toFixed(2).replace(".", ",")} m³
-              </span>
+              <span className="cb-num">{fmtCarga(p)}</span>
             </div>
-            <div className="cb-fact">
-              <small>Comercial</small>
-              <span>
-                <span className={"cb-pill " + etapa.k}>{etapa.t}</span>
-              </span>
-            </div>
-            <div className="cb-fact" style={{ gridColumn: "span 2" }}>
-              <small>Expedição</small>
-              <span>
-                {STATUS_EXP_LABELS[p.status_expedicao]}
-                {mExp ? " · " + MOTIVOS_EXP[mExp] : ""}
-              </span>
-            </div>
-          </div>
-          <div className="cb-blk">
-            <h4>
-              Cotações <span className="cb-pill mute cb-num">{cotacoes.length}</span>
-            </h4>
-            <p className="cb-hint">
-              Anexe uma ou mais cotações. Marque com o círculo qual foi aprovada pelo fornecedor: o número e o valor dela vão para a nota na liberação.
-            </p>
-            {podeEditar && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 12 }}>
-                <div className="cb-field-row" style={{ marginBottom: 0 }}>
-                  <div style={{ flex: 1, minWidth: 120 }}>
-                    <label style={S.label} htmlFor="cot-num">
-                      Nº da cotação
-                    </label>
-                    <input id="cot-num" style={S.input} value={numero} onChange={(e) => setNumero(e.target.value)} placeholder="Ex: 2215" />
-                  </div>
-                  <div style={{ flex: 1, minWidth: 120 }}>
-                    <label style={S.label} htmlFor="cot-valor">
-                      Valor do frete (R$)
-                    </label>
-                    <input
-                      id="cot-valor"
-                      style={S.input}
-                      inputMode="decimal"
-                      value={valor}
-                      onChange={(e) => setValor(e.target.value)}
-                      placeholder="0,00"
-                    />
-                  </div>
-                </div>
-                <ZonaArquivo
-                  id="cot-arquivo"
-                  rotulo={arquivo ? arquivo.name : "Arraste o arquivo da cotação aqui"}
-                  dica={arquivo ? "clique para trocar" : "ou clique para escolher (PDF ou imagem, até 10 MB)"}
-                  aceita="application/pdf,image/png,image/jpeg,image/webp"
-                  onArquivo={setArquivo}
-                  desabilitado={ocupado}
-                />
-                <button type="button" style={{ ...S.btnY, opacity: ocupado ? 0.6 : 1 }} disabled={ocupado} onClick={adicionar}>
-                  {ocupado ? "Enviando..." : "Anexar cotação"}
-                </button>
-              </div>
-            )}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {cotacoes.length === 0 ? (
-                <div className="cb-col-empty">Nenhuma cotação anexada.</div>
-              ) : (
-                cotacoes.map((c) => (
-                  <LinhaCotacao
-                    key={c.id}
-                    c={c}
-                    selecionada={p.cotacao_aprovada_id === c.id}
-                    podeEditar={podeEditar && !ocupado}
-                    onSelecionar={(id) => executar(() => db.atualizarPendencia(p.id, { cotacao_aprovada_id: id }), "Cotação aprovada marcada.")}
-                    onRemover={(c) => executar(() => db.removerCotacao(c), "Cotação removida.")}
-                  />
-                ))
-              )}
-            </div>
-          </div>
-          <div className="cb-blk">
-            <h4>
-              Aprovação do fornecedor{" "}
-              {p.aprovacao_path ? <span className="cb-pill ok">Anexada</span> : <span className="cb-pill warn">Pendente</span>}
-            </h4>
-            <p className="cb-hint">Print da conversa ou do e-mail em que o fornecedor aprova o embarque. Também aceita colar com Ctrl+V.</p>
-            {p.aprovacao_path ? (
+            {p.status_comercial === "liberado" && (
               <>
-                <div className="cb-proof">
-                  {urlAprov ? (
-                    <a href={urlAprov} target="_blank" rel="noreferrer">
-                      <img src={urlAprov} alt="Print da aprovação do fornecedor" loading="lazy" />
-                    </a>
-                  ) : (
-                    <div className="cb-skel" style={{ height: 180, borderRadius: 0 }} />
-                  )}
+                <div className="cb-fact">
+                  <small>Cotação aprovada</small>
+                  <span className="cb-num">{p.cotacao_numero || "—"}</span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginTop: 8, alignItems: "center" }}>
-                  <small style={{ color: "var(--muted)", fontSize: 12 }}>
-                    {p.aprovacao_por_nome || "—"}
-                    {p.aprovacao_em ? " · " + fmtDate(p.aprovacao_em) : ""}
-                  </small>
-                  {podeEditar && (
-                    <button
-                      type="button"
-                      style={{ ...S.btnD, padding: "4px 9px" }}
-                      disabled={ocupado}
-                      onClick={() => executar(() => db.atualizarPendencia(p.id, { aprovacao_path: null, aprovacao_nome: null }), "Print removido.")}
-                    >
-                      Remover print
-                    </button>
-                  )}
+                <div className="cb-fact">
+                  <small>Frete</small>
+                  <span className="cb-num">{fmtMoedaBR(p.frete_valor)}</span>
+                </div>
+                <div className="cb-fact">
+                  <small>Liberada em</small>
+                  <span className="cb-num">{p.data_liberacao ? new Date(p.data_liberacao + "T12:00:00").toLocaleDateString("pt-BR") : "—"}</span>
                 </div>
               </>
-            ) : podeEditar ? (
-              <ZonaArquivo
-                id="aprov-arquivo"
-                rotulo="Arraste ou cole o print aqui"
-                dica="imagem PNG, JPG ou WEBP"
-                aceita="image/png,image/jpeg,image/webp"
-                onArquivo={enviarAprovacao}
-                desabilitado={ocupado}
-              />
-            ) : (
-              <div className="cb-col-empty">Ainda não anexado.</div>
+            )}
+            {p.chave_nf && (
+              <div className="cb-fact" style={{ gridColumn: "1/-1" }}>
+                <small>Chave de acesso</small>
+                <span className="cb-num" style={{ fontFamily: "ui-monospace,Menlo,monospace", fontSize: 12, letterSpacing: ".03em" }}>
+                  {String(p.chave_nf).replace(/(\d{4})/g, "$1 ").trim()}
+                </span>
+              </div>
             )}
           </div>
+          {(etapa <= 3 || isComercial(perfil)) && (
+            <>
+              <div className="cb-blk">
+                <h4>
+                  Cotações <span className="cb-pill mute cb-num">{cotacoes.length}</span>
+                </h4>
+                <p className="cb-hint">Marque no círculo a cotação que o fornecedor aprovou. O número e o valor dela vão para a nota na liberação.</p>
+                {comEdita && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 12 }}>
+                    <div className="cb-field-row" style={{ marginBottom: 0 }}>
+                      <div style={{ flex: 1, minWidth: 120 }}>
+                        <label style={S.label} htmlFor="cot-num">
+                          Nº da cotação
+                        </label>
+                        <input id="cot-num" style={S.input} value={numero} onChange={(e) => setNumero(e.target.value)} placeholder="Ex: 5733793" />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 120 }}>
+                        <label style={S.label} htmlFor="cot-valor">
+                          Valor do frete (R$)
+                        </label>
+                        <input id="cot-valor" style={S.input} inputMode="decimal" value={valor} onChange={(e) => setValor(e.target.value)} placeholder="380,00" />
+                      </div>
+                    </div>
+                    <ZonaArquivo
+                      id="cot-arquivo"
+                      rotulo={arquivo ? arquivo.name : "Arraste o arquivo da cotação aqui"}
+                      dica={arquivo ? "clique para trocar" : "ou clique para escolher (PDF ou imagem, até 10 MB)"}
+                      aceita="application/pdf,image/png,image/jpeg,image/webp"
+                      onArquivo={setArquivo}
+                      desabilitado={ocupado}
+                    />
+                    <button type="button" style={{ ...S.btnY, opacity: ocupado ? 0.6 : 1 }} disabled={ocupado} onClick={adicionar}>
+                      {ocupado ? "Enviando..." : "Anexar cotação"}
+                    </button>
+                  </div>
+                )}
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {cotacoes.length === 0 ? (
+                    <div className="cb-col-empty">Nenhuma cotação anexada.</div>
+                  ) : (
+                    cotacoes.map((c) => (
+                      <LinhaCotacao
+                        key={c.id}
+                        c={c}
+                        selecionada={p.cotacao_aprovada_id === c.id}
+                        podeEditar={comEdita && !ocupado}
+                        onSelecionar={(id) => executar(() => db.atualizarPendencia(p.id, { cotacao_aprovada_id: id }), "Cotação aprovada marcada.")}
+                        onRemover={(c) => executar(() => db.removerCotacao(c), "Cotação removida.")}
+                      />
+                    ))
+                  )}
+                </div>
+              </div>
+              <div className="cb-blk">
+                <h4>
+                  Aprovação do fornecedor{" "}
+                  {p.aprovacao_path ? <span className="cb-pill ok">Anexada</span> : <span className="cb-pill warn">Pendente</span>}
+                </h4>
+                <p className="cb-hint">Print da conversa ou do e-mail em que o fornecedor aprova o embarque. Também aceita colar com Ctrl+V.</p>
+                {p.aprovacao_path ? (
+                  <>
+                    <div className="cb-proof">
+                      {urlAprov ? (
+                        <a href={urlAprov} target="_blank" rel="noreferrer">
+                          <img src={urlAprov} alt="Print da aprovação do fornecedor" loading="lazy" />
+                        </a>
+                      ) : (
+                        <div className="cb-skel" style={{ height: 180, borderRadius: 0 }} />
+                      )}
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginTop: 8, alignItems: "center" }}>
+                      <small style={{ color: "var(--muted)", fontSize: 12 }}>
+                        {p.aprovacao_por_nome || "—"}
+                        {p.aprovacao_em ? " · " + fmtDate(p.aprovacao_em) : ""}
+                      </small>
+                      {comEdita && (
+                        <button
+                          type="button"
+                          style={{ ...S.btnD, padding: "4px 9px" }}
+                          disabled={ocupado}
+                          onClick={() => executar(() => db.atualizarPendencia(p.id, { aprovacao_path: null, aprovacao_nome: null }), "Print removido.")}
+                        >
+                          Remover print
+                        </button>
+                      )}
+                    </div>
+                  </>
+                ) : comEdita ? (
+                  <ZonaArquivo
+                    id="aprov-arquivo"
+                    rotulo="Arraste ou cole o print aqui"
+                    dica="imagem PNG, JPG ou WEBP"
+                    aceita="image/png,image/jpeg,image/webp"
+                    onArquivo={enviarAprovacao}
+                    desabilitado={ocupado}
+                  />
+                ) : (
+                  <div className="cb-col-empty">Ainda não anexado.</div>
+                )}
+              </div>
+              <div className="cb-blk">
+                <h4>Observação do Comercial</h4>
+                {comEdita ? (
+                  <>
+                    <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: "var(--fg)", marginBottom: 6 }}>
+                      <input type="checkbox" checked={divergencia} onChange={(e) => setDivergencia(e.target.checked)} />
+                      Divergência de valor de frete
+                    </label>
+                    <textarea
+                      style={{ ...S.input, minHeight: 60, resize: "vertical" }}
+                      value={obsCom}
+                      onChange={(e) => setObsCom(e.target.value)}
+                      placeholder="Ex.: fornecedor pediu revisão do valor"
+                    />
+                    <div style={{ marginTop: 8 }}>
+                      <button
+                        type="button"
+                        style={S.btnS}
+                        disabled={ocupado}
+                        onClick={() =>
+                          executar(
+                            () =>
+                              db.atualizarPendencia(p.id, {
+                                observacao_comercial: obsCom.trim() || null,
+                                motivo_comercial: divergencia ? "divergencia_frete" : null,
+                              }),
+                            "Observação salva.",
+                          )
+                        }
+                      >
+                        Salvar observação
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <p style={{ fontSize: 13, color: p.observacao_comercial ? "var(--fg)" : "var(--muted)" }}>{p.observacao_comercial || "Sem observação."}</p>
+                )}
+              </div>
+            </>
+          )}
           <div className="cb-blk">
-            <h4>Observação do Comercial</h4>
-            {podeEditar ? (
+            <h4>Situação na Expedição</h4>
+            {expEdita ? (
               <>
-                <label style={{ ...S.label, display: "flex", alignItems: "center", gap: 8, cursor: "pointer", textTransform: "none", letterSpacing: 0, fontSize: 13, color: "var(--fg)" }}>
-                  <input type="checkbox" checked={divergencia} onChange={(e) => setDivergencia(e.target.checked)} />
-                  Divergência de valor de frete
-                </label>
-                <textarea
-                  style={{ ...S.input, minHeight: 64, resize: "vertical", marginTop: 6 }}
-                  value={obs}
-                  onChange={(e) => setObs(e.target.value)}
-                  placeholder="Ex.: fornecedor pediu revisão do valor"
-                />
-                <div style={{ marginTop: 8 }}>
-                  <button
-                    type="button"
-                    style={S.btnS}
-                    disabled={ocupado}
-                    onClick={() =>
-                      executar(
-                        () =>
-                          db.atualizarPendencia(p.id, {
-                            observacao_comercial: obs.trim() || null,
-                            motivo_comercial: divergencia ? "divergencia_frete" : null,
-                          }),
-                        "Observação salva.",
-                      )
-                    }
-                  >
-                    Salvar observação
+                <div className="cb-mchips" role="group" aria-label="Motivo da pendência">
+                  {MOTIVOS_EXP_OPCOES.map((m) => (
+                    <button key={m.id} type="button" className="cb-mchip" aria-pressed={motivo === m.id} onClick={() => setMotivo(m.id)}>
+                      {m.label}
+                      <small>{m.dica}</small>
+                    </button>
+                  ))}
+                </div>
+                {motivo === "falta_mercadoria" && (
+                  <div style={{ maxWidth: 220, marginTop: 10 }}>
+                    <label style={S.label} htmlFor="det-falta">
+                      Volumes faltando
+                    </label>
+                    <input id="det-falta" style={S.input} inputMode="numeric" value={falta} onChange={(e) => setFalta(e.target.value)} />
+                  </div>
+                )}
+                <div style={{ marginTop: 10 }}>
+                  <label style={S.label} htmlFor="det-obs-exp">
+                    Observação
+                  </label>
+                  <textarea
+                    id="det-obs-exp"
+                    style={{ ...S.input, minHeight: 56, resize: "vertical" }}
+                    value={obsExp}
+                    onChange={(e) => setObsExp(e.target.value)}
+                    placeholder="Ex.: faltaram 4 volumes na conferência"
+                  />
+                </div>
+                <div className="cb-row" style={{ marginTop: 8 }}>
+                  <button type="button" style={S.btnS} disabled={ocupado} onClick={salvarSituacao}>
+                    Salvar situação
+                  </button>
+                  <button type="button" style={S.btnS} onClick={() => onStatus(p)}>
+                    Status / CT-e anulado
                   </button>
                 </div>
               </>
             ) : (
-              <p style={{ fontSize: 13, color: p.observacao_comercial ? "var(--fg)" : "var(--muted)" }}>{p.observacao_comercial || "Sem observação."}</p>
+              <p style={{ fontSize: 13 }}>
+                {problemas.filter((x) => x.t !== "Divergência de frete").map((x) => x.t).join(" · ") || "Sem problema registrado."}
+                {p.observacao_expedicao && (
+                  <>
+                    <br />
+                    <span style={{ color: "var(--muted)" }}>{p.observacao_expedicao}</span>
+                  </>
+                )}
+              </p>
             )}
           </div>
-          {(p.observacao_expedicao || p.houve_falta) && (
+          <div className="cb-blk">
+            <h4>Medidas</h4>
+            <TabelaMedidas grupos={p.grupos} />
+          </div>
+          {urlNf && (
             <div className="cb-blk">
-              <h4>Observação da Expedição</h4>
-              <p style={{ fontSize: 13 }}>
-                {p.houve_falta ? "Falta de " + (p.qtd_falta || "?") + " volume(s). " : ""}
-                {p.observacao_expedicao || ""}
-              </p>
+              <h4>Anexo da NF</h4>
+              <a href={urlNf} target="_blank" rel="noreferrer" style={{ color: "var(--accent)", fontSize: 13 }}>
+                Abrir o arquivo da NF
+              </a>
+            </div>
+          )}
+          {isExpedicao(perfil) && (
+            <div className="cb-row" style={{ alignItems: "center" }}>
+              <button type="button" style={S.btnS} onClick={() => onEditar(p)}>
+                Editar dados da nota
+              </button>
+              {podeExcluirPendencia(perfil) &&
+                (confirmaExcluir ? (
+                  <>
+                    <span style={{ fontSize: 12.5, color: "var(--crit)" }}>Excluir esta pendência? Não pode ser desfeito.</span>
+                    <button
+                      type="button"
+                      style={{ ...S.btnD, fontWeight: 700 }}
+                      disabled={ocupado}
+                      onClick={() => executar(() => db.deletarPendencia(p.id), "Pendência excluída.", true)}
+                    >
+                      Confirmar exclusão
+                    </button>
+                    <button type="button" style={S.btnS} onClick={() => setConfirmaExcluir(false)}>
+                      Cancelar
+                    </button>
+                  </>
+                ) : (
+                  <button type="button" style={S.btnD} onClick={() => setConfirmaExcluir(true)}>
+                    Excluir
+                  </button>
+                ))}
             </div>
           )}
         </div>
-        <div className="cb-dr-foot">
-          {p.status_comercial === "liberado" ? (
-            <>
-              <small>
-                Liberada {p.data_liberacao ? "em " + new Date(p.data_liberacao + "T12:00:00").toLocaleDateString("pt-BR") : ""} · cotação{" "}
-                {p.cotacao_numero || "—"} · {fmtMoedaBR(p.frete_valor)}
-              </small>
-              <button type="button" style={S.btnS} onClick={onClose}>
-                Fechar
-              </button>
-            </>
-          ) : isComercial(perfil) ? (
-            <>
-              <small>{etapa.step === 3 && p.cotacao_aprovada_id ? "Tudo certo. Pode liberar." : "Para liberar: marque a cotação aprovada e anexe o print do fornecedor."}</small>
-              <button
-                type="button"
-                style={{ ...S.btnY, opacity: p.cotacao_aprovada_id && p.aprovacao_path && !ocupado ? 1 : 0.4 }}
-                disabled={!p.cotacao_aprovada_id || !p.aprovacao_path || ocupado}
-                onClick={() => executar(() => db.atualizarPendencia(p.id, { status_comercial: "liberado" }), "NF " + (p.nf_numero || "") + " liberada.")}
-              >
-                Liberar nota
-              </button>
-            </>
-          ) : (
-            <small>Somente o Comercial altera esta parte.</small>
-          )}
-        </div>
+        <div className="cb-dr-foot">{rodape}</div>
       </aside>
     </>
   );
 }
-function TabelaComercial({ lista, onAbrir }) {
-  if (lista.length === 0) return <p style={{ color: "var(--muted)", fontSize: 13 }}>Nenhuma nota pendente com o Comercial.</p>;
+function LinhaNota({ p, ctx, perfil, onAbrir, onExpedir }) {
+  const etapa = etapaDe(p);
+  const et = ETAPAS[Math.min(etapa, 4) - 1];
+  const d = diasParado(p);
+  const problemas = problemasDe(p);
   return (
-    <div className="cb-tbl-wrap">
-      <table className="cb-tbl">
-        <thead>
-          <tr>
-            <th>Nota fiscal</th>
-            <th>Frota</th>
-            <th>Destino</th>
-            <th>Carga</th>
-            <th>Cotações</th>
-            <th>Aprovação</th>
-            <th>Etapa</th>
-            <th>Parada há</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {lista.map((p) => {
-            const e = etapaComercial(p);
-            const d = diasParado(p);
-            return (
-              <tr key={p.id}>
-                <td className="cb-nfcell">
-                  <b className="cb-num">NF {p.nf_numero || "—"}</b>
-                  <small>{p.cliente}</small>
-                </td>
-                <td>
-                  <MiniPlaca placa={p.frota_placa} />
-                </td>
-                <td>{p.municipio_destino ? p.municipio_destino + (p.uf_destino ? "/" + p.uf_destino : "") : p.uf_destino || "—"}</td>
-                <td className="cb-num" style={{ whiteSpace: "nowrap" }}>
-                  {p.qtd_volumes || 0} vol · {(parseFloat(p.m3_total) || 0).toFixed(2).replace(".", ",")} m³
-                </td>
-                <td className="cb-num">{(p.cotacoes || []).length}</td>
-                <td>{p.aprovacao_path ? <span className="cb-pill ok">Anexada</span> : <span style={{ color: "var(--muted)" }}>—</span>}</td>
-                <td>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <span className={"cb-pill " + e.k}>{e.t}</span>
-                    <span className="cb-steps" aria-hidden="true">
-                      {[1, 2, 3].map((i) => (
-                        <i key={i} className={e.step > i || e.step === 4 ? "done" : e.step === i ? "on" : ""} />
-                      ))}
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <span className={"cb-pill " + (d >= 3 ? "crit" : d >= 2 ? "warn" : "mute")}>{textoDias(d)}</span>
-                </td>
-                <td>
-                  <button type="button" style={p.status_comercial === "liberado" ? S.btnS : S.btnY} onClick={() => onAbrir(p)}>
-                    {p.status_comercial === "liberado" ? "Ver" : "Abrir controle"}
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <div
+      className={"cb-linha" + (d >= 3 ? " a3" : d >= 2 ? " a2" : "")}
+      role="button"
+      tabIndex={0}
+      aria-label={"Abrir NF " + (p.nf_numero || "")}
+      onClick={() => onAbrir(p)}
+      onKeyDown={(e) => e.key === "Enter" && onAbrir(p)}
+    >
+      <span className="stripe" />
+      <div className="nf" style={{ minWidth: 0 }}>
+        <b className="cb-num">NF {p.nf_numero || "—"}</b>
+        <small>{p.cliente}</small>
+      </div>
+      <div>
+        <MiniPlaca placa={p.frota_placa} />
+      </div>
+      <div className="muted">{destinoDe(p)}</div>
+      <div className="muted cb-num">{fmtCarga(p)}</div>
+      <div className="flags">
+        {problemas.length ? (
+          problemas.map((x) => (
+            <span key={x.t} className={"cb-pill " + x.k}>
+              {x.t}
+            </span>
+          ))
+        ) : (
+          <span className="muted">—</span>
+        )}
+      </div>
+      <div className="age">
+        <span className={"cb-pill " + (d >= 3 ? "crit" : d >= 2 ? "warn" : "mute")}>{textoDias(d)}</span>
+      </div>
+      <div>
+        {ctx === "expedicao" && etapa === 4 && isExpedicao(perfil) ? (
+          <button
+            type="button"
+            style={S.btnY}
+            onClick={(e) => {
+              e.stopPropagation();
+              onExpedir(p);
+            }}
+          >
+            Marcar expedida
+          </button>
+        ) : (
+          <span className="next">
+            com {et.quem === "comercial" ? "o" : "a"} {QUEM[et.quem]}
+            <br />
+            <b>{et.label}</b>
+          </span>
+        )}
+      </div>
     </div>
   );
 }
-function MapaPendencias({ perfil, showToast, onAbrirComercial, onAbrirExpedicao, versao }) {
+function GrupoLinhas({ titulo, sub, itens, vazio, ...rest }) {
+  return (
+    <>
+      <div className="cb-group-h">
+        <b>{titulo}</b>
+        <span>{sub}</span>
+      </div>
+      <div className="cb-rows">
+        {itens.length ? itens.map((p) => <LinhaNota key={p.id} p={p} {...rest} />) : <div className="cb-empty-row">{vazio}</div>}
+      </div>
+    </>
+  );
+}
+function usePendencias(versao, showToast) {
   const [lista, setLista] = useState(null);
-  const [setor, setSetor] = useState("todos");
-  const [busca, setBusca] = useState("");
   useEffect(() => {
     let ativo = true;
     db.listarPendencias()
@@ -1900,105 +1810,100 @@ function MapaPendencias({ perfil, showToast, onAbrirComercial, onAbrirExpedicao,
       ativo = false;
     };
   }, [versao]);
-  if (!lista)
-    return (
-      <div className="cb-page">
-        <SkeletonBar width={280} height={28} />
-        <div className="cb-board" style={{ marginTop: 20 }}>
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="cb-skel" style={{ height: 160, borderRadius: 12 }} />
-          ))}
-        </div>
-      </div>
-    );
-  const abertas = lista.filter((p) => p.status_expedicao !== "expedido");
-  const entradas = [];
-  abertas.forEach((p) => {
-    const mc = motivoComercial(p);
-    const me = motivoExpedicao(p);
-    if (mc) entradas.push({ p, setor: "comercial", motivo: mc });
-    if (me) entradas.push({ p, setor: "expedicao", motivo: me });
-  });
-  const q = busca.trim().toLowerCase();
-  const visiveis = entradas.filter(
-    (e) =>
-      (setor === "todos" || e.setor === setor) &&
-      (!q || [e.p.nf_numero, e.p.cliente, e.p.frota_placa, e.p.municipio_destino].join(" ").toLowerCase().includes(q)),
+  return lista;
+}
+function SkeletonPagina() {
+  return (
+    <div className="cb-page">
+      <SkeletonBar width={280} height={28} />
+      <div className="cb-skel" style={{ height: 110, borderRadius: 14, margin: "20px 0 16px" }} />
+      <div className="cb-skel" style={{ height: 220, borderRadius: 12 }} />
+    </div>
   );
-  const colunas = [
-    ...Object.keys(MOTIVOS_COM).map((k) => ({ k, setor: "comercial", label: MOTIVOS_COM[k] })),
-    ...Object.keys(MOTIVOS_EXP).map((k) => ({ k, setor: "expedicao", label: MOTIVOS_EXP[k] })),
-  ].filter((c) => setor === "todos" || c.setor === setor);
-  const comCom = abertas.filter((p) => motivoComercial(p)).length;
-  const comExp = abertas.filter((p) => motivoExpedicao(p)).length;
-  const paradas = abertas.filter((p) => diasParado(p) >= 3).length;
+}
+function MapaPendencias({ perfil, showToast, onAbrir, versao }) {
+  const lista = usePendencias(versao, showToast);
+  const [etapaSel, setEtapaSel] = useState("todas");
+  const [atencao, setAtencao] = useState(false);
+  const [busca, setBusca] = useState("");
+  if (!lista) return <SkeletonPagina />;
+  const abertas = lista.filter((p) => etapaDe(p) < 5);
+  const q = busca.trim().toLowerCase();
+  const filtradas = abertas.filter(
+    (p) =>
+      (etapaSel === "todas" || ETAPAS[etapaDe(p) - 1].id === etapaSel) &&
+      (!atencao || precisaAtencao(p)) &&
+      (!q || [p.nf_numero, p.cliente, p.frota_placa, p.municipio_destino].join(" ").toLowerCase().includes(q)),
+  );
+  const att = abertas.filter(precisaAtencao);
   const m3 = abertas.reduce((s, p) => s + (parseFloat(p.m3_total) || 0), 0);
-  const ufs = {};
-  abertas.forEach((p) => {
-    const uf = p.uf_destino || "—";
-    ufs[uf] = ufs[uf] || { c: 0, e: 0 };
-    if (motivoComercial(p)) ufs[uf].c++;
-    else ufs[uf].e++;
-  });
-  const maxUf = Math.max(1, ...Object.values(ufs).map((u) => u.c + u.e));
-  const frotasCont = {};
-  abertas.forEach((p) => {
-    const f = p.frota_placa || "";
-    frotasCont[f] = (frotasCont[f] || 0) + 1;
-  });
-  const abrir = (e) => {
-    if (e.setor === "expedicao" && isExpedicao(perfil)) onAbrirExpedicao(e.p);
-    else onAbrirComercial(e.p);
-  };
+  const grupos = ETAPAS.filter((et) => etapaSel === "todas" || et.id === etapaSel);
   return (
     <div className="cb-page">
       <div className="cb-head">
         <div>
-          <div className="cb-eyebrow">Visível para Comercial e Expedição</div>
+          <div className="cb-eyebrow">Comercial e Expedição</div>
           <h1 className="cb-h1">Mapa de pendências</h1>
-          <p className="cb-sub">Notas fiscais que ainda não seguiram viagem, agrupadas pelo motivo. A cor da borda mostra há quanto tempo a nota está parada.</p>
+          <p className="cb-sub">Onde cada nota está parada, na ordem do processo. Clique numa etapa para ver só as notas dela.</p>
+        </div>
+        <div className="cb-sumline">
+          <span>
+            <b>{abertas.length}</b> notas abertas
+          </span>
+          <span>
+            <b>{m3.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</b> m³ retidos
+          </span>
         </div>
       </div>
-      <div className="cb-kpis">
-        <div className="cb-kpi">
-          <b>{abertas.length}</b>
-          <small>notas pendentes</small>
-        </div>
-        <div className="cb-kpi">
-          <b style={{ color: "var(--com)" }}>{comCom}</b>
-          <small>com o Comercial</small>
-        </div>
-        <div className="cb-kpi">
-          <b style={{ color: "var(--accent)" }}>{comExp}</b>
-          <small>com a Expedição</small>
-        </div>
-        <div className="cb-kpi">
-          <b style={{ color: "var(--crit)" }}>{paradas}</b>
-          <small>paradas há 3+ dias</small>
-        </div>
-        <div className="cb-kpi">
-          <b>{m3.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</b>
-          <small>m³ retidos</small>
-        </div>
+      <div className="cb-stages">
+        {ETAPAS.map((et) => {
+          const itens = abertas.filter((p) => etapaDe(p) === et.n);
+          const velha = itens.reduce((m, p) => Math.max(m, diasParado(p)), -1);
+          return (
+            <button
+              key={et.id}
+              type="button"
+              className="cb-stage"
+              aria-pressed={etapaSel === et.id}
+              onClick={() => setEtapaSel(etapaSel === et.id ? "todas" : et.id)}
+            >
+              <span className="cb-stage-top">
+                <span className="cb-stage-n">{et.n}</span>
+                <span className="cb-stage-label">{et.label}</span>
+              </span>
+              <span className={"cb-stage-count" + (itens.length ? "" : " zero")}>{itens.length}</span>
+              <span className="cb-stage-meta">
+                <span className={"cb-pill " + (et.quem === "comercial" ? "com" : "exp")}>{QUEM[et.quem]}</span>
+                <span>{itens.length ? "mais antiga: " + textoDias(velha) : "nada parado"}</span>
+              </span>
+            </button>
+          );
+        })}
       </div>
-      <div className="cb-label-row">
-        <span>Pendências por motivo</span>
-        <span>
-          {visiveis.length} de {entradas.length}
-        </span>
-      </div>
-      <div className="cb-row" style={{ marginBottom: 16, alignItems: "center" }}>
-        {[
-          ["todos", "Todos os setores"],
-          ["comercial", "Comercial"],
-          ["expedicao", "Expedição"],
-        ].map(([k, l]) => (
-          <button key={k} type="button" className="cb-chip" aria-pressed={setor === k} onClick={() => setSetor(k)}>
-            {l}
+      {att.length ? (
+        <div className="cb-attn">
+          <b>
+            {att.length} {att.length === 1 ? "nota precisa" : "notas precisam"} de atenção
+          </b>
+          <span style={{ fontSize: 13, color: "var(--fg-2)" }}>paradas há 3 dias ou mais, falta de mercadoria ou CT-e anulado</span>
+          <span style={{ flex: 1 }} />
+          <button type="button" className="cb-chip" aria-pressed={atencao} onClick={() => setAtencao(!atencao)}>
+            {atencao ? "Mostrar todas" : "Ver só essas"}
           </button>
-        ))}
+        </div>
+      ) : (
+        <div className="cb-attn ok">
+          <b>Nada crítico</b>
+          <span style={{ fontSize: 13, color: "var(--muted)" }}>nenhuma nota parada há 3+ dias ou com problema grave</span>
+        </div>
+      )}
+      <div className="cb-row" style={{ margin: "20px 0 4px", alignItems: "center" }}>
+        <button type="button" className="cb-chip" aria-pressed={etapaSel === "todas"} onClick={() => setEtapaSel("todas")}>
+          Todas as etapas
+        </button>
+        <span style={{ flex: 1 }} />
         <input
-          style={{ ...S.input, width: 240, maxWidth: "100%" }}
+          style={{ ...S.input, width: 260, maxWidth: "100%" }}
           type="search"
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
@@ -2006,538 +1911,751 @@ function MapaPendencias({ perfil, showToast, onAbrirComercial, onAbrirExpedicao,
           aria-label="Buscar"
         />
       </div>
-      <div className="cb-split">
-        <div className="cb-board">
-          {colunas.map((c) => {
-            const itens = visiveis.filter((e) => e.setor === c.setor && e.motivo === c.k).sort((a, b) => diasParado(b.p) - diasParado(a.p));
-            return (
-              <div key={c.setor + c.k} className="cb-col">
-                <div className="cb-col-h">
-                  <h3>{c.label}</h3>
-                  <span className={"cb-pill " + (c.setor === "comercial" ? "com" : "exp")}>{c.setor === "comercial" ? "Comercial" : "Expedição"}</span>
-                </div>
-                {itens.length === 0 ? (
-                  <div className="cb-col-empty">Nenhuma nota com este motivo.</div>
-                ) : (
-                  itens.map((e) => {
-                    const d = diasParado(e.p);
-                    return (
-                      <button
-                        key={e.p.id + e.setor}
-                        type="button"
-                        className={"cb-nfc" + (d >= 3 ? " a3" : d >= 2 ? " a2" : "")}
-                        onClick={() => abrir(e)}
-                      >
-                        <div className="cb-nfc-top">
-                          <b className="cb-num">NF {e.p.nf_numero || "—"}</b>
-                          <span>{textoDias(d)}</span>
-                        </div>
-                        <div style={{ fontSize: 13, overflowWrap: "anywhere" }}>{e.p.cliente}</div>
-                        <div className="cb-nfc-meta">
-                          <MiniPlaca placa={e.p.frota_placa} />
-                          <span>{e.p.municipio_destino ? e.p.municipio_destino + "/" + (e.p.uf_destino || "") : e.p.uf_destino || "—"}</span>
-                          <span className="cb-num">{(parseFloat(e.p.m3_total) || 0).toFixed(1).replace(".", ",")} m³</span>
-                        </div>
-                      </button>
-                    );
-                  })
-                )}
-              </div>
-            );
-          })}
+      {abertas.length === 0 ? (
+        <div className="cb-rows" style={{ marginTop: 14 }}>
+          <div className="cb-empty-row">Nenhuma nota pendente. Tudo expedido.</div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <div className="cb-panel">
-            <h3>Destino das pendências</h3>
-            {Object.keys(ufs).length === 0 ? (
-              <div className="cb-col-empty">Nenhuma nota pendente.</div>
-            ) : (
-              Object.entries(ufs)
-                .sort((a, b) => b[1].c + b[1].e - (a[1].c + a[1].e))
-                .map(([uf, u]) => (
-                  <div key={uf} className="cb-uf-row">
-                    <b>{uf}</b>
-                    <div className="cb-uf-track" title={u.c + " com o Comercial · " + u.e + " com a Expedição"}>
-                      <i style={{ width: (u.c / maxUf) * 100 + "%", background: "var(--com)" }} />
-                      <i style={{ width: (u.e / maxUf) * 100 + "%", background: "var(--accent)" }} />
-                    </div>
-                    <span className="cb-num" style={{ textAlign: "right" }}>
-                      {u.c + u.e}
-                    </span>
-                  </div>
-                ))
-            )}
-            <div className="cb-legend">
-              <span>
-                <i style={{ background: "var(--com)" }} />
-                Comercial
-              </span>
-              <span>
-                <i style={{ background: "var(--accent)" }} />
-                Expedição
-              </span>
-            </div>
-          </div>
-          <div className="cb-panel">
-            <h3>Por frota</h3>
-            {Object.keys(frotasCont).length === 0 ? (
-              <div className="cb-col-empty">Nenhuma nota pendente.</div>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {Object.entries(frotasCont).map(([f, n]) => (
-                  <div key={f} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-                    <MiniPlaca placa={f} />
-                    <span className="cb-num" style={{ color: "var(--muted)" }}>
-                      {n} {n === 1 ? "nota" : "notas"}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <div className="cb-panel">
-            <h3>Tempo parado</h3>
-            <div className="cb-legend" style={{ marginTop: 0 }}>
-              <span>
-                <i style={{ background: "var(--line)" }} />
-                até 1 dia
-              </span>
-              <span>
-                <i style={{ background: "var(--warn)" }} />2 dias
-              </span>
-              <span>
-                <i style={{ background: "var(--crit)" }} />3 dias ou mais
-              </span>
-            </div>
-          </div>
+      ) : (
+        grupos.map((et) => {
+          const itens = filtradas.filter((p) => etapaDe(p) === et.n).sort((a, b) => diasParado(b) - diasParado(a));
+          if (!itens.length && etapaSel === "todas") return null;
+          return (
+            <GrupoLinhas
+              key={et.id}
+              titulo={et.n + " · " + et.label}
+              sub={"com " + (et.quem === "comercial" ? "o " : "a ") + QUEM[et.quem] + " · próximo passo: " + et.acao.toLowerCase()}
+              itens={itens}
+              vazio="Nenhuma nota nesta etapa."
+              ctx="mapa"
+              perfil={perfil}
+              onAbrir={onAbrir}
+            />
+          );
+        })
+      )}
+      {abertas.length > 0 && etapaSel === "todas" && filtradas.length === 0 && (
+        <div className="cb-rows" style={{ marginTop: 14 }}>
+          <div className="cb-empty-row">Nenhuma nota encontrada com esses filtros.</div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
-
-function PendenciaEmissao({ modo, perfil, session, frotas, clientes, showToast, onFrota, onAbrirComercial, versao }) {
-  const [lista, setLista] = useState([]);
-  const [carregando, setCarregando] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [editPend, setEditPend] = useState(null);
-  const [painelExp, setPainelExp] = useState(null);
-  const [confirmDel, setConfirmDel] = useState(null);
-  const [buscaNf, setBuscaNf] = useState("");
-  const [mesRef, setMesRef] = useState(() => {
+function RelatorioExpedidas({ lista, onAbrir }) {
+  const [mes, setMes] = useState(() => {
     const d = new Date();
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
   });
-  const recarregar = useCallback(async () => {
-    setCarregando(true);
-    try {
-      setLista(await db.listarPendencias());
-    } catch (e) {
-      showToast("Erro ao carregar pendências: " + e.message, "err");
-    }
-    setCarregando(false);
-  }, [showToast]);
-  useEffect(() => {
-    recarregar();
-  }, [recarregar, versao]);
-  const handleDelete = async (id) => {
-    try {
-      await db.deletarPendencia(id);
-      setConfirmDel(null);
-      showToast("Pendência excluída.", "err");
-      await recarregar();
-    } catch (e) {
-      showToast("Erro: " + e.message, "err");
-    }
+  const mover = (delta) => {
+    const [a, m] = mes.split("-").map(Number);
+    const d = new Date(a, m - 1 + delta, 1);
+    setMes(d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"));
   };
-  const fmtMoeda = (v) =>
-    v == null ? "—" : "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const filtrar = (arr) =>
-    buscaNf.trim() ? arr.filter((p) => (p.nf_numero || "").toLowerCase().includes(buscaNf.trim().toLowerCase())) : arr;
-  const pendentes = filtrar(lista.filter((p) => p.status_expedicao !== "expedido"));
-  const expedidos = filtrar(
-    lista.filter((p) => p.status_expedicao === "expedido" && p.expedido_em && p.expedido_em.slice(0, 7) === mesRef),
-  );
-  const NUM_COLS = 15;
-  const FaltaBadge = ({ p }) =>
-    p.houve_falta ? (
-      <div style={{ ...S.badge, background: "var(--crit-soft)", color: "var(--crit)", marginTop: 3 }}>⚠ falta {p.qtd_falta || ""}</div>
-    ) : null;
-  const ExpedicaoCell = ({ p }) =>
-    isExpedicao(perfil) ? (
-      <button
-        style={{
-          ...S.btnS,
-          fontSize: 11,
-          padding: "3px 8px",
-          borderColor: STATUS_EXP_COLORS[p.status_expedicao]?.color,
-          color: STATUS_EXP_COLORS[p.status_expedicao]?.color,
-        }}
-        onClick={() => setPainelExp(p)}
-      >
-        {STATUS_EXP_LABELS[p.status_expedicao]} ✎
-      </button>
-    ) : (
-      <StatusBadge map={STATUS_EXP_COLORS} value={p.status_expedicao} label={STATUS_EXP_LABELS[p.status_expedicao]} />
-    );
-  const MotivoCell = ({ p }) => {
-    const me = motivoExpedicao(p);
-    const mc = motivoComercial(p);
-    return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 150 }}>
-        {me && <span className="cb-pill exp" style={{ whiteSpace: "normal" }}>{MOTIVOS_EXP[me]}</span>}
-        {mc && <span className="cb-pill com" style={{ whiteSpace: "normal" }}>{MOTIVOS_COM[mc]}</span>}
-        {!me && !mc && <span style={{ color: "var(--muted)" }}>—</span>}
-      </div>
-    );
-  };
-  const ComercialCell = ({ p }) =>
-    isComercial(perfil) ? (
-      <button
-        style={{
-          ...S.btnS,
-          fontSize: 11,
-          padding: "3px 8px",
-          borderColor: p.status_comercial === "liberado" ? "var(--info)" : "var(--warn)",
-          color: p.status_comercial === "liberado" ? "var(--info)" : "var(--warn)",
-        }}
-        onClick={() => onAbrirComercial(p)}
-      >
-        {p.status_comercial === "liberado" ? "Liberado" : "Em análise"} ✎
-      </button>
-    ) : (
-      <StatusBadge
-        map={{ em_analise: { bg: "var(--warn-soft)", color: "var(--warn)" }, liberado: { bg: "var(--info-soft)", color: "var(--info)" } }}
-        value={p.status_comercial}
-        label={p.status_comercial === "liberado" ? "Liberado" : "Em análise"}
-      />
-    );
-  const Linha = ({ p, modo }) => (
-    <React.Fragment>
-      <tr
-        style={{
-          background:
-            p.status_expedicao === "cte_anulado" ? "rgba(251,146,60,0.20)" : modo === "liberado" ? "rgba(90,166,239,.18)" : "transparent",
-        }}
-      >
-        <td style={{ ...S.td, fontSize: 10, whiteSpace: "nowrap" }}>{fmtDate(p.criado_em)}</td>
-        <td className="cb-hide-mobile" style={{ ...S.td, fontSize: 10, color: "var(--muted)" }}>
-          {p.criado_por_nome || "—"}
-        </td>
-        <td style={S.td}>{p.cliente}</td>
-        <td style={{ ...S.td, fontWeight: 700, color: "var(--accent)", whiteSpace: "nowrap" }}>{p.frota_placa || "—"}</td>
-        <td style={{ ...S.td, whiteSpace: "nowrap" }}>{p.nf_numero || "—"}</td>
-        <td style={{ ...S.td, textAlign: "center" }}>
-          {p.qtd_volumes}
-          <FaltaBadge p={p} />
-        </td>
-        <td className="cb-hide-mobile" style={S.td}>
-          <GruposDetalhe grupos={p.grupos} />
-        </td>
-        <td style={{ ...S.td, fontWeight: 700, whiteSpace: "nowrap" }}>{parseFloat(p.m3_total).toFixed(4)}</td>
-        <td style={S.td}>
-          <ExpedicaoCell p={p} />
-        </td>
-        {modo === "pendente" && (
-          <td style={S.td}>
-            <MotivoCell p={p} />
-          </td>
-        )}
-        <td className="cb-hide-mobile" style={{ ...S.td, fontSize: 11, maxWidth: 130 }}>
-          {p.observacao_expedicao || "—"}
-        </td>
-        <td style={S.td}>
-          <ComercialCell p={p} />
-        </td>
-        <td className="cb-hide-mobile" style={{ ...S.td, fontSize: 11, maxWidth: 130 }}>
-          {p.observacao_comercial || "—"}
-        </td>
-        <td style={{ ...S.td, fontSize: 11, whiteSpace: "nowrap" }}>{p.cotacao_numero || "—"}</td>
-        <td style={{ ...S.td, fontSize: 11, whiteSpace: "nowrap" }}>{fmtMoeda(p.frete_valor)}</td>
-        <td className="cb-hide-mobile" style={{ ...S.td, fontSize: 10, whiteSpace: "nowrap" }}>
-          {p.chave_nf || "—"}
-        </td>
-        {modo === "liberado" && (
-          <>
-            <td style={{ ...S.td, fontSize: 10, whiteSpace: "nowrap" }}>{p.expedido_em ? fmtDate(p.expedido_em) : "—"}</td>
-            <td className="cb-hide-mobile" style={{ ...S.td, fontSize: 10 }}>
-              {p.expedido_por_nome || "—"}
-            </td>
-          </>
-        )}
-        <td style={S.td}>
-          <div style={{ display: "flex", gap: 4 }}>
-            <button style={{ ...S.btnS, padding: "3px 7px", fontSize: 11 }} onClick={() => setEditPend(p)}>
-              ✎
-            </button>
-            {podeExcluirPendencia(perfil) && (
-              <button style={{ ...S.btnD, padding: "3px 7px", fontSize: 11 }} onClick={() => setConfirmDel(p)}>
-                🗑
-              </button>
-            )}
-          </div>
-        </td>
-      </tr>
-      {p.status_expedicao === "cte_anulado" && (
-        <tr style={{ background: "rgba(251,146,60,0.30)" }}>
-          <td
-            colSpan={modo === "liberado" ? NUM_COLS + 2 : NUM_COLS + 1}
-            style={{
-              padding: "6px 10px",
-              textAlign: "center",
-              fontSize: 12,
-              fontWeight: 700,
-              color: "#fb923c",
-              letterSpacing: 1,
-              borderBottom: "1px solid var(--line)",
-            }}
-          >
-            🚫 CTE ANULADO — Nº {p.cte_anulado_numero || "—"}
-          </td>
-        </tr>
-      )}
-    </React.Fragment>
-  );
-  const Header = ({ modo }) => (
-    <tr>
-      <th style={S.th}>Data</th>
-      <th className="cb-hide-mobile" style={S.th}>
-        Inserido por
-      </th>
-      <th style={S.th}>Cliente</th>
-      <th style={S.th}>Frota</th>
-      <th style={S.th}>NF</th>
-      <th style={S.th}>Vol.</th>
-      <th className="cb-hide-mobile" style={S.th}>
-        Medidas
-      </th>
-      <th style={S.th}>M³</th>
-      <th style={S.th}>Expedição</th>
-      {modo === "pendente" && <th style={S.th}>Motivo</th>}
-      <th className="cb-hide-mobile" style={S.th}>
-        Obs. Exp.
-      </th>
-      <th style={S.th}>Comercial</th>
-      <th className="cb-hide-mobile" style={S.th}>
-        Obs. Com.
-      </th>
-      <th style={S.th}>Cotação</th>
-      <th style={S.th}>Valor frete</th>
-      <th className="cb-hide-mobile" style={S.th}>
-        Chave NF
-      </th>
-      {modo === "liberado" && (
-        <>
-          <th style={S.th}>Expedido em</th>
-          <th className="cb-hide-mobile" style={S.th}>
-            Expedido por
-          </th>
-        </>
-      )}
-      <th style={S.th}>Ações</th>
-    </tr>
-  );
+  const nomeMes = new Date(mes + "-15T12:00:00").toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  const doMes = lista
+    .filter((p) => p.status_expedicao === "expedido" && p.expedido_em && fmtMesLocal(p.expedido_em) === mes)
+    .sort((a, b) => new Date(b.expedido_em) - new Date(a.expedido_em));
+  const m3 = doMes.reduce((s, p) => s + (parseFloat(p.m3_total) || 0), 0);
+  const frete = doMes.reduce((s, p) => s + (parseFloat(p.frete_valor) || 0), 0);
   return (
-    <div className="cb-page">
-      <div className="cb-head">
-        <div>
-          <div className="cb-eyebrow">{modo === "comercial" ? "Somente Comercial" : "Somente Expedição"}</div>
-          <h1 className="cb-h1">{modo === "comercial" ? "Comercial" : "Expedição"}</h1>
-          <p className="cb-sub">
-            {modo === "comercial"
-              ? "Controle por nota: anexe as cotações e o print do fornecedor aprovando o embarque. A nota só é liberada com a cotação aprovada marcada e o print."
-              : "Lance a cubagem por frota, abra pendências de emissão e trate as notas que estão paradas com a Expedição."}
-          </p>
-        </div>
-        <div className="cb-row" style={{ alignItems: "center" }}>
-          <input
-            style={{ ...S.input, width: 200 }}
-            value={buscaNf}
-            onChange={(e) => setBuscaNf(e.target.value)}
-            placeholder="Buscar por NF"
-            aria-label="Buscar por NF"
-          />
-          {modo === "expedicao" && isExpedicao(perfil) && (
-            <button style={S.btnY} onClick={() => setShowForm(true)}>
-              + Nova pendência
-            </button>
-          )}
-        </div>
+    <>
+      <div className="cb-label-row" style={{ marginTop: 34, alignItems: "center" }}>
+        <span>Expedidas no mês</span>
+        <span className="cb-month">
+          <button type="button" style={{ ...S.btnS, padding: "2px 10px" }} onClick={() => mover(-1)} aria-label="Mês anterior">
+            ‹
+          </button>
+          <b>{nomeMes}</b>
+          <button type="button" style={{ ...S.btnS, padding: "2px 10px" }} onClick={() => mover(1)} aria-label="Próximo mês">
+            ›
+          </button>
+        </span>
       </div>
-      {modo === "expedicao" && (
-        <>
-          <div className="cb-label-row" style={{ marginTop: 0 }}>
-            <span>Selecionar frota</span>
-            <span>{(frotas || []).length} frotas</span>
-          </div>
-          <FrotasGrid
-            frotas={frotas}
-            onFrota={onFrota}
-            contagem={carregando ? null : (f) => {
-              const n = lista.filter((p) => p.status_expedicao !== "expedido" && p.frota_placa === f.placa).length;
-              return n ? n + (n === 1 ? " pendência" : " pendências") : "sem pendência";
-            }}
-          />
-          <div style={{ height: 22 }} />
-        </>
-      )}
-      {carregando ? (
-        <SkeletonTableRows rows={5} cols={9} />
+      <div className="cb-sumline" style={{ marginBottom: 12 }}>
+        <span>
+          <b>{doMes.length}</b> notas
+        </span>
+        <span>
+          <b>{m3.toLocaleString("pt-BR", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</b> m³
+        </span>
+        <span>
+          <b>{fmtMoedaBR(frete)}</b> em frete
+        </span>
+        <span>Clique numa linha para ver medidas, chave e observações.</span>
+      </div>
+      {doMes.length === 0 ? (
+        <div className="cb-rows">
+          <div className="cb-empty-row">Nenhuma nota expedida neste mês.</div>
+        </div>
       ) : (
-        <>
-          {modo === "comercial" ? (
-            <>
-              <div className="cb-kpis">
-                <div className="cb-kpi">
-                  <b style={{ color: "var(--crit)" }}>{pendentes.filter((p) => etapaComercial(p).step === 1).length}</b>
-                  <small>sem cotação</small>
-                </div>
-                <div className="cb-kpi">
-                  <b style={{ color: "var(--warn)" }}>{pendentes.filter((p) => etapaComercial(p).step === 2).length}</b>
-                  <small>aguardando aprovação</small>
-                </div>
-                <div className="cb-kpi">
-                  <b style={{ color: "var(--com)" }}>{pendentes.filter((p) => etapaComercial(p).step === 3).length}</b>
-                  <small>prontas para liberar</small>
-                </div>
-                <div className="cb-kpi">
-                  <b style={{ color: "var(--ok)" }}>{pendentes.filter((p) => p.status_comercial === "liberado").length}</b>
-                  <small>liberadas, aguardando expedição</small>
-                </div>
-              </div>
-              <div className="cb-label-row">
-                <span>Controle por nota fiscal</span>
-                <span>Cotação → Aprovação → Liberação</span>
-              </div>
-              <div style={{ marginBottom: 14 }}>
-                <TabelaComercial
-                  lista={[...pendentes].sort(
-                    (a, b) => (a.status_comercial === "liberado" ? 1 : 0) - (b.status_comercial === "liberado" ? 1 : 0) || diasParado(b) - diasParado(a),
-                  )}
-                  onAbrir={onAbrirComercial}
-                />
-              </div>
-            </>
-          ) : (
-          <div className="cb-card">
-            <div style={S.secT}>Pendentes / em análise ({pendentes.length})</div>
-            <div style={{ fontSize: 10, color: "var(--muted)", marginBottom: 10 }}>Fica aqui até ser expedido, independente do mês.</div>
-            {pendentes.length === 0 ? (
-              <p style={{ color: "var(--muted)", fontSize: 13 }}>Nenhuma pendência encontrada.</p>
-            ) : (
-              <div className="cb-table-wrap">
-                <table style={S.table}>
-                  <thead>
-                    <Header modo="pendente" />
-                  </thead>
-                  <tbody>
-                    {pendentes.map((p) => (
-                      <Linha key={p.id} p={p} modo="pendente" />
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-          )}
-          <div className="cb-card">
-            <div className="cb-row" style={{ alignItems: "center", marginBottom: 2 }}>
-              <div style={S.secT}>Liberados/expedidos ({expedidos.length})</div>
-              <input
-                style={{ ...S.input, width: 160, marginLeft: "auto" }}
-                type="month"
-                value={mesRef}
-                onChange={(e) => setMesRef(e.target.value)}
-              />
-            </div>
-            <div style={{ fontSize: 10, color: "var(--muted)", marginBottom: 10 }}>
-              Relatório mensal — filtra pela data em que foi marcado "Expedido".
-            </div>
-            {expedidos.length === 0 ? (
-              <p style={{ color: "var(--muted)", fontSize: 13 }}>Nenhuma liberação encontrada neste mês.</p>
-            ) : (
-              <div className="cb-table-wrap">
-                <table style={S.table}>
-                  <thead>
-                    <Header modo="liberado" />
-                  </thead>
-                  <tbody>
-                    {expedidos.map((p) => (
-                      <Linha key={p.id} p={p} modo="liberado" />
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </>
-      )}
-      {showForm && (
-        <PendenciaModal
-          frotas={frotas}
-          clientes={clientes}
-          perfil={perfil}
-          session={session}
-          onClose={() => setShowForm(false)}
-          onSave={() => {
-            setShowForm(false);
-            showToast("Pendência criada!");
-            recarregar();
-          }}
-        />
-      )}
-      {editPend && (
-        <PendenciaModal
-          pendencia={editPend}
-          frotas={frotas}
-          clientes={clientes}
-          perfil={perfil}
-          session={session}
-          onClose={() => setEditPend(null)}
-          onSave={() => {
-            setEditPend(null);
-            showToast("Pendência atualizada!");
-            recarregar();
-          }}
-        />
-      )}
-      {painelExp && (
-        <PainelExpedicao
-          p={painelExp}
-          onClose={() => setPainelExp(null)}
-          onSaved={() => {
-            setPainelExp(null);
-            showToast("Expedição atualizada!");
-            recarregar();
-          }}
-        />
-      )}
-      {confirmDel && (
-        <div style={S.modal} onClick={(e) => e.target === e.currentTarget && setConfirmDel(null)}>
-          <div className="cb-modal-box" style={{ maxWidth: 380 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "var(--crit)", marginBottom: 14 }}>⚠️ EXCLUIR PENDÊNCIA</div>
-            <div style={{ fontSize: 13, color: "var(--fg-2)", lineHeight: 2, marginBottom: 18 }}>
-              Excluir pendência de <b style={{ color: "var(--fg)" }}>{confirmDel.cliente}</b>?<br />
-              <span style={{ color: "var(--crit)" }}>Esta ação não pode ser desfeita.</span>
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button style={{ ...S.btnS, flex: 1 }} onClick={() => setConfirmDel(null)}>
-                Cancelar
-              </button>
-              <button
-                style={{ ...S.btnD, flex: 1, background: "var(--crit-soft)", fontWeight: 700 }}
-                onClick={() => handleDelete(confirmDel.id)}
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
+        <div className="cb-tbl-wrap">
+          <table className="cb-tbl cb-tbl-click">
+            <thead>
+              <tr>
+                <th>Expedida em</th>
+                <th>Nota fiscal</th>
+                <th>Frota</th>
+                <th>Carga</th>
+                <th>Cotação</th>
+                <th>Frete</th>
+                <th>Observação</th>
+              </tr>
+            </thead>
+            <tbody>
+              {doMes.map((p) => (
+                <tr key={p.id} tabIndex={0} onClick={() => onAbrir(p)} onKeyDown={(e) => e.key === "Enter" && onAbrir(p)}>
+                  <td className="cb-num" style={{ whiteSpace: "nowrap" }}>
+                    {fmtDate(p.expedido_em).slice(0, 17)}
+                  </td>
+                  <td className="cb-nfcell">
+                    <b className="cb-num">NF {p.nf_numero || "—"}</b>
+                    <small>{p.cliente}</small>
+                  </td>
+                  <td>
+                    <MiniPlaca placa={p.frota_placa} />
+                  </td>
+                  <td className="cb-num" style={{ whiteSpace: "nowrap" }}>
+                    {fmtCarga(p)}
+                  </td>
+                  <td className="cb-num">{p.cotacao_numero || "—"}</td>
+                  <td className="cb-num" style={{ whiteSpace: "nowrap" }}>
+                    {fmtMoedaBR(p.frete_valor)}
+                  </td>
+                  <td>
+                    <div className="cb-ellip">{p.observacao_comercial || p.observacao_expedicao || "—"}</div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
+    </>
+  );
+}
+function fmtMesLocal(iso) {
+  const d = new Date(iso);
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+}
+function TabelaComercial({ lista, onAbrir }) {
+  if (lista.length === 0)
+    return (
+      <div className="cb-rows">
+        <div className="cb-empty-row">Nenhuma nota aberta.</div>
+      </div>
+    );
+  return (
+    <div className="cb-tbl-wrap">
+      <table className="cb-tbl cb-tbl-click">
+        <thead>
+          <tr>
+            <th>Nota fiscal</th>
+            <th>Destino</th>
+            <th>Carga</th>
+            <th>Cotações</th>
+            <th>Aprovação</th>
+            <th>Etapa</th>
+            <th>Alerta</th>
+            <th>Parada há</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {lista.map((p) => {
+            const e = etapaDe(p);
+            const d = diasParado(p);
+            const alerta = problemasDe(p).find((x) => x.t === "Divergência de frete");
+            return (
+              <tr key={p.id} tabIndex={0} onClick={() => onAbrir(p)} onKeyDown={(ev) => ev.key === "Enter" && onAbrir(p)}>
+                <td className="cb-nfcell">
+                  <b className="cb-num">NF {p.nf_numero || "—"}</b>
+                  <small>{p.cliente}</small>
+                </td>
+                <td>{destinoDe(p)}</td>
+                <td className="cb-num" style={{ whiteSpace: "nowrap" }}>
+                  {fmtCarga(p)}
+                </td>
+                <td className="cb-num">{(p.cotacoes || []).length}</td>
+                <td>{p.aprovacao_path ? <span className="cb-pill ok">Anexada</span> : <span style={{ color: "var(--muted)" }}>—</span>}</td>
+                <td>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    <span className={"cb-pill " + (e === 4 ? "ok" : e === 1 ? "crit" : e === 2 ? "warn" : "com")}>{e === 4 ? "Liberada" : ETAPAS[e - 1].label}</span>
+                    <span className="cb-steps" aria-hidden="true">
+                      {[1, 2, 3].map((i) => (
+                        <i key={i} className={e > i ? "done" : e === i ? "on" : ""} />
+                      ))}
+                    </span>
+                  </div>
+                </td>
+                <td>{alerta ? <span className="cb-pill warn">{alerta.t}</span> : <span style={{ color: "var(--muted)" }}>—</span>}</td>
+                <td>
+                  <span className={"cb-pill " + (d >= 3 ? "crit" : d >= 2 ? "warn" : "mute")}>{textoDias(d)}</span>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    style={e === 4 ? S.btnS : S.btnY}
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+                      onAbrir(p);
+                    }}
+                  >
+                    {e === 4 ? "Ver" : "Abrir controle"}
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
-
+function PendenciaEmissao({ modo, perfil, frotas, showToast, onFrota, onAbrir, onNova, onChanged, versao }) {
+  const lista = usePendencias(versao, showToast);
+  const [buscaNf, setBuscaNf] = useState("");
+  if (!lista) return <SkeletonPagina />;
+  const q = buscaNf.trim().toLowerCase();
+  const filtra = (arr) => (q ? arr.filter((p) => [p.nf_numero, p.cliente].join(" ").toLowerCase().includes(q)) : arr);
+  const abertas = filtra(lista.filter((p) => etapaDe(p) < 5)).sort((a, b) => diasParado(b) - diasParado(a));
+  const prontas = abertas.filter((p) => etapaDe(p) === 4);
+  const comComercial = abertas.filter((p) => etapaDe(p) <= 3);
+  const expedir = async (p) => {
+    try {
+      await db.expedirPendencia(p.id);
+      showToast("NF " + (p.nf_numero || "") + " marcada como expedida.");
+      onChanged();
+    } catch (e) {
+      showToast(e.message || "Erro ao expedir.", "err");
+    }
+  };
+  const cabecalho = (
+    <div className="cb-head">
+      <div>
+        <div className="cb-eyebrow">{modo === "comercial" ? "Somente Comercial" : "Somente Expedição"}</div>
+        <h1 className="cb-h1">{modo === "comercial" ? "Comercial" : "Expedição"}</h1>
+        <p className="cb-sub">
+          {modo === "comercial"
+            ? "Etapas 1 a 3 do processo: cotação, aprovação do fornecedor e liberação."
+            : "Notas liberadas esperando carregamento, as que ainda estão com o Comercial e o que já saiu no mês."}
+        </p>
+      </div>
+      <div className="cb-row" style={{ alignItems: "center" }}>
+        <input
+          style={{ ...S.input, width: 200 }}
+          type="search"
+          value={buscaNf}
+          onChange={(e) => setBuscaNf(e.target.value)}
+          placeholder="Buscar NF ou cliente"
+          aria-label="Buscar NF ou cliente"
+        />
+        {modo === "expedicao" && isExpedicao(perfil) && (
+          <button style={{ ...S.btnY, height: 40, padding: "0 18px" }} onClick={onNova}>
+            + Nova pendência
+          </button>
+        )}
+      </div>
+    </div>
+  );
+  if (modo === "comercial") {
+    const c = (n) => abertas.filter((p) => etapaDe(p) === n).length;
+    return (
+      <div className="cb-page">
+        {cabecalho}
+        <div className="cb-stages">
+          {ETAPAS.slice(0, 3).map((et) => (
+            <div key={et.id} className="cb-stage" style={{ cursor: "default" }}>
+              <span className="cb-stage-top">
+                <span className="cb-stage-n">{et.n}</span>
+                <span className="cb-stage-label">{et.label}</span>
+              </span>
+              <span className={"cb-stage-count" + (c(et.n) ? "" : " zero")}>{c(et.n)}</span>
+              <span className="cb-stage-meta">{et.acao}</span>
+            </div>
+          ))}
+          <div className="cb-stage" style={{ cursor: "default" }}>
+            <span className="cb-stage-top">
+              <span className="cb-stage-n">✓</span>
+              <span className="cb-stage-label">Liberadas</span>
+            </span>
+            <span className={"cb-stage-count" + (c(4) ? "" : " zero")} style={c(4) ? { color: "var(--ok)" } : undefined}>
+              {c(4)}
+            </span>
+            <span className="cb-stage-meta">aguardando a Expedição</span>
+          </div>
+        </div>
+        <div className="cb-label-row">
+          <span>Controle por nota fiscal</span>
+          <span>{abertas.length} notas abertas</span>
+        </div>
+        <TabelaComercial lista={[...comComercial, ...prontas]} onAbrir={onAbrir} />
+        <RelatorioExpedidas lista={lista} onAbrir={onAbrir} />
+      </div>
+    );
+  }
+  return (
+    <div className="cb-page">
+      {cabecalho}
+      <div className="cb-label-row" style={{ marginTop: 0 }}>
+        <span>Lançar cubagem</span>
+        <span>{(frotas || []).length} frotas</span>
+      </div>
+      <FrotasGrid frotas={frotas} onFrota={onFrota} compacto />
+      <div style={{ height: 10 }} />
+      <GrupoLinhas
+        titulo="Prontas para expedir"
+        sub={prontas.length + " · liberadas pelo Comercial"}
+        itens={prontas}
+        vazio="Nenhuma nota liberada aguardando expedição."
+        ctx="expedicao"
+        perfil={perfil}
+        onAbrir={onAbrir}
+        onExpedir={expedir}
+      />
+      <GrupoLinhas
+        titulo="Ainda com o Comercial"
+        sub={comComercial.length + " · cotação, aprovação ou liberação"}
+        itens={comComercial}
+        vazio="Nenhuma nota com o Comercial."
+        ctx="expedicao"
+        perfil={perfil}
+        onAbrir={onAbrir}
+      />
+      <RelatorioExpedidas lista={lista} onAbrir={onAbrir} />
+    </div>
+  );
+}
+function FormPendencia({ pendencia, frotas, clientes, perfil, onClose, onSaved, showToast }) {
+  const editando = !!pendencia;
+  const gruposDe = (gs) =>
+    gs.map((g) => ({
+      ...novoGrupo(),
+      unidade: "m",
+      qtd: String(g.qtd),
+      altura: String(g.altura_m).replace(".", ","),
+      largura: String(g.largura_m).replace(".", ","),
+      comprimento: String(g.comprimento_m).replace(".", ","),
+    }));
+  const [cliente, setCliente] = useState(pendencia?.cliente || "");
+  const [cubagens, setCubagens] = useState([]);
+  const [cubSel, setCubSel] = useState(pendencia?.registro_vinculado_id || null);
+  const [chave, setChave] = useState(pendencia?.chave_nf || "");
+  const [nf, setNf] = useState(pendencia?.nf_numero || "");
+  const [placa, setPlaca] = useState(pendencia?.frota_placa || "");
+  const [uf, setUf] = useState(pendencia?.uf_destino || "");
+  const [cidade, setCidade] = useState(pendencia?.municipio_destino || "");
+  const [grupos, setGrupos] = useState(pendencia?.grupos?.length ? gruposDe(pendencia.grupos) : [novoGrupo()]);
+  const [motivo, setMotivo] = useState(pendencia?.motivo_expedicao || (pendencia?.houve_falta ? "falta_mercadoria" : ""));
+  const [falta, setFalta] = useState(pendencia?.qtd_falta != null ? String(pendencia.qtd_falta) : "");
+  const [obs, setObs] = useState(pendencia?.observacao_expedicao || "");
+  const [anexo, setAnexo] = useState(null);
+  const [tentou, setTentou] = useState(false);
+  const [salvando, setSalvando] = useState(false);
+  const clienteValido = (clientes || []).some((c) => c.nome === cliente);
+  useEffect(() => {
+    if (!clienteValido) {
+      setCubagens([]);
+      return;
+    }
+    let ativo = true;
+    db.buscarRegistrosPorCliente(cliente)
+      .then((rs) => ativo && setCubagens(rs.slice(0, 8)))
+      .catch(() => {});
+    return () => {
+      ativo = false;
+    };
+  }, [cliente, clienteValido]);
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const usarCubagem = (r) => {
+    if (cubSel === r.id) {
+      setCubSel(null);
+      return;
+    }
+    setCubSel(r.id);
+    setNf(r.nota || "");
+    setPlaca(r.frota_placa || "");
+    if (r.grupos?.length) setGrupos(gruposDe(r.grupos));
+    showToast("NF, frota e medidas preenchidas pela cubagem do conferente.");
+  };
+  const ch = chaveInfo(chave);
+  const onChave = (v) => {
+    setChave(v);
+    const info = chaveInfo(v);
+    if (info.ok && !nf) {
+      setNf(info.nf);
+      showToast("Número da NF preenchido pela chave: " + info.nf);
+    }
+  };
+  const msgChave = !chave
+    ? "Opcional, mas preenche o número da NF."
+    : !ch.ok
+      ? { bad: ch.d.length + "/44 dígitos" }
+      : nf && nf.replace(/^0+/, "") !== ch.nf
+        ? { bad: "A chave é da NF " + ch.nf + ", mas o número informado é " + nf + "." }
+        : { ok: "Chave válida · NF " + ch.nf + " · série " + ch.serie };
+  const vol = grupos.reduce((s, g) => s + (parseInt(g.qtd) || 0), 0);
+  const m3 = calcM3(grupos);
+  const faltando = [];
+  if (!clienteValido) faltando.push("cliente da lista");
+  if (!nf.trim()) faltando.push("número da NF");
+  if (!placa) faltando.push("frota");
+  if (!grupos.every(grupoCompleto)) faltando.push("medidas");
+  if (motivo === "falta_mercadoria" && !(parseInt(falta) > 0)) faltando.push("volumes faltando");
+  if (chave && !ch.ok) faltando.push("chave com 44 dígitos");
+  if (ch.ok && nf.trim() && nf.trim().replace(/^0+/, "") !== ch.nf) faltando.push("chave e número da mesma NF");
+  const upG = (id, campo, v) => setGrupos((gs) => gs.map((x) => (x.id === id ? { ...x, [campo]: v } : x)));
+  const salvar = async () => {
+    if (faltando.length) {
+      setTentou(true);
+      showToast("Falta preencher: " + faltando.join(", "), "err");
+      return;
+    }
+    if (anexo) {
+      const erro = validarAnexo(anexo, false);
+      if (erro) return showToast(erro, "err");
+    }
+    setSalvando(true);
+    try {
+      const ehFalta = motivo === "falta_mercadoria";
+      const frota = (frotas || []).find((f) => f.placa === placa);
+      const dados = {
+        cliente,
+        nf_numero: nf.trim(),
+        chave_nf: ch.ok ? ch.d : null,
+        frota_placa: placa,
+        frota_id: frota?.id || null,
+        uf_destino: uf || null,
+        municipio_destino: cidade.trim() || null,
+        qtd_volumes: vol,
+        m3_total: m3,
+        motivo_expedicao: motivo || null,
+        houve_falta: ehFalta,
+        qtd_falta: ehFalta ? parseInt(falta) : null,
+        observacao_expedicao: obs.trim() || null,
+        registro_vinculado_id: cubSel || null,
+      };
+      const gruposM = grupos.map((g) => ({ ...g, ...dimsM(g) }));
+      let id;
+      if (editando) {
+        id = pendencia.id;
+        await db.atualizarPendencia(id, dados);
+        await db.atualizarGruposPendencia(id, gruposM, m3);
+      } else {
+        const criada = await db.criarPendencia(dados, gruposM);
+        id = criada.id;
+      }
+      if (anexo) {
+        try {
+          const path = await db.uploadNfImagem(anexo, id);
+          await db.atualizarPendencia(id, { nf_imagem_path: path });
+        } catch (e) {
+          showToast("Pendência salva, mas o anexo não subiu: " + e.message, "err");
+        }
+      }
+      onSaved(editando ? "Pendência da NF " + nf + " atualizada." : "Pendência da NF " + nf + " criada. Está na etapa 1, com o Comercial.");
+    } catch (e) {
+      showToast("Erro ao salvar: " + e.message, "err");
+    }
+    setSalvando(false);
+  };
+  const campoMedida = (g, k, rotulo) => (
+    <div key={k}>
+      <label style={S.label} htmlFor={"fp" + g.id + k}>
+        {rotulo}
+        {k === "qtd" ? "" : " (" + g.unidade + ")"}
+      </label>
+      <input
+        id={"fp" + g.id + k}
+        style={{ ...S.input, borderColor: tentou && !(parseNum(g[k]) > 0) ? "var(--crit)" : undefined }}
+        className="cb-num"
+        inputMode={k === "qtd" ? "numeric" : "decimal"}
+        value={g[k]}
+        placeholder={k === "qtd" ? "0" : g.unidade === "m" ? "0,00" : "0"}
+        onChange={(e) => upG(g.id, k, e.target.value)}
+      />
+    </div>
+  );
+  return (
+    <>
+      <div className="cb-scrim" onClick={onClose} />
+      <aside className="cb-drawer wide" role="dialog" aria-modal="true" aria-labelledby="fp-title">
+        <div className="cb-dr-head">
+          <div>
+            <h2 id="fp-title">{editando ? "Editar pendência" : "Nova pendência de emissão"}</h2>
+            <p>{editando ? "NF " + (pendencia.nf_numero || "—") + " · " + pendencia.cliente : "A nota entra no Mapa na etapa 1 (Cotação), com o Comercial."}</p>
+          </div>
+          <button type="button" style={S.btnS} onClick={onClose} aria-label="Fechar">
+            ✕
+          </button>
+        </div>
+        <div className="cb-dr-body" style={{ gap: 28 }}>
+          <div className="cb-sec">
+            <div className="cb-sec-h">
+              <span className="n">1</span>
+              <h3>Cliente e cubagem</h3>
+              <small>de onde vem a carga</small>
+            </div>
+            <div>
+              <label style={S.label} htmlFor="fp-cliente">
+                Cliente
+              </label>
+              <input
+                id="fp-cliente"
+                style={{ ...S.input, borderColor: tentou && !clienteValido ? "var(--crit)" : undefined }}
+                list="fp-clientes"
+                autoComplete="off"
+                value={cliente}
+                onChange={(e) => {
+                  setCliente(e.target.value);
+                  setCubSel(null);
+                }}
+                placeholder="Digite para buscar"
+              />
+              <datalist id="fp-clientes">
+                {(clientes || []).map((c) => (
+                  <option key={c.id} value={c.nome} />
+                ))}
+              </datalist>
+            </div>
+            {clienteValido &&
+              (cubagens.length ? (
+                <div>
+                  <div className="cb-helper" style={{ marginBottom: 6 }}>
+                    <span>Cubagens já lançadas pelos conferentes para este cliente. Escolha uma para preencher NF, frota e medidas.</span>
+                  </div>
+                  <div className="cb-cub-pick">
+                    {cubagens.map((r) => (
+                      <button key={r.id} type="button" className="cb-cub" aria-pressed={cubSel === r.id} onClick={() => usarCubagem(r)}>
+                        <span style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                          <b className="cb-num">NF {r.nota}</b>
+                          <MiniPlaca placa={r.frota_placa} />
+                        </span>
+                        <small className="cb-num">
+                          {r.qtd_total} vol · {fmtM3(parseFloat(r.m3_total) || 0)} m³ · {new Date(r.criado_em).toLocaleDateString("pt-BR")}
+                        </small>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="cb-helper">
+                  <span>Nenhuma cubagem lançada para este cliente. Preencha as medidas abaixo.</span>
+                </div>
+              ))}
+          </div>
+          <div className="cb-sec">
+            <div className="cb-sec-h">
+              <span className="n">2</span>
+              <h3>Nota fiscal</h3>
+              <small>cole a chave e o número sai sozinho</small>
+            </div>
+            <div>
+              <label style={S.label} htmlFor="fp-chave">
+                Chave de acesso
+              </label>
+              <input
+                id="fp-chave"
+                style={{ ...S.input, fontFamily: "ui-monospace,Menlo,monospace", fontSize: 12.5 }}
+                inputMode="numeric"
+                value={chave}
+                onChange={(e) => onChave(e.target.value)}
+                placeholder="44 dígitos"
+              />
+              <div className="cb-helper">
+                <span>
+                  {typeof msgChave === "string" ? msgChave : msgChave.ok ? <span className="okc">{msgChave.ok}</span> : <span className="bad">{msgChave.bad}</span>}
+                </span>
+                <span className="cb-num">{ch.d.length}/44</span>
+              </div>
+            </div>
+            <div className="cb-grid3">
+              <div>
+                <label style={S.label} htmlFor="fp-nf">
+                  Nº da NF
+                </label>
+                <input
+                  id="fp-nf"
+                  style={{ ...S.input, borderColor: tentou && !nf.trim() ? "var(--crit)" : undefined }}
+                  className="cb-num"
+                  inputMode="numeric"
+                  value={nf}
+                  onChange={(e) => setNf(e.target.value)}
+                />
+              </div>
+              <div>
+                <label style={S.label} htmlFor="fp-uf">
+                  UF destino
+                </label>
+                <select id="fp-uf" style={{ ...S.select, width: "100%" }} value={uf} onChange={(e) => setUf(e.target.value)}>
+                  <option value="">—</option>
+                  {UFS.map((u) => (
+                    <option key={u}>{u}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label style={S.label} htmlFor="fp-cidade">
+                  Município
+                </label>
+                <input id="fp-cidade" style={S.input} value={cidade} onChange={(e) => setCidade(e.target.value)} placeholder="Ex.: Recife" />
+              </div>
+            </div>
+            <div>
+              <label style={S.label}>Frota</label>
+              <div className="cb-plate-pick" role="group" aria-label="Frota">
+                {(frotas || []).map((f) => (
+                  <button key={f.id} type="button" aria-pressed={placa === f.placa} onClick={() => setPlaca(f.placa)}>
+                    <MiniPlaca placa={f.placa} />
+                  </button>
+                ))}
+              </div>
+              {tentou && !placa && <div className="cb-helper"><span className="bad">Escolha a frota.</span></div>}
+            </div>
+          </div>
+          <div className="cb-sec">
+            <div className="cb-sec-h">
+              <span className="n">3</span>
+              <h3>Carga</h3>
+              <small>um grupo por tamanho de volume</small>
+            </div>
+            {grupos.map((g) => (
+              <div key={g.id} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <div className="cb-mgrp">
+                  {campoMedida(g, "qtd", "Volumes")}
+                  {campoMedida(g, "altura", "Altura")}
+                  {campoMedida(g, "largura", "Largura")}
+                  {campoMedida(g, "comprimento", "Compr.")}
+                  <div className="m3">{fmtM3(calcM3([g]))}</div>
+                  <div className="cb-row" style={{ gap: 6, paddingBottom: 4, flexWrap: "nowrap" }}>
+                    <div className="cb-unit" role="group" aria-label="Unidade">
+                      {["m", "mm"].map((u) => (
+                        <button key={u} type="button" aria-pressed={g.unidade === u} onClick={() => upG(g.id, "unidade", u)}>
+                          {u}
+                        </button>
+                      ))}
+                    </div>
+                    {grupos.length > 1 && (
+                      <button type="button" style={{ ...S.btnD, padding: "3px 8px" }} onClick={() => setGrupos((gs) => gs.filter((x) => x.id !== g.id))} aria-label="Remover grupo">
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {avisosMedida(g).map((a) => (
+                  <div key={a} className="cb-warnbox">
+                    {a}
+                  </div>
+                ))}
+              </div>
+            ))}
+            <div>
+              <button type="button" style={S.btnS} onClick={() => setGrupos((gs) => [...gs, novoGrupo()])}>
+                + Novo grupo
+              </button>
+            </div>
+          </div>
+          <div className="cb-sec">
+            <div className="cb-sec-h">
+              <span className="n">4</span>
+              <h3>Situação na Expedição</h3>
+              <small>por que a nota ainda não saiu</small>
+            </div>
+            <div className="cb-mchips" role="group" aria-label="Motivo da pendência">
+              {MOTIVOS_EXP_OPCOES.map((m) => (
+                <button key={m.id} type="button" className="cb-mchip" aria-pressed={motivo === m.id} onClick={() => setMotivo(m.id)}>
+                  {m.label}
+                  <small>{m.dica}</small>
+                </button>
+              ))}
+            </div>
+            {motivo === "falta_mercadoria" && (
+              <div style={{ maxWidth: 220 }}>
+                <label style={S.label} htmlFor="fp-falta">
+                  Volumes faltando
+                </label>
+                <input
+                  id="fp-falta"
+                  style={{ ...S.input, borderColor: tentou && !(parseInt(falta) > 0) ? "var(--crit)" : undefined }}
+                  inputMode="numeric"
+                  value={falta}
+                  onChange={(e) => setFalta(e.target.value)}
+                />
+              </div>
+            )}
+            <div>
+              <label style={S.label} htmlFor="fp-obs">
+                Observação
+              </label>
+              <textarea
+                id="fp-obs"
+                style={{ ...S.input, minHeight: 56, resize: "vertical" }}
+                value={obs}
+                onChange={(e) => setObs(e.target.value)}
+                placeholder="Ex.: NF sem cotação, cliente pediu urgência"
+              />
+            </div>
+          </div>
+          <div className="cb-sec">
+            <div className="cb-sec-h">
+              <span className="n">5</span>
+              <h3>Anexo da NF</h3>
+              <small>{editando && pendencia.nf_imagem_path ? "já tem anexo; enviar outro substitui" : "sobe junto ao salvar"}</small>
+            </div>
+            {anexo ? (
+              <div className="cb-file" style={{ gridTemplateColumns: "48px minmax(0,1fr) auto" }}>
+                <div className="cb-thumb">{(anexo.name.split(".").pop() || "").toUpperCase().slice(0, 4)}</div>
+                <div style={{ minWidth: 0 }}>
+                  <b>{anexo.name}</b>
+                  <small>será enviado ao salvar</small>
+                </div>
+                <button type="button" style={{ ...S.btnD, padding: "4px 9px" }} onClick={() => setAnexo(null)}>
+                  Remover
+                </button>
+              </div>
+            ) : (
+              <ZonaArquivo
+                id="fp-anexo"
+                rotulo="Arraste o PDF ou a foto da NF"
+                dica="ou clique para escolher (até 10 MB)"
+                aceita="application/pdf,image/png,image/jpeg,image/webp"
+                onArquivo={(f) => {
+                  const erro = validarAnexo(f, false);
+                  if (erro) showToast(erro, "err");
+                  else setAnexo(f);
+                }}
+              />
+            )}
+          </div>
+        </div>
+        <div className="cb-dr-foot">
+          <div className="cb-foot-sum">
+            {nf && <b className="cb-num">NF {nf}</b>}
+            {placa && <MiniPlaca placa={placa} />}
+            <span>
+              <b className="cb-num">{vol}</b> vol
+            </span>
+            <span>
+              <b className="cb-num">{fmtM3(m3)}</b> m³
+            </span>
+            {faltando.length ? <span style={{ color: "var(--warn)" }}>falta: {faltando.join(", ")}</span> : <span style={{ color: "var(--ok)" }}>pronto para salvar</span>}
+          </div>
+          <div className="cb-row" style={{ gap: 8 }}>
+            <button type="button" style={S.btnS} onClick={onClose}>
+              Cancelar
+            </button>
+            <button type="button" style={{ ...S.btnY, opacity: salvando ? 0.6 : 1 }} disabled={salvando} onClick={salvar}>
+              {salvando ? "Salvando..." : editando ? "Salvar alterações" : "Criar pendência"}
+            </button>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+}
 function viewInicial(p) {
   if (!p) return "dashboard";
   if (p.role === "user") return "dashboard";
@@ -2568,6 +2686,7 @@ function App() {
   const [solicitacoesPendentes, setSolicitacoesPendentes] = useState(0);
   const [drawerPend, setDrawerPend] = useState(null);
   const [painelExpPend, setPainelExpPend] = useState(null);
+  const [formPend, setFormPend] = useState(null);
   const [versao, setVersao] = useState(0);
   const viewInicialDe = useRef(null);
   const showToast = useCallback((msg, type = "ok") => {
@@ -2580,15 +2699,17 @@ function App() {
     setFrota(null);
     setView(viewInicial(p));
   };
-  const abrirComercial = (p) => setDrawerPend(p);
-  const atualizarDrawer = async () => {
-    if (!drawerPend) return;
-    try {
-      setDrawerPend(await db.obterPendencia(drawerPend.id));
-    } catch (e) {
-      showToast("Erro ao recarregar a nota: " + e.message, "err");
+  const abrirNota = (p) => setDrawerPend(p);
+  const recarregarListas = () => setVersao((v) => v + 1);
+  const atualizarDrawer = async (fechou) => {
+    if (!fechou && drawerPend) {
+      try {
+        setDrawerPend(await db.obterPendencia(drawerPend.id));
+      } catch (e) {
+        showToast("Erro ao recarregar a nota: " + e.message, "err");
+      }
     }
-    setVersao((v) => v + 1);
+    recarregarListas();
   };
   const irPara = (v) => {
     setFrota(null);
@@ -2637,6 +2758,7 @@ function App() {
           viewInicialDe.current = null;
           setDrawerPend(null);
           setPainelExpPend(null);
+          setFormPend(null);
           setSession(null);
           setPerfil(null);
           setFrotas([]);
@@ -2803,20 +2925,19 @@ function App() {
             perfil={perfil}
             showToast={showToast}
             versao={versao}
-            onAbrirComercial={abrirComercial}
-            onAbrirExpedicao={setPainelExpPend}
+            onAbrir={abrirNota}
           />
         )}
         {(view === "expedicao" && isExpedicao(perfil)) || (view === "comercial" && isComercial(perfil)) ? (
           <PendenciaEmissao
             modo={view}
             perfil={perfil}
-            session={session}
             frotas={frotas}
-            clientes={clientes}
             showToast={showToast}
             versao={versao}
-            onAbrirComercial={abrirComercial}
+            onAbrir={abrirNota}
+            onChanged={recarregarListas}
+            onNova={() => setFormPend({ pendencia: null })}
             onFrota={(f) => {
               setFrota(f);
               setView("frota");
@@ -2849,23 +2970,42 @@ function App() {
         )}
       </div>
       {drawerPend && (
-        <ControleComercial
+        <DetalheNota
           key={drawerPend.id}
           p={drawerPend}
           perfil={perfil}
           showToast={showToast}
           onClose={() => setDrawerPend(null)}
           onChanged={atualizarDrawer}
+          onEditar={(p) => setFormPend({ pendencia: p })}
+          onStatus={setPainelExpPend}
+        />
+      )}
+      {formPend && (
+        <FormPendencia
+          pendencia={formPend.pendencia}
+          frotas={frotas}
+          clientes={clientes}
+          perfil={perfil}
+          showToast={showToast}
+          onClose={() => setFormPend(null)}
+          onSaved={async (msg) => {
+            const editada = formPend.pendencia;
+            setFormPend(null);
+            showToast(msg);
+            if (editada && drawerPend && drawerPend.id === editada.id) await atualizarDrawer();
+            else recarregarListas();
+          }}
         />
       )}
       {painelExpPend && (
         <PainelExpedicao
           p={painelExpPend}
           onClose={() => setPainelExpPend(null)}
-          onSaved={() => {
+          onSaved={async () => {
             setPainelExpPend(null);
             showToast("Expedição atualizada!");
-            setVersao((v) => v + 1);
+            await atualizarDrawer();
           }}
         />
       )}
