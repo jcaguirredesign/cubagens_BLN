@@ -374,8 +374,8 @@ async atualizarRole(userId,role){const {error}=await sb.from('perfis').update({r
 async listarPendencias(){const {data,error}=await sb.from('pendencias_emissao').select('*, grupos:pendencias_emissao_grupos(*), cotacoes:pendencias_cotacoes!pendencias_cotacoes_pendencia_id_fkey(*)').order('criado_em',{ascending:false});if(error) throw error;return (data||[]).map(normalizarPendencia)},
 async obterPendencia(id){const {data,error}=await sb.from('pendencias_emissao').select('*, grupos:pendencias_emissao_grupos(*), cotacoes:pendencias_cotacoes!pendencias_cotacoes_pendencia_id_fkey(*)').eq('id',id).single();if(error) throw error;return normalizarPendencia(data)},
 async uploadAnexo(file,pendenciaId,pasta){const ext=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,5)||'bin';const path=`${pendenciaId}/${pasta}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;const {error}=await sb.storage.from('nf-anexos').upload(path,file,{contentType:file.type,upsert:false});if(error) throw error;return path},
-async adicionarCotacao(pendenciaId,{numero,freteValor,file}){const path=await this.uploadAnexo(file,pendenciaId,'cotacoes');const {error}=await sb.from('pendencias_cotacoes').insert({pendencia_id:pendenciaId,numero,frete_valor:freteValor,arquivo_path:path,arquivo_nome:file.name});if(error){await sb.storage.from('nf-anexos').remove([path]);throw error}},
-async removerCotacao(c){const {error}=await sb.from('pendencias_cotacoes').delete().eq('id',c.id);if(error) throw error;await sb.storage.from('nf-anexos').remove([c.arquivo_path])},
+async adicionarCotacao(pendenciaId,{numero,freteValor,file}){const path=file?await this.uploadAnexo(file,pendenciaId,'cotacoes'):null;const {error}=await sb.from('pendencias_cotacoes').insert({pendencia_id:pendenciaId,numero,frete_valor:freteValor,arquivo_path:path,arquivo_nome:file?file.name:null});if(error){if(path) await sb.storage.from('nf-anexos').remove([path]);throw error}},
+async removerCotacao(c){const {error}=await sb.from('pendencias_cotacoes').delete().eq('id',c.id);if(error) throw error;if(c.arquivo_path) await sb.storage.from('nf-anexos').remove([c.arquivo_path])},
 async buscarRegistrosPorCliente(cliente){if(!cliente) return [];const {data,error}=await sb.from('registros').select('*, grupos(*)').eq('cliente',cliente).order('criado_em',{ascending:false}).limit(30);if(error) throw error;return (data||[]).map(r=>({...r,grupos:(r.grupos||[]).sort((a,b)=>a.seq-b.seq)}))},
 async criarPendencia(payload,grupos){const {data:p,error:e1}=await sb.from('pendencias_emissao').insert(payload).select().single();if(e1) throw e1;if(grupos&&grupos.length){const gd=grupos.map((g,i)=>({pendencia_id:p.id,seq:i+1,qtd:parseInt(g.qtd)||0,unidade:g.unidade||'m',altura_m:g.alturaM??0,largura_m:g.larguraM??0,comprimento_m:g.comprimentoM??0,m3_grupo:(g.alturaM??0)*(g.larguraM??0)*(g.comprimentoM??0)*(parseInt(g.qtd)||0)}));const {error:e2}=await sb.from('pendencias_emissao_grupos').insert(gd);if(e2) throw e2}return p},
 async atualizarPendencia(id,patch){const {error}=await sb.from('pendencias_emissao').update(patch).eq('id',id);if(error) throw error},
@@ -1065,9 +1065,9 @@ function PainelExpedicao({ p, onClose, onSaved }) {
 }
 
 const ETAPAS = [
-  { n: 1, id: "cotacao", label: "Cotação", quem: "comercial", acao: "Anexar a cotação do frete" },
-  { n: 2, id: "aprovacao", label: "Aprovação do fornecedor", quem: "comercial", acao: "Anexar o print do fornecedor aprovando" },
-  { n: 3, id: "liberacao", label: "Liberação", quem: "comercial", acao: "Marcar a cotação aprovada e liberar" },
+  { n: 1, id: "cotacao", label: "Cotação", quem: "comercial", acao: "Registrar a cotação do frete" },
+  { n: 2, id: "aprovacao", label: "Aprovação do fornecedor", quem: "comercial", acao: "Marcar a cotação que o fornecedor aprovou" },
+  { n: 3, id: "liberacao", label: "Liberação", quem: "comercial", acao: "Liberar a nota" },
   { n: 4, id: "expedicao", label: "Expedição", quem: "expedicao", acao: "Carregar e marcar como expedida" },
 ];
 const QUEM = { comercial: "Comercial", expedicao: "Expedição" };
@@ -1090,7 +1090,7 @@ function etapaDe(p) {
   if (p.status_expedicao === "expedido") return 5;
   if (p.status_comercial === "liberado") return 4;
   if (!(p.cotacoes || []).length) return 1;
-  if (!p.aprovacao_path) return 2;
+  if (!p.cotacao_aprovada_id) return 2;
   return 3;
 }
 function problemasDe(p) {
@@ -1206,22 +1206,28 @@ function LinhaCotacao({ c, selecionada, podeEditar, onSelecionar, onRemover }) {
         onChange={() => onSelecionar(c.id)}
         style={{ accentColor: "var(--ok)", width: 18, height: 18 }}
       />
-      <a
-        href={url || undefined}
-        target="_blank"
-        rel="noreferrer"
-        className="cb-thumb"
-        style={ehImagem && url ? { backgroundImage: `url("${url}")` } : undefined}
-        aria-label={"Abrir arquivo da cotação " + c.numero}
-      >
-        {ehImagem && url ? "" : (c.arquivo_path || "").split(".").pop().toUpperCase().slice(0, 4)}
-      </a>
+      {c.arquivo_path ? (
+        <a
+          href={url || undefined}
+          target="_blank"
+          rel="noreferrer"
+          className="cb-thumb"
+          style={ehImagem && url ? { backgroundImage: `url("${url}")` } : undefined}
+          aria-label={"Abrir arquivo da cotação " + c.numero}
+        >
+          {ehImagem && url ? "" : c.arquivo_path.split(".").pop().toUpperCase().slice(0, 4)}
+        </a>
+      ) : (
+        <span className="cb-thumb" title="Cotação sem arquivo" aria-hidden="true">
+          —
+        </span>
+      )}
       <div style={{ minWidth: 0 }}>
         <b className="cb-num">
           {c.numero} · {fmtMoedaBR(c.frete_valor)}
         </b>
         <small>
-          {c.arquivo_nome || "arquivo"} · {c.criado_por_nome || "—"}
+          {c.arquivo_nome || "sem arquivo"} · {c.criado_por_nome || "—"}
         </small>
       </div>
       {podeEditar ? (
@@ -1313,7 +1319,7 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
     const v = parseNum(valor);
     if (!n) return showToast("Informe o número da cotação.", "err");
     if (String(valor).trim() === "" || !(v >= 0)) return showToast("Informe o valor do frete.", "err");
-    const erro = validarAnexo(arquivo, false);
+    const erro = arquivo ? validarAnexo(arquivo, false) : null;
     if (erro) return showToast(erro, "err");
     executar(async () => {
       await db.adicionarCotacao(p.id, { numero: n, freteValor: v, file: arquivo });
@@ -1363,10 +1369,10 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
   };
   let rodape;
   if (etapa <= 3 && isComercial(perfil)) {
-    const pronta = p.cotacao_aprovada_id && p.aprovacao_path;
+    const pronta = !!p.cotacao_aprovada_id;
     rodape = (
       <>
-        <small>{pronta ? "Tudo certo. Pode liberar." : "Para liberar: marque a cotação aprovada e anexe o print do fornecedor."}</small>
+        <small>{pronta ? "Tudo certo. Pode liberar." : "Para liberar: marque no círculo a cotação aprovada. Arquivo e print são opcionais."}</small>
         <button
           type="button"
           style={{ ...S.btnY, opacity: pronta && !ocupado ? 1 : 0.4 }}
@@ -1508,20 +1514,20 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
                     </div>
                     <ZonaArquivo
                       id="cot-arquivo"
-                      rotulo={arquivo ? arquivo.name : "Arraste o arquivo da cotação aqui"}
-                      dica={arquivo ? "clique para trocar" : "ou clique para escolher (PDF ou imagem, até 10 MB)"}
+                      rotulo={arquivo ? arquivo.name : "Arquivo da cotação (opcional)"}
+                      dica={arquivo ? "clique para trocar" : "arraste ou clique para escolher (PDF ou imagem, até 10 MB)"}
                       aceita="application/pdf,image/png,image/jpeg,image/webp"
                       onArquivo={setArquivo}
                       desabilitado={ocupado}
                     />
                     <button type="button" style={{ ...S.btnY, opacity: ocupado ? 0.6 : 1 }} disabled={ocupado} onClick={adicionar}>
-                      {ocupado ? "Enviando..." : "Anexar cotação"}
+                      {ocupado ? "Enviando..." : "Adicionar cotação"}
                     </button>
                   </div>
                 )}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {cotacoes.length === 0 ? (
-                    <div className="cb-col-empty">Nenhuma cotação anexada.</div>
+                    <div className="cb-col-empty">Nenhuma cotação registrada.</div>
                   ) : (
                     cotacoes.map((c) => (
                       <LinhaCotacao
@@ -1539,9 +1545,9 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
               <div className="cb-blk">
                 <h4>
                   Aprovação do fornecedor{" "}
-                  {p.aprovacao_path ? <span className="cb-pill ok">Anexada</span> : <span className="cb-pill warn">Pendente</span>}
+                  {p.aprovacao_path ? <span className="cb-pill ok">Anexada</span> : <span className="cb-pill mute">Opcional</span>}
                 </h4>
-                <p className="cb-hint">Print da conversa ou do e-mail em que o fornecedor aprova o embarque. Também aceita colar com Ctrl+V.</p>
+                <p className="cb-hint">Opcional. Print da conversa ou do e-mail em que o fornecedor aprova o embarque. Também aceita colar com Ctrl+V.</p>
                 {p.aprovacao_path ? (
                   <>
                     <div className="cb-proof">

@@ -54,7 +54,10 @@ const pend = (o) => ({ status_comercial: "em_analise", status_expedicao: "penden
 test("etapa da nota segue o processo", () => {
   assert.equal(app.etapaDe(pend()), 1);
   assert.equal(app.etapaDe(pend({ cotacoes: [{ id: 1 }] })), 2);
-  assert.equal(app.etapaDe(pend({ cotacoes: [{ id: 1 }], aprovacao_path: "a.png" })), 3);
+  // print do fornecedor é opcional: não avança nem trava a etapa
+  assert.equal(app.etapaDe(pend({ cotacoes: [{ id: 1 }], aprovacao_path: "a.png" })), 2);
+  assert.equal(app.etapaDe(pend({ cotacoes: [{ id: 1 }], cotacao_aprovada_id: 1 })), 3);
+  assert.equal(app.etapaDe(pend({ cotacoes: [{ id: 1 }], cotacao_aprovada_id: 1, aprovacao_path: null })), 3);
   assert.equal(app.etapaDe(pend({ status_comercial: "liberado" })), 4);
   assert.equal(app.etapaDe(pend({ status_expedicao: "expedido" })), 5);
   assert.equal(app.etapaDe(pend({ status_expedicao: "expedido", status_comercial: "em_analise" })), 5);
