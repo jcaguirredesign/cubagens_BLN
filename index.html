@@ -1290,6 +1290,7 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
   const expEdita = isExpedicao(perfil) && etapa <= 4;
   const [numero, setNumero] = useState("");
   const [valor, setValor] = useState("");
+  const [adicionada, setAdicionada] = useState(null);
   const [arquivo, setArquivo] = useState(null);
   const [ocupado, setOcupado] = useState(false);
   const [obsCom, setObsCom] = useState(p.observacao_comercial || "");
@@ -1319,14 +1320,14 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
     const v = parseNum(valor);
     if (!n) return showToast("Informe o número da cotação.", "err");
     if (String(valor).trim() === "" || !(v >= 0)) return showToast("Informe o valor do frete.", "err");
+    if ((p.cotacoes || []).some((c) => String(c.numero).trim() === n)) return showToast("A cotação " + n + " já está adicionada nesta nota.", "err");
     const erro = arquivo ? validarAnexo(arquivo, false) : null;
     if (erro) return showToast(erro, "err");
     executar(async () => {
       await db.adicionarCotacao(p.id, { numero: n, freteValor: v, file: arquivo });
-      setNumero("");
-      setValor("");
+      setAdicionada(n + "|" + String(valor).trim());
       setArquivo(null);
-    }, "Cotação " + n + " anexada.");
+    }, "Cotação " + n + " adicionada.");
   };
   const enviarAprovacao = (file) => {
     const erro = validarAnexo(file, true);
@@ -1509,7 +1510,7 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
                         <label style={S.label} htmlFor="cot-valor">
                           Valor do frete (R$)
                         </label>
-                        <input id="cot-valor" style={S.input} inputMode="decimal" value={valor} onChange={(e) => setValor(e.target.value)} placeholder="380,00" />
+                        <input id="cot-valor" style={S.input} inputMode="decimal" value={valor} onChange={(e) => setValor(e.target.value)} placeholder="0,00" />
                       </div>
                     </div>
                     <ZonaArquivo
@@ -1520,9 +1521,22 @@ function DetalheNota({ p, perfil, onClose, onChanged, onEditar, onStatus, showTo
                       onArquivo={setArquivo}
                       desabilitado={ocupado}
                     />
-                    <button type="button" style={{ ...S.btnY, opacity: ocupado ? 0.6 : 1 }} disabled={ocupado} onClick={adicionar}>
-                      {ocupado ? "Enviando..." : "Adicionar cotação"}
-                    </button>
+                    {adicionada === numero.trim() + "|" + String(valor).trim() ? (
+                      <>
+                        <button
+                          type="button"
+                          disabled
+                          style={{ ...S.btnS, borderColor: "var(--ok)", color: "var(--ok)", background: "var(--ok-soft)", cursor: "default" }}
+                        >
+                          ✓ Cotação adicionada
+                        </button>
+                        <small style={{ color: "var(--muted)", fontSize: 12 }}>Para registrar outra cotação, altere o número e o valor.</small>
+                      </>
+                    ) : (
+                      <button type="button" style={{ ...S.btnY, opacity: ocupado ? 0.6 : 1 }} disabled={ocupado} onClick={adicionar}>
+                        {ocupado ? "Enviando..." : "Adicionar cotação"}
+                      </button>
+                    )}
                   </div>
                 )}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
